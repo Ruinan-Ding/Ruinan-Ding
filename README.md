@@ -36,4 +36,4 @@ Multiplayer strategy turn-based game (In Development):
 - GitHub: https://github.com/Ruinan-Ding
 
 ---
-Never stop learning, never stop building
+*Never stop learning, never stop building*
