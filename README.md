@@ -16,11 +16,9 @@ A comprehensive Python application for working with YouTube content:
 
 *Note: All core features are fully functional. I'm currently working on improving documentation while refactoring the codebase to enhance organization and maintainability. Contributions to documentation and code structure improvements are welcome!*
 
-*I welcome contributions, feedback, and collaboration for this project!*
+*I welcome contributions, feedback, and collaboration for this project! Feel free to [open issues](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber/issues) or [join discussions](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber/discussions).*
 
-Feel free to [open issues](https://github.com/Ruinan-Ding/ChessPlusPlus/issues) or [join discussions](https://github.com/Ruinan-Ding/ChessPlusPlus/discussions).*
-
-Your ideas and pull requests are always appreciated!*
+*Your ideas and pull requests are always appreciated!*
 
 ### [ChessPlusPlus](https://github.com/Ruinan-Ding/ChessPlusPlus)
 Multiplayer strategy turn-based game (In Development):
@@ -29,9 +27,7 @@ Multiplayer strategy turn-based game (In Development):
 - Real-time multiplayer capabilities
 - Custom game mechanics and rule system
 
-*I also welcome contributions, feedback, and collaboration for this project as well!*
-
-*Contribute to the [issues](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber/issues) and [discussions](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber/discussions).*
+*I also welcome contributions, feedback, and collaboration for this project! Feel free to [open issues](https://github.com/Ruinan-Ding/ChessPlusPlus/issues) or [join discussions](https://github.com/Ruinan-Ding/ChessPlusPlus/discussions).*
 
 *Again, your ideas and pull requests are always appreciated!*
 
