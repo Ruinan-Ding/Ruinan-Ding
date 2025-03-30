@@ -4,17 +4,9 @@
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ruinan-ding/)
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Ruinan-Ding)
-<<<<<<< HEAD
-![Security+](https://img.shields.io/badge/CompTIA-Security%2B%20(Apr%202021)-green?style=for-the-badge&logo=comptia&logoColor=white)
 
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=32&duration=3000&pause=1000&color=8A2BE2&center=true&vCenter=true&width=850&height=70&lines=Java+Development;Spring+Boot+Microservices;AWS+Cloud+Architecture;Kafka+Event+Streaming" alt="Typing SVG" />
-=======
-[![Security+](https://img.shields.io/badge/CompTIA-Security%2B-green?style=for-the-badge&logo=comptia&logoColor=white)](https://www.credly.com)
-
-<div align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Pacifico&size=40&duration=3000&pause=1000&color=8A2BE2&center=true&vCenter=true&width=500&lines=Java+Development;Spring+Boot+Microservices;AWS+Cloud+Architecture;Kafka+Event+Streaming" alt="Typing SVG" />
->>>>>>> origin/main
 </div>
 
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=150&lines=%F0%9F%9A%80+About" alt="About Me" />
@@ -193,9 +185,9 @@ Multiplayer strategy turn-based game (In Development):
 <!-- BLOG-POST-LIST:END -->
 
 <div align="center">
-  <h3>🎵 Currently Listening To</h3>
-  <a href="https://spotify-github-profile.vercel.app/api/view?uid=YOUR_SPOTIFY_ID&redirect=true">
-    <img src="https://spotify-github-profile.vercel.app/api/view?uid=YOUR_SPOTIFY_ID&cover_image=true&theme=novatorem&show_offline=false&background_color=121212&interchange=false&bar_color=8A2BE2&bar_color_cover=false" alt="Spotify Now Playing" width="400" />
+  <h3>🎵 Coding Playlist</h3>
+  <a href="https://open.spotify.com/playlist/37i9dQZF1DWYoYGBbGKurt">
+    <img src="https://img.shields.io/badge/Spotify-Deep%20Focus%20Coding-1DB954?style=for-the-badge&logo=spotify&logoColor=white" alt="Spotify Playlist" />
   </a>
 </div>
 
@@ -212,15 +204,12 @@ Multiplayer strategy turn-based game (In Development):
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Ruinan-Ding&layout=compact&theme=radical&hide=html,css" alt="Top Languages" />
 </p>
 
-<<<<<<< HEAD
 <div align="center">
 <a href="https://github.com/Ruinan-Ding">
   <img height="180em" src="https://github-readme-stats.vercel.app/api?username=Ruinan-Ding&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true"/>
   <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Ruinan-Ding&layout=compact&langs_count=7&theme=tokyonight"/>
 </div>
 
-=======
->>>>>>> origin/main
 ### 🏆 GitHub Achievements
 <p align="center">
   <img src="https://github-profile-trophy.vercel.app/?username=Ruinan-Ding&theme=radical&row=1&column=6&margin-w=15" alt="Trophy" />
@@ -249,23 +238,8 @@ Multiplayer strategy turn-based game (In Development):
 </p>
 
 <div align="center">
-<<<<<<< HEAD
   <img src="https://user-images.githubusercontent.com/74038190/212750155-3f9a9ca9-804c-4a20-8231-54b1bfb30e37.gif" width="500" alt="GitHub Animation" />
 </div>
-
-<div align="center">
-=======
->>>>>>> origin/main
-  <img src="https://github.com/Ruinan-Ding/Ruinan-Ding/blob/output/github-contribution-grid-snake.svg" alt="Snake animation" />
-</div>
-
-<p align="center">
-  <a href="https://skyline.github.com/Ruinan-Ding/2023" target="_blank">
-    <img src="https://img.shields.io/badge/GitHub-Skyline%203D-8A2BE2?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Skyline" />
-  </a>
-  <br>
-  <i>👆 Click to see my GitHub contributions in 3D! 👆</i>
-</p>
 
 <img src="https://capsule-render.vercel.app/api?type=soft&color=gradient&customColorList=2,3,20,15&height=80&section=header&animation=twinkling" width="100%"/>
 
