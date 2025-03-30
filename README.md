@@ -4,7 +4,7 @@
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ruinan-ding/)
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Ruinan-Ding)
-[![Security+](https://img.shields.io/badge/CompTIA-Security%2B-green?style=for-the-badge&logo=comptia&logoColor=white)](https://www.credly.com)
+![Security+](https://img.shields.io/badge/CompTIA-Security%2B%20(Apr%202021)-green?style=for-the-badge&logo=comptia&logoColor=white)
 
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=32&duration=3000&pause=1000&color=8A2BE2&center=true&vCenter=true&width=850&height=70&lines=Java+Development;Spring+Boot+Microservices;AWS+Cloud+Architecture;Kafka+Event+Streaming" alt="Typing SVG" />
@@ -237,6 +237,10 @@ Multiplayer strategy turn-based game (In Development):
 <p align="center">
   <img src="https://github-readme-streak-stats.herokuapp.com/?user=Ruinan-Ding&theme=radical" alt="GitHub Streak" />
 </p>
+
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/74038190/212750155-3f9a9ca9-804c-4a20-8231-54b1bfb30e37.gif" width="500" alt="GitHub Animation" />
+</div>
 
 <div align="center">
   <img src="https://github.com/Ruinan-Ding/Ruinan-Ding/blob/output/github-contribution-grid-snake.svg" alt="Snake animation" />
