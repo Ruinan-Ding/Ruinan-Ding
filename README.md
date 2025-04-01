@@ -121,7 +121,7 @@ Professional and hobbyist software engineer skilled in Java, Spring Boot, and AW
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
 
 <div align="center">
-  <img src="https://user-images.githubusercontent.com/74038190/216122041-518ac32e-8d92-4c6b-9b3f-ca01dcaf38ee.png" width="100%" />
+  <img src="https://skillicons.dev/icons?i=java,spring,aws,kafka,typescript,python,angular,docker" />
 </div>
 </div>
 </details>
@@ -193,6 +193,10 @@ Multiplayer strategy turn-based game (In Development):
 
 <div align="center">
   <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=radical&quote=The%20most%20powerful%20tool%20we%20have%20as%20developers%20is%20automation.&author=Ruinan%20Ding" alt="Quote" />
+</div>
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/sindresorhus/awesome/main/media/logo.svg" width="100%" />
 </div>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,4,24,30&height=100&section=footer&animation=fadeIn" width="100%"/>
