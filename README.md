@@ -17,7 +17,7 @@
   <img src="https://img.shields.io/badge/Experience-6%2B%20Years-purple?style=for-the-badge" />
 </div>
 
-Professional and hobbyist software engineer skilled in Java, Spring Boot, and AWS, with 6+ years of professional experience and a lifelong passion for coding. A continuous learner with a passion for embracing new technologies. Active contributor to open-source projects—check out my [GitHub repositories](https://github.com/Ruinan-Ding?tab=repositories)! Connect on [Linkedin](https://www.linkedin.com/in/ruinan-ding/)!
+Software engineer with a strong background in Java, Spring Boot, and AWS. 6+ years of professional experience building enterprise applications and a passion for continuous learning and open-source contributions. Check out my [GitHub repositories](https://github.com/Ruinan-Ding?tab=repositories) and connect on [LinkedIn](https://www.linkedin.com/in/ruinan-ding/)!
 
 <details>
 <summary><b>🛠️ Tech Stack</b></summary>
@@ -61,7 +61,7 @@ Professional and hobbyist software engineer skilled in Java, Spring Boot, and AW
 - **Career Start**: Began professional development with Spring Framework, building enterprise applications
 - **Growth Period**: Expanded into cloud technologies with AWS certification and microservices architecture
 - **Current Focus**: Event-driven architecture, streaming systems, and cloud-native development
-- **Future Interests**: Exploring AI/ML integration with traditional systems
+- **Side Projects**: Open-source tools and applications that solve practical problems I encounter
 
 > "The most challenging part of software engineering isn't writing code—it's designing systems that can evolve with changing requirements while maintaining stability."
 
@@ -155,7 +155,7 @@ A comprehensive Python application for working with YouTube content:
 - 📁 Local media file processing
 - 🔄 Format conversion via ffmpeg
 
-> *Note: All core features are fully functional. I'm currently working on improving documentation while refactoring the codebase to enhance organization and maintainability. Contributions to documentation and code structure improvements are welcome!*
+> *Note: All core features are fully functional. I'm currently refactoring the codebase to enhance organization and maintainability. Contributions to documentation and code structure improvements are welcome!*
 
 *I welcome contributions, feedback, and collaboration for this project! Feel free to [open issues](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber/issues) or [join discussions](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber/discussions).*
 
@@ -263,7 +263,7 @@ Multiplayer strategy turn-based game (In Development):
 <div align="center">
   <img src="https://komarev.com/ghpvc/?username=Ruinan-Ding&color=blueviolet&style=flat-square" alt="Profile Views">
   <br>
-  <img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=30&duration=2000&pause=1000&color=8A2BE2&center=true&vCenter=true&width=500&height=70&lines=Always+learning%2C+always+building...;Connect+with+me+today!" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=30&duration=2000&pause=1000&color=8A2BE2&center=true&vCenter=true&width=500&height=70&lines=Always+learning%2C+always+building...;Let's+connect!" alt="Typing SVG" />
 </div>
 
 <img src="https://user-images.githubusercontent.com/74038190/212284119-fbf2e478-b674-4479-8a2c-0ed586e40d64.gif" width="100%" height="100">
