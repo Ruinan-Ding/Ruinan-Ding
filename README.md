@@ -12,12 +12,26 @@
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=150&lines=%F0%9F%9A%80+About" alt="About Me" />
 
 <div align="center">
+  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="400" />
+  <br>
+  <img src="https://user-images.githubusercontent.com/74038190/236119160-1b98dc29-c910-47df-997b-f08fec86e7cd.gif" width="80" style="vertical-align: middle;" />
+  <img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/DCSpringCherry2025.gif" width="300" alt="Ruinan Ding" style="border-radius: 10px; border: 3px solid #8A2BE2; vertical-align: middle;" />
+  <img src="https://user-images.githubusercontent.com/74038190/236119160-1b98dc29-c910-47df-997b-f08fec86e7cd.gif" width="80" style="vertical-align: middle;" />
+  <br>
+  <em>Software Engineer based in Washington, DC</em><br>
+  <em>In my free time, I love coding and exploring the city!</em><br>
+  <em>Photo taken at Tidal Basin during cherry blossom peak bloom 2025</em>
+  <br>
+  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="400" />
+</div>
+
+<div align="center">
   <img src="https://img.shields.io/badge/Focus-Enterprise%20Development-purple?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Passion-Open%20Source-purple?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Experience-6%2B%20Years-purple?style=for-the-badge" />
 </div>
 
-Professional and hobbyist software engineer skilled in Java, Spring Boot, and AWS, with 6+ years of professional experience and a lifelong passion for coding. A continuous learner with a passion for embracing new technologies. Active contributor to open-source projects—check out my [GitHub repositories](https://github.com/Ruinan-Ding?tab=repositories)! Connect on [Linkedin](https://www.linkedin.com/in/ruinan-ding/)!
+Software engineer with a strong background in Java, Spring Boot, and AWS. 6+ years of professional experience building enterprise applications and a passion for continuous learning and open-source contributions. Check out my [GitHub repositories](https://github.com/Ruinan-Ding?tab=repositories) and connect on [LinkedIn](https://www.linkedin.com/in/ruinan-ding/)!
 
 <details>
 <summary><b>🛠️ Tech Stack</b></summary>
@@ -61,7 +75,7 @@ Professional and hobbyist software engineer skilled in Java, Spring Boot, and AW
 - **Career Start**: Began professional development with Spring Framework, building enterprise applications
 - **Growth Period**: Expanded into cloud technologies with AWS certification and microservices architecture
 - **Current Focus**: Event-driven architecture, streaming systems, and cloud-native development
-- **Future Interests**: Exploring AI/ML integration with traditional systems
+- **Side Projects**: Open-source tools and applications that solve practical problems I encounter
 
 > "The most challenging part of software engineering isn't writing code—it's designing systems that can evolve with changing requirements while maintaining stability."
 
@@ -121,7 +135,11 @@ Professional and hobbyist software engineer skilled in Java, Spring Boot, and AW
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
 
 <div align="center">
-  <img src="https://user-images.githubusercontent.com/74038190/216122041-518ac32e-8d92-4c6b-9b3f-ca01dcaf38ee.png" width="100%" />
+  <img src="https://skillicons.dev/icons?i=java,spring,aws,kafka,typescript,python,angular,docker" />
+</div>
+
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/74038190/235224431-e8c8c12e-6826-47f1-89fb-2ddad83b3abf.gif" width="500">
 </div>
 </div>
 </details>
@@ -155,7 +173,7 @@ A comprehensive Python application for working with YouTube content:
 - 📁 Local media file processing
 - 🔄 Format conversion via ffmpeg
 
-> *Note: All core features are fully functional. I'm currently working on improving documentation while refactoring the codebase to enhance organization and maintainability. Contributions to documentation and code structure improvements are welcome!*
+> *Note: All core features are fully functional. I'm currently refactoring the codebase to enhance organization and maintainability. Contributions to documentation and code structure improvements are welcome!*
 
 *I welcome contributions, feedback, and collaboration for this project! Feel free to [open issues](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber/issues) or [join discussions](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber/discussions).*
 
@@ -177,13 +195,6 @@ Multiplayer strategy turn-based game (In Development):
   <img src="https://user-images.githubusercontent.com/74038190/219923809-b86dc415-a0c2-4a38-bc88-ad6cf06395a8.gif" width="500">
 </div>
 
-## 📝 Latest Blog Posts
-<!-- BLOG-POST-LIST:START -->
-- [How I Built a Real-time Event Processing System with Kafka](https://yoursite.com)
-- [Microservices Architecture: Lessons Learned](https://yoursite.com)
-- [AWS Lambda: Best Practices for Java Developers](https://yoursite.com)
-<!-- BLOG-POST-LIST:END -->
-
 <div align="center">
   <h3>🎵 Coding Playlist</h3>
   <a href="https://open.spotify.com/playlist/37i9dQZF1DWYoYGBbGKurt">
@@ -193,6 +204,10 @@ Multiplayer strategy turn-based game (In Development):
 
 <div align="center">
   <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=radical&quote=The%20most%20powerful%20tool%20we%20have%20as%20developers%20is%20automation.&author=Ruinan%20Ding" alt="Quote" />
+</div>
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/sindresorhus/awesome/main/media/logo.svg" width="100%" />
 </div>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,4,24,30&height=100&section=footer&animation=fadeIn" width="100%"/>
@@ -213,28 +228,6 @@ Multiplayer strategy turn-based game (In Development):
 ### 🏆 GitHub Achievements
 <p align="center">
   <img src="https://github-profile-trophy.vercel.app/?username=Ruinan-Ding&theme=radical&row=1&column=6&margin-w=15" alt="Trophy" />
-</p>
-
-### ⚡ Skill Set
-<p align="center">
-  <img src="https://skillicons.dev/icons?i=java,spring,aws,kafka,typescript,python,angular,django,git,docker" />
-</p>
-
-<div align="center">
-  <h3>💻 Technologies I Work With</h3>
-  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Java-Dark.svg" width="48" height="48" alt="Java" />
-  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Spring-Dark.svg" width="48" height="48" alt="Spring" />
-  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/AWS-Dark.svg" width="48" height="48" alt="AWS" />
-  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Kafka.svg" width="48" height="48" alt="Kafka" />
-  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/TypeScript.svg" width="48" height="48" alt="TypeScript" />
-  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Python-Dark.svg" width="48" height="48" alt="Python" />
-  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Angular-Dark.svg" width="48" height="48" alt="Angular" />
-  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Docker.svg" width="48" height="48" alt="Docker" />
-</div>
-
-### 📈 Contribution Stats
-<p align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=Ruinan-Ding&theme=radical" alt="GitHub Streak" />
 </p>
 
 <div align="center">
@@ -259,7 +252,7 @@ Multiplayer strategy turn-based game (In Development):
 <div align="center">
   <img src="https://komarev.com/ghpvc/?username=Ruinan-Ding&color=blueviolet&style=flat-square" alt="Profile Views">
   <br>
-  <img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=30&duration=2000&pause=1000&color=8A2BE2&center=true&vCenter=true&width=500&height=70&lines=Always+learning%2C+always+building...;Connect+with+me+today!" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=30&duration=2000&pause=1000&color=8A2BE2&center=true&vCenter=true&width=500&height=70&lines=Always+learning%2C+always+building...;Let's+connect!" alt="Typing SVG" />
 </div>
 
 <img src="https://user-images.githubusercontent.com/74038190/212284119-fbf2e478-b674-4479-8a2c-0ed586e40d64.gif" width="100%" height="100">
