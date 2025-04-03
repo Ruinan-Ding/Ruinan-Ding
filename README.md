@@ -12,6 +12,20 @@
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=150&lines=%F0%9F%9A%80+About" alt="About Me" />
 
 <div align="center">
+  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="400" />
+  <br>
+  <img src="https://user-images.githubusercontent.com/74038190/236119160-1b98dc29-c910-47df-997b-f08fec86e7cd.gif" width="80" style="vertical-align: middle;" />
+  <img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/DCSpringCherry2025.gif" width="300" alt="Ruinan Ding" style="border-radius: 10px; border: 3px solid #8A2BE2; vertical-align: middle;" />
+  <img src="https://user-images.githubusercontent.com/74038190/236119160-1b98dc29-c910-47df-997b-f08fec86e7cd.gif" width="80" style="vertical-align: middle;" />
+  <br>
+  <em>Software Engineer based in Washington, DC</em><br>
+  <em>In my free time, I love coding and exploring the city!</em><br>
+  <em>Photo taken at Tidal Basin during cherry blossom peak bloom 2025</em>
+  <br>
+  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="400" />
+</div>
+
+<div align="center">
   <img src="https://img.shields.io/badge/Focus-Enterprise%20Development-purple?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Passion-Open%20Source-purple?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Experience-6%2B%20Years-purple?style=for-the-badge" />
@@ -181,13 +195,6 @@ Multiplayer strategy turn-based game (In Development):
   <img src="https://user-images.githubusercontent.com/74038190/219923809-b86dc415-a0c2-4a38-bc88-ad6cf06395a8.gif" width="500">
 </div>
 
-## 📝 Latest Blog Posts
-<!-- BLOG-POST-LIST:START -->
-- [How I Built a Real-time Event Processing System with Kafka](https://yoursite.com)
-- [Microservices Architecture: Lessons Learned](https://yoursite.com)
-- [AWS Lambda: Best Practices for Java Developers](https://yoursite.com)
-<!-- BLOG-POST-LIST:END -->
-
 <div align="center">
   <h3>🎵 Coding Playlist</h3>
   <a href="https://open.spotify.com/playlist/37i9dQZF1DWYoYGBbGKurt">
@@ -221,28 +228,6 @@ Multiplayer strategy turn-based game (In Development):
 ### 🏆 GitHub Achievements
 <p align="center">
   <img src="https://github-profile-trophy.vercel.app/?username=Ruinan-Ding&theme=radical&row=1&column=6&margin-w=15" alt="Trophy" />
-</p>
-
-### ⚡ Skill Set
-<p align="center">
-  <img src="https://skillicons.dev/icons?i=java,spring,aws,kafka,typescript,python,angular,django,git,docker" />
-</p>
-
-<div align="center">
-  <h3>💻 Technologies I Work With</h3>
-  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Java-Dark.svg" width="48" height="48" alt="Java" />
-  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Spring-Dark.svg" width="48" height="48" alt="Spring" />
-  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/AWS-Dark.svg" width="48" height="48" alt="AWS" />
-  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Kafka.svg" width="48" height="48" alt="Kafka" />
-  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/TypeScript.svg" width="48" height="48" alt="TypeScript" />
-  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Python-Dark.svg" width="48" height="48" alt="Python" />
-  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Angular-Dark.svg" width="48" height="48" alt="Angular" />
-  <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Docker.svg" width="48" height="48" alt="Docker" />
-</div>
-
-### 📈 Contribution Stats
-<p align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=Ruinan-Ding&theme=radical" alt="GitHub Streak" />
 </p>
 
 <div align="center">
