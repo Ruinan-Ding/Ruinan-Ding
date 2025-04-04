@@ -208,7 +208,7 @@ Multiplayer strategy turn-based game (In Development):
 </div>
 
 <div align="center">
-  <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=radical&quote=The%20most%20powerful%20tool%20we%20have%20as%20developers%20is%20automation.&author=Ruinan%20Ding" alt="Quote" />
+  <img src="https://github-readme-quotes.herokuapp.com/quote?theme=radical&animation=grow_out_in&layout=default" alt="Random Quote" />
 </div>
 
 <div align="center">
