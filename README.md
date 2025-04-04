@@ -12,17 +12,22 @@
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=150&lines=%F0%9F%9A%80+About" alt="About Me" />
 
 <div align="center">
-  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="400" />
+  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="90%" />
   <br>
-  <img src="https://user-images.githubusercontent.com/74038190/236119160-1b98dc29-c910-47df-997b-f08fec86e7cd.gif" width="80" style="vertical-align: middle;" />
-  <img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/DCSpringCherry2025.gif" width="300" alt="Ruinan Ding" style="border-radius: 10px; border: 3px solid #8A2BE2; vertical-align: middle;" />
-  <img src="https://user-images.githubusercontent.com/74038190/236119160-1b98dc29-c910-47df-997b-f08fec86e7cd.gif" width="80" style="vertical-align: middle;" />
+  <!-- Top border -->
+  <img src="https://user-images.githubusercontent.com/74038190/212284115-f47cd8ff-2ffb-4b04-b5bf-4d1c14c0247f.gif" width="90%" />
+  <br>
+  <!-- Main profile image -->
+  <img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/DCSpringCherry2025.gif" width="90%" alt="Ruinan Ding" style="border-radius: 10px; border: 3px solid #8A2BE2;" />
+  <br>
+  <!-- Bottom border -->
+  <img src="https://user-images.githubusercontent.com/74038190/212284115-f47cd8ff-2ffb-4b04-b5bf-4d1c14c0247f.gif" width="90%" />
   <br>
   <em>Software Engineer based in Washington, DC</em><br>
   <em>In my free time, I love coding and exploring the city!</em><br>
   <em>Photo taken at Tidal Basin during cherry blossom peak bloom 2025</em>
   <br>
-  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="400" />
+  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="90%" />
 </div>
 
 <div align="center">
@@ -32,6 +37,10 @@
 </div>
 
 Software engineer with a strong background in Java, Spring Boot, and AWS. 6+ years of professional experience building enterprise applications and a passion for continuous learning and open-source contributions. Check out my [GitHub repositories](https://github.com/Ruinan-Ding?tab=repositories) and connect on [LinkedIn](https://www.linkedin.com/in/ruinan-ding/)!
+
+<div align="center">
+  <img src="https://skillicons.dev/icons?i=java,spring,aws,kafka,typescript,python,angular,docker" />
+</div>
 
 <details>
 <summary><b>🛠️ Tech Stack</b></summary>
@@ -135,10 +144,6 @@ Software engineer with a strong background in Java, Spring Boot, and AWS. 6+ yea
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
 
 <div align="center">
-  <img src="https://skillicons.dev/icons?i=java,spring,aws,kafka,typescript,python,angular,docker" />
-</div>
-
-<div align="center">
   <img src="https://user-images.githubusercontent.com/74038190/235224431-e8c8c12e-6826-47f1-89fb-2ddad83b3abf.gif" width="500">
 </div>
 </div>
@@ -214,11 +219,7 @@ Multiplayer strategy turn-based game (In Development):
 
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=150&lines=%F0%9F%93%8A+Insights" alt="Insights" />
 
-### 💻 Top Languages
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Ruinan-Ding&layout=compact&theme=radical&hide=html,css" alt="Top Languages" />
-</p>
-
+### 📊 GitHub Stats & Languages
 <div align="center">
 <a href="https://github.com/Ruinan-Ding">
   <img height="180em" src="https://github-readme-stats.vercel.app/api?username=Ruinan-Ding&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true"/>
