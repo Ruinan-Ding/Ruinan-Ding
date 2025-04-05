@@ -14,6 +14,8 @@
 <div align="center">
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="90%" />
   <br>
+  <img src="https://readme-typing-svg.herokuapp.com?font=Pacifico&size=28&duration=2500&pause=500&color=FF80BF&center=true&vCenter=true&width=700&height=80&lines=Tidal+Basin+during+cherry+blossom+peak+bloom+2025" alt="Cherry Blossom Caption" />
+  <br>
   <!-- Top border -->
   <img src="https://user-images.githubusercontent.com/74038190/212284115-f47cd8ff-2ffb-4b04-b5bf-4d1c14c0247f.gif" width="90%" />
   <br>
@@ -25,7 +27,6 @@
   <br>
   <em>Software Engineer based in Washington, DC</em><br>
   <em>In my free time, I love coding and exploring the city!</em><br>
-  <em>Photo taken at Tidal Basin during cherry blossom peak bloom 2025</em>
   <br>
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="90%" />
 </div>
@@ -208,7 +209,13 @@ Multiplayer strategy turn-based game (In Development):
 </div>
 
 <div align="center">
-  <img src="https://github-readme-quotes.herokuapp.com/quote?theme=radical&animation=grow_out_in&layout=default" alt="Random Quote" />
+  <h3>🎵 My Recent Tracks</h3>
+  <img src="https://spotify-recently-played-readme.vercel.app/api?user=ruinan_ding&count=5" alt="Spotify Recently Played" />
+</div>
+
+<div align="center">
+  <h3>🧠 Tech Thought of the Day</h3>
+  <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=radical" alt="Random Programming Quote" />
 </div>
 
 <div align="center">
