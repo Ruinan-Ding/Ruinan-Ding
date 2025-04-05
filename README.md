@@ -1,6 +1,6 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=120&section=header&text=Ruinan%20Ding&fontSize=50&fontAlignY=45&animation=fadeIn&fontColor=ffffff" width="100%"/>
 
-## <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=2000&pause=1000&color=8A2BE2&center=false&vCenter=true&repeat=false&width=435&lines=Software+Engineer+%7C+Java+Developer" alt="Typing SVG" /> <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="40">
+## <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=2000&pause=1000&color=8A2BE2&center=false&vCenter=true&repeat=false&width=435&lines=Software+Engineer+%7C+Java+Developer" alt="Typing SVG" />
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ruinan-ding/)
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Ruinan-Ding)
@@ -263,4 +263,6 @@ Multiplayer strategy turn-based game (In Development):
   <img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=30&duration=2000&pause=1000&color=8A2BE2&center=true&vCenter=true&width=500&height=70&lines=Always+learning%2C+always+building...;Let's+connect!" alt="Typing SVG" />
 </div>
 
-<img src="https://user-images.githubusercontent.com/74038190/212284119-fbf2e478-b674-4479-8a2c-0ed586e40d64.gif" width="100%" height="100">
+<div align="center">
+  <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="200">
+</div>
