@@ -8,9 +8,22 @@
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=32&duration=3000&pause=1000&color=8A2BE2&center=true&vCenter=true&width=850&height=70&lines=Java+Development;Spring+Boot+Microservices;AWS+Cloud+Architecture;Kafka+Event+Streaming" alt="Typing SVG" />
 </div>
+
+<div align="center">
+  <img src="https://skillicons.dev/icons?i=java,spring,aws,kafka,typescript,python,angular,docker" />
+</div>
 <br>
 
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=150&height=60&vCenter=true&lines=%F0%9F%9A%80+About" alt="About Me" />
+
+<div align="center">
+  <img src="https://img.shields.io/badge/Focus-Enterprise%20Development-purple?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Passion-Open%20Source-purple?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Experience-6%2B%20Years-purple?style=for-the-badge" />
+</div>
+
+Software engineer with a strong background in Java, Spring Boot, and AWS. 6+ years of professional experience building enterprise applications and a passion for continuous learning and open-source contributions.
+Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories) for some cool open-source projects and connect on [LinkedIn](https://www.linkedin.com/in/ruinan-ding/) to engage in some interesting thoughts!
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="90%" />
@@ -30,18 +43,6 @@
   <em>In my free time, I love coding and exploring the city!</em><br>
   <br>
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="90%" />
-</div>
-
-<div align="center">
-  <img src="https://img.shields.io/badge/Focus-Enterprise%20Development-purple?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Passion-Open-Source-purple?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Experience-6%2B%20Years-purple?style=for-the-badge" />
-</div>
-
-Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories) for some cool open-source projects and connect on [LinkedIn](https://www.linkedin.com/in/ruinan-ding/) to engage in some interesting thoughts!
-
-<div align="center">
-  <img src="https://skillicons.dev/icons?i=java,spring,aws,kafka,typescript,python,angular,docker" />
 </div>
 
 <details>
