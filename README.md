@@ -218,6 +218,8 @@ Multiplayer strategy turn-based game (In Development):
 <div align="center">
   <img src="https://raw.githubusercontent.com/sindresorhus/awesome/main/media/logo.svg" width="100%" />
 </div>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=gradient&customColorList=2,3,20,15&height=80&section=header&animation=twinkling" width="100%"/>
+<br>
 
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=150&height=60&vCenter=true&lines=%F0%9F%93%8A+Insights" alt="Insights" />
 
@@ -236,9 +238,6 @@ Multiplayer strategy turn-based game (In Development):
 <div align="center">
   <img src="https://user-images.githubusercontent.com/74038190/212750155-3f9a9ca9-804c-4a20-8231-54b1bfb30e37.gif" width="500" alt="GitHub Animation" />
 </div>
-
-<img src="https://capsule-render.vercel.app/api?type=soft&color=gradient&customColorList=2,3,20,15&height=80&section=header&animation=twinkling" width="100%"/>
-<br>
 
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=160&height=60&vCenter=true&lines=%F0%9F%93%AB+Connect" alt="Connect" />
 
