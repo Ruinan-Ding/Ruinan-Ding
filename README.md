@@ -1,16 +1,15 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=120&section=header&text=Ruinan%20Ding&fontSize=50&fontAlignY=45&animation=fadeIn&fontColor=ffffff" width="100%"/>
+<div align="center">
+  <img src="https://skillicons.dev/icons?i=java,spring,aws,kafka,typescript,python,angular,docker" />
+</div>
 
-## <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=2000&pause=1000&color=8A2BE2&center=false&vCenter=true&repeat=false&width=435&lines=Software+Engineer+%7C+Java+Developer" alt="Typing SVG" />
+## <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=16&duration=2000&pause=1000&color=8A2BE2&center=false&vCenter=true&repeat=false&width=900&lines=Software+Engineer+%7C+Java+Developer+%7C+CompTIA+Security%2B+Certified+April+2021" alt="Typing SVG" />
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ruinan-ding/)
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Ruinan-Ding)
 
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=32&duration=3000&pause=1000&color=8A2BE2&center=true&vCenter=true&width=850&height=70&lines=Java+Development;Spring+Boot+Microservices;AWS+Cloud+Architecture;Kafka+Event+Streaming" alt="Typing SVG" />
-</div>
-
-<div align="center">
-  <img src="https://skillicons.dev/icons?i=java,spring,aws,kafka,typescript,python,angular,docker" />
 </div>
 <br>
 
@@ -172,8 +171,7 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
 
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=150&height=60&vCenter=true&lines=%F0%9F%8C%9F+Projects" alt="Projects" />
 
-### <img src="https://readme-typing-svg.herokuapp.com?font=Roboto&duration=2000&pause=500&color=FF7139&repeat=false&width=300&lines=📹+OpenAI+YouTube+Transcriber" alt="Project 1" />
-
+### <img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=FF7139&repeat=false&width=400&lines=📹+OpenAI+YouTube+Transcriber" alt="Project 1" />
 A comprehensive Python application for working with YouTube content:
 - 🎬 Automatic download of audio/video streams from YouTube URLs
 - 🔊 Transcription using OpenAI's Whisper AI
@@ -190,8 +188,7 @@ A comprehensive Python application for working with YouTube content:
   <img src="https://user-images.githubusercontent.com/74038190/212284115-f47cd8ff-2ffb-4b04-b5bf-4d1c14c0247f.gif" width="500">
 </div>
 
-### <img src="https://readme-typing-svg.herokuapp.com?font=Roboto&duration=2000&pause=500&color=DD0031&repeat=false&width=250&lines=♟️+ChessPlusPlus" alt="Project 2" />
-
+### <img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=DD0031&repeat=false&width=250&lines=♟️+ChessPlusPlus" alt="Project 2" />
 Multiplayer strategy turn-based game (In Development):
 - 🎮 Angular frontend with interactive game board
 - 🔌 Django backend with WebSocket communication
@@ -221,9 +218,6 @@ Multiplayer strategy turn-based game (In Development):
 <div align="center">
   <img src="https://raw.githubusercontent.com/sindresorhus/awesome/main/media/logo.svg" width="100%" />
 </div>
-
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,4,24,30&height=100&section=footer&animation=fadeIn" width="100%"/>
-<br>
 
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=150&height=60&vCenter=true&lines=%F0%9F%93%8A+Insights" alt="Insights" />
 
@@ -268,3 +262,5 @@ Multiplayer strategy turn-based game (In Development):
 <div align="center">
   <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="200">
 </div>
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,4,24,30&height=100&section=footer&animation=fadeIn" width="100%"/>
