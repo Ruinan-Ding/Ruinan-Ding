@@ -41,7 +41,6 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
   <br>
   <em>Software Engineer based in Washington, DC</em><br>
   <em>In my free time, I love coding and exploring the city!</em><br>
-  <br>
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="90%" />
   
   <h3>🎵 Coding Playlist and My Recent Tracks</h3>
@@ -52,6 +51,10 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
   <img src="https://spotify-recently-played-readme.vercel.app/api?user=ruinan_ding&count=5" width="600" alt="Spotify Recently Played" />
 </div>
 <br>
+
+<div align="center">
+  <h3>💡 Explore More About My Work</h3>
+</div>
 
 <details>
 <summary><b>🛠️ Tech Stack</b></summary>
