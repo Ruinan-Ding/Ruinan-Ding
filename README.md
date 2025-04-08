@@ -32,7 +32,8 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
 
   <img src="https://user-images.githubusercontent.com/74038190/212284115-f47cd8ff-2ffb-4b04-b5bf-4d1c14c0247f.gif" width="90%" />
   <br>
-
+  
+  <br>
   <img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/DCSpringCherry2025.gif" width="90%" alt="Ruinan Ding" style="border-radius: 10px; border: 3px solid #8A2BE2;" />
   <br>
 
@@ -42,7 +43,15 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
   <em>In my free time, I love coding and exploring the city!</em><br>
   <br>
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="90%" />
+  
+  <h3>🎵 Coding Playlist and My Recent Tracks</h3>
+  <a href="https://open.spotify.com/playlist/37i9dQZF1DWYoYGBbGKurt">
+    <img src="https://img.shields.io/badge/Spotify-Deep%20Focus%20Coding-1DB954?style=for-the-badge&logo=spotify&logoColor=white" alt="Spotify Playlist" />
+  </a>
+  <br>
+  <img src="https://spotify-recently-played-readme.vercel.app/api?user=ruinan_ding&count=5" width="600" alt="Spotify Recently Played" />
 </div>
+<br>
 
 <details>
 <summary><b>🛠️ Tech Stack</b></summary>
@@ -220,15 +229,6 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/74038190/212284087-bbe7e430-757e-4901-90bf-4cd2ce3e1852.gif" width="500">
-</div>
-
-<div align="center">
-  <h3>🎵 Coding Playlist and My Recent Tracks</h3>
-  <a href="https://open.spotify.com/playlist/37i9dQZF1DWYoYGBbGKurt">
-    <img src="https://img.shields.io/badge/Spotify-Deep%20Focus%20Coding-1DB954?style=for-the-badge&logo=spotify&logoColor=white" alt="Spotify Playlist" />
-  </a>
-  <br>
-  <img src="https://spotify-recently-played-readme.vercel.app/api?user=ruinan_ding&count=5" width="600" alt="Spotify Recently Played" />
 </div>
 
 <div align="center">
