@@ -217,8 +217,8 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
   <img src="https://user-images.githubusercontent.com/74038190/219923809-b86dc415-a0c2-4a38-bc88-ad6cf06395a8.gif" width="500">
 </div>
 
-### <a href="https://github.com/Ruinan-Ding/Ruinan-Ding"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=4B8BBE&repeat=false&width=400&lines=🎨+Dynamic+GitHub+Profile+README" alt="Project 3" /></a>
-[See the code](https://github.com/Ruinan-Ding/Ruinan-Ding) or click the header above. This very GitHub profile you're exploring now — visually enhanced developer profile using modern web techniques:
+### <a href="https://github.com/Ruinan-Ding/Ruinan-Ding"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=4B8BBE&repeat=false&width=400&lines=🎨+Dynamic+GitHub+Profile+README+(What+You're+Seeing+Now)!" alt="Project 3" /></a>
+[See the code](https://github.com/Ruinan-Ding/Ruinan-Ding) or click the header above. This very GitHub profile you're currently exploring — visually enhanced developer profile using modern web techniques:
 - 🌊 Animated headers and footers via Capsule Render API
 - ✨ Dynamic typing animations with README Typing SVG
 - 🛠️ Tech stack visualization using SkillIcons and Shields.io
