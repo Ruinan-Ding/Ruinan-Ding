@@ -41,7 +41,6 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
   <br>
   <em>Software Engineer based in Washington, DC</em><br>
   <em>In my free time, I love coding and exploring the city!</em><br>
-  <br>
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="90%" />
   
   <h3>🎵 Coding Playlist and My Recent Tracks</h3>
@@ -52,6 +51,10 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
   <img src="https://spotify-recently-played-readme.vercel.app/api?user=ruinan_ding&count=5" width="600" alt="Spotify Recently Played" />
 </div>
 <br>
+
+<div align="center">
+  <h3>💡 Explore More About My Work</h3>
+</div>
 
 <details>
 <summary><b>🛠️ Tech Stack</b></summary>
@@ -67,7 +70,7 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
 ![Django](https://img.shields.io/badge/Django-092E20?style=flat-square&logo=django&logoColor=white)
 
 ### Backend Development
-- **Java Ecosystem**: 6+ years building enterprise applications with Spring Boot, JPA/Hibernate, and RESTful APIs
+- **Java Ecosystem**: 6 years building enterprise applications with Spring Boot, JPA/Hibernate, and RESTful APIs
 - **Messaging & Streaming**: Extensive experience with Kafka for event-driven architectures
 - **Python**: Building automation tools, data processing utilities, and backend services
 
@@ -214,8 +217,8 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
   <img src="https://user-images.githubusercontent.com/74038190/219923809-b86dc415-a0c2-4a38-bc88-ad6cf06395a8.gif" width="500">
 </div>
 
-### <a href="https://github.com/Ruinan-Ding/Ruinan-Ding"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=4B8BBE&repeat=false&width=400&lines=🎨+Dynamic+GitHub+Profile+README" alt="Project 3" /></a>
-[See the code](https://github.com/Ruinan-Ding/Ruinan-Ding) or click the header above. A visually enhanced developer profile using modern web techniques:
+### <a href="https://github.com/Ruinan-Ding/Ruinan-Ding"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=4B8BBE&repeat=false&width=650&lines=🎨+Dynamic+GitHub+Profile+README+(What+You're+Seeing+Now)!" alt="Project 3" /></a>
+[See the code](https://github.com/Ruinan-Ding/Ruinan-Ding) or click the header above. This very GitHub profile you're currently exploring — visually enhanced developer profile using modern web techniques:
 - 🌊 Animated headers and footers via Capsule Render API
 - ✨ Dynamic typing animations with README Typing SVG
 - 🛠️ Tech stack visualization using SkillIcons and Shields.io
