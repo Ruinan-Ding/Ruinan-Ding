@@ -18,10 +18,10 @@
 <div align="center">
   <img src="https://img.shields.io/badge/Focus-Enterprise%20Development-purple?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Passion-Open%20Source-purple?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Experience-6%20Years-purple?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Experience-6%2B%20Years-purple?style=for-the-badge" />
 </div>
 
-Software engineer with a strong background in Java, Spring Boot, and AWS. 6 years of professional experience building enterprise applications and a passion for continuous learning and open-source contributions.
+Software engineer with a strong background in Java, Spring Boot, and AWS. 6+ years of professional experience building enterprise applications and a passion for continuous learning and open-source contributions.
 Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories) for some cool open-source projects and connect on [LinkedIn](https://www.linkedin.com/in/ruinan-ding/) to engage in some interesting thoughts!
 
 <div align="center">
