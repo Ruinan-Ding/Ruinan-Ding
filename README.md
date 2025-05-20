@@ -226,7 +226,7 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
 - 💻 Collapsible sections for clean information hierarchy
 - 🎵 Spotify integration for personalized content
 
-> *The README itself serves as a showcase of modern GitHub profile techniques. Created with a combination of Markdown, HTML, and external API services. Feel free to use it as a template for your own profile—just remember to change any of my personal details*
+> *The README itself serves as a showcase of modern GitHub profile techniques. Created with a combination of Markdown, HTML, and external API services. Feel free to use it as a template for your own profile—just remember to change any of my personal details.*
 
 *Check out how this profile was built and perhaps adapt these techniques for your own GitHub presence! Feedback welcomed!*
 
