@@ -1,0 +1,260 @@
+<style>
+  :host {
+    --primary-color: #8A2BE2;
+    --text-dark: #1a1a1a;
+    --text-light: #666666;
+    --bg-light: #f9f9f9;
+    --border-color: #e0e0e0;
+
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  main {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  }
+
+  .container {
+    max-width: 800px;
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    padding: 3rem;
+    text-align: center;
+  }
+
+  .header {
+    margin-bottom: 2rem;
+  }
+
+  .logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, var(--primary-color), #6A1B82);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    font-size: 1.25rem;
+    color: var(--primary-color);
+    font-weight: 500;
+    margin: 0 0 2rem 0;
+  }
+
+  .divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+    margin: 2rem 0;
+  }
+
+  .content {
+    margin: 2rem 0;
+    line-height: 1.8;
+  }
+
+  .content p {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin: 1rem 0;
+  }
+
+  .highlight {
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+    text-align: left;
+  }
+
+  .feature-card {
+    padding: 1.5rem;
+    background: var(--bg-light);
+    border-left: 4px solid var(--primary-color);
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(138, 43, 226, 0.15);
+  }
+
+  .feature-card h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+  }
+
+  .feature-card p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-light);
+  }
+
+  .cta-section {
+    margin: 2.5rem 0;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), #6A1B82);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
+  }
+
+  .btn-secondary {
+    background: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+  }
+
+  .btn-secondary:hover {
+    background: var(--bg-light);
+    transform: translateY(-2px);
+  }
+
+  .footer {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    color: var(--text-light);
+  }
+
+  .footer p {
+    margin: 0.5rem 0;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+    }
+
+    .features {
+      grid-template-columns: 1fr;
+    }
+
+    .nav-links {
+      flex-direction: column;
+    }
+
+    .btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<main>
+  <div class="container">
+    <div class="header">
+      <div class="logo">👤</div>
+      <h1>Ruinan Ding</h1>
+      <p class="subtitle">Deep-Dive Profile & Resume</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+      <p>
+        Welcome to my <span class="highlight">detailed professional profile</span>. 
+        This is where you'll find comprehensive information about my background, skills, 
+        experience, and projects.
+      </p>
+      
+      <div class="features">
+        <div class="feature-card">
+          <h3>🎓 Experience</h3>
+          <p>6+ years of professional software engineering and development</p>
+        </div>
+        <div class="feature-card">
+          <h3>💻 Tech Stack</h3>
+          <p>Java, Spring Boot, Python, TypeScript, Angular, AWS & More</p>
+        </div>
+        <div class="feature-card">
+          <h3>🚀 Focus Areas</h3>
+          <p>Enterprise systems, cloud architecture, and open-source</p>
+        </div>
+      </div>
+
+      <p>
+        This site serves as a comprehensive resource for my professional journey, 
+        detailed resume, project portfolios, and technical expertise.
+      </p>
+    </div>
+
+    <div class="cta-section">
+      <h2 style="color: var(--text-dark); margin-bottom: 1.5rem;">Get to Know More</h2>
+      <div class="nav-links">
+        <a href="https://ruinanding.github.io/" class="btn btn-secondary">← Return to Hub</a>
+        <a href="https://www.linkedin.com/in/ruinan-ding/" class="btn btn-primary">LinkedIn Profile</a>
+        <a href="https://github.com/Ruinan-Ding" class="btn btn-primary">GitHub</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>© 2025 Ruinan Ding. All rights reserved.</p>
+      <p>Based in Washington, DC | Software Engineer | Open Source Enthusiast</p>
+    </div>
+  </div>
+</main>
+
+
