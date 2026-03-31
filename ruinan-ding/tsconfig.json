@@ -13,8 +13,8 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "moduleResolution": "bundler",
-    "importHelpers": true,
+    "moduleResolution": "node",
+    "importHelpers": false,
     "target": "ES2022",
     "module": "ES2022"
   },
