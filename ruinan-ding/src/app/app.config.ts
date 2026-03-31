@@ -1,5 +1,5 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { provideZoneChangeDetection } from '@angular/core';
 
-export const appConfig: ApplicationConfig = {
+export const appConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true })]
 };
