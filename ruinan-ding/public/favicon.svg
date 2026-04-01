@@ -1,32 +1,46 @@
 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+      @keyframes drawR {
+        0% { stroke-dashoffset: 180; }
+        40% { stroke-dashoffset: 0; }
+        100% { stroke-dashoffset: 0; }
       }
-      @keyframes fadeInOut {
+      @keyframes drawD {
+        0% { stroke-dashoffset: 160; }
+        40% { stroke-dashoffset: 160; }
+        80% { stroke-dashoffset: 0; }
+        100% { stroke-dashoffset: 0; }
+      }
+      @keyframes pulse {
         0%, 100% { opacity: 1; }
-        50% { opacity: 0.6; }
+        50% { opacity: 0.7; }
       }
-      .rd-circle {
-        animation: spin 2s linear infinite;
-        transform-origin: 50px 50px;
+      .letter-r {
+        stroke-dasharray: 180;
+        animation: drawR 2.5s ease-in-out infinite;
       }
-      .rd-text {
-        animation: fadeInOut 2s ease-in-out infinite;
+      .letter-d {
+        stroke-dasharray: 160;
+        animation: drawD 2.5s ease-in-out infinite;
+      }
+      .pulse-circle {
+        animation: pulse 2.5s ease-in-out infinite;
       }
     </style>
   </defs>
   
-  <!-- Animated background circle -->
-  <g class="rd-circle">
-    <circle cx="50" cy="50" r="48" fill="none" stroke="#0066cc" stroke-width="2" opacity="0.8"/>
-  </g>
+  <!-- Outer circle with pulse effect -->
+  <circle cx="50" cy="50" r="47" fill="none" stroke="#0066cc" stroke-width="1.5" opacity="0.5" class="pulse-circle"/>
   
-  <!-- Static inner circle -->
-  <circle cx="50" cy="50" r="45" fill="#f0f8ff" stroke="#0066cc" stroke-width="2"/>
+  <!-- Background -->
+  <circle cx="50" cy="50" r="45" fill="#f0f8ff" stroke="#0066cc" stroke-width="1.5"/>
   
-  <!-- Animated RD text -->
-  <text class="rd-text" x="50" y="58" font-size="48" font-weight="bold" text-anchor="middle" fill="#0066cc" font-family="Arial, sans-serif">RD</text>
+  <!-- Letter R - drawn with strokes -->
+  <path class="letter-r" d="M 28 35 L 28 60 M 28 35 L 38 35 Q 42 35 42 40 Q 42 45 38 45 L 28 45 M 42 45 L 48 60" 
+    fill="none" stroke="#0066cc" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Letter D - drawn with strokes -->
+  <path class="letter-d" d="M 56 35 L 56 60 M 56 35 L 66 35 Q 70 35 70 47.5 Q 70 60 66 60 L 56 60" 
+    fill="none" stroke="#0066cc" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
