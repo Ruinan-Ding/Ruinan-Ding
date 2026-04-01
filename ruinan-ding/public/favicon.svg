@@ -1,0 +1,32 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      @keyframes fadeInOut {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.6; }
+      }
+      .rd-circle {
+        animation: spin 2s linear infinite;
+        transform-origin: 50px 50px;
+      }
+      .rd-text {
+        animation: fadeInOut 2s ease-in-out infinite;
+      }
+    </style>
+  </defs>
+  
+  <!-- Animated background circle -->
+  <g class="rd-circle">
+    <circle cx="50" cy="50" r="48" fill="none" stroke="#0066cc" stroke-width="2" opacity="0.8"/>
+  </g>
+  
+  <!-- Static inner circle -->
+  <circle cx="50" cy="50" r="45" fill="#f0f8ff" stroke="#0066cc" stroke-width="2"/>
+  
+  <!-- Animated RD text -->
+  <text class="rd-text" x="50" y="58" font-size="48" font-weight="bold" text-anchor="middle" fill="#0066cc" font-family="Arial, sans-serif">RD</text>
+</svg>
