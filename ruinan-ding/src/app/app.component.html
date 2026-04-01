@@ -125,6 +125,35 @@
     margin: 10px 0;
   }
 
+  /* Location lines (match README size and tighter spacing) */
+  .location {
+    text-align: center;
+    display: block;
+    margin: 4px 0 0 0;
+    font-style: italic;
+    color: #c9d1d9;
+    font-size: 16px;
+    line-height: 1.15;
+  }
+
+  /* Slow rainbow splitter */
+  .rainbow-splitter {
+    width: 60%;
+    height: 6px;
+    margin: 8px auto 0;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+    background-size: 200% 100%;
+    animation: rainbow 10s linear infinite;
+    box-shadow: 0 0 8px rgba(0,0,0,0.12);
+  }
+
+  @keyframes rainbow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
   .location {
     text-align: center;
     display: block;
@@ -308,6 +337,7 @@
     <img src="https://user-images.githubusercontent.com/74038190/212284115-f47cd8ff-2ffb-4b04-b5bf-4d1c14c0247f.gif" alt="Animation" width="90%" />
     <p class="location"><em>Software Engineer based in Washington, DC</em></p>
     <p class="location"><em>In my free time, I love coding and exploring the city!</em></p>
+    <div class="rainbow-splitter" aria-hidden="true"></div>
   </div>
 
   <!-- Spotify Section -->
