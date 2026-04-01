@@ -90,3 +90,12 @@ frames[0].save(
 
 print(f"Created animated favicon with {len(frames)} frames!")
 
+# Also save a static ICO favicon (for browsers that ignore dynamic updates)
+try:
+    ico_img = frames[-1].convert('RGBA')
+    # Pillow will include multiple sizes in the ICO when provided via sizes
+    ico_img.save('public/favicon.ico', format='ICO', sizes=[(16,16),(32,32),(48,48),(64,64)])
+    print('Saved static public/favicon.ico')
+except Exception as e:
+    print('Failed to save ICO:', e)
+
