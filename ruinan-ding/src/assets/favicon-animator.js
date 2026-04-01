@@ -19,7 +19,16 @@
       link.href = dataUrl;
       link.type = 'image/png';
       link.sizes = '64x64';
-      console.debug && console.debug('[favicon-animator] favicon updated');
+      // ensure a shortcut icon exists for broader compatibility
+      let short = document.getElementById('favicon-short') || document.querySelector("link[rel='shortcut icon']");
+      if (!short) {
+        short = document.createElement('link');
+        short.id = 'favicon-short';
+        short.rel = 'shortcut icon';
+        document.head.appendChild(short);
+      }
+      short.href = dataUrl;
+      console.log('[favicon-animator] favicon updated');
     } catch (e) {
       console.error('[favicon-animator] updateFavicon error', e);
     }
@@ -103,7 +112,7 @@
     requestAnimationFrame(drawFavicon);
   }
 
-  console.debug && console.debug('[favicon-animator] started');
+  console.log('[favicon-animator] started');
 
   // Start animation when DOM is ready
   if (document.readyState === 'loading') {
