@@ -121,3 +121,85 @@
     drawFavicon();
   }
 })();
+// Simple flashing RD favicon (reliable toggle between two PNG frames)
+(function() {
+  const size = 64;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+
+  function drawBase() {
+    ctx.clearRect(0, 0, size, size);
+    ctx.fillStyle = '#f0f8ff';
+    ctx.fillRect(0, 0, size, size);
+    // border
+    ctx.strokeStyle = '#0066cc';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(size/2, size/2, 28, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
+  function drawRD() {
+    ctx.fillStyle = '#0066cc';
+    // Use a compact sans-serif that renders clearly in small sizes
+    ctx.font = 'bold 36px Arial, system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('RD', size/2, size/2 + 2);
+  }
+
+  function dataUrlFor(showRD) {
+    drawBase();
+    if (showRD) drawRD();
+    return canvas.toDataURL('image/png');
+  }
+
+  function updateLinks(href) {
+    try {
+      let link = document.getElementById('favicon') || document.querySelector("link[rel*='icon']");
+      if (!link) {
+        link = document.createElement('link');
+        link.id = 'favicon';
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.href = href;
+      link.type = 'image/png';
+
+      let short = document.getElementById('favicon-short') || document.querySelector("link[rel='shortcut icon']");
+      if (!short) {
+        short = document.createElement('link');
+        short.id = 'favicon-short';
+        short.rel = 'shortcut icon';
+        document.head.appendChild(short);
+      }
+      short.href = href;
+    } catch (e) {
+      console.error('[favicon-animator] updateLinks error', e);
+    }
+  }
+
+  function startFlashing() {
+    try {
+      const off = dataUrlFor(false);
+      const on = dataUrlFor(true);
+      let visible = false;
+      updateLinks(off);
+      console.log('[favicon-animator] flashing RD started');
+      setInterval(() => {
+        visible = !visible;
+        updateLinks(visible ? on : off);
+      }, 600);
+    } catch (e) {
+      console.error('[favicon-animator] startFlashing error', e);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startFlashing);
+  } else {
+    startFlashing();
+  }
+})();
