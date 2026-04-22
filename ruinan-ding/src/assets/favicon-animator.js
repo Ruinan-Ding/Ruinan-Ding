@@ -1,3 +1,173 @@
+/* Improved favicon animator: updates both 'icon' and 'shortcut icon' links repeatedly.
+   Makes a small rotating/scaling RD badge and forces the browser to reload the favicon.
+*/
+(function(){
+  const size = 64;
+  const canvas = document.createElement('canvas');
+  canvas.width = size; canvas.height = size;
+  const ctx = canvas.getContext('2d');
+
+  function ensureLink(rel){
+    let l = document.querySelector('link[rel="' + rel + '"]');
+    if(!l){ l = document.createElement('link'); l.rel = rel; document.head.appendChild(l); }
+    return l;
+  }
+
+  const linkIcon = ensureLink('icon');
+  const linkShortcut = ensureLink('shortcut icon');
+
+  let t = 0;
+  let iv = null;
+
+  function drawOnce(){
+    ctx.clearRect(0,0,size,size);
+    ctx.save();
+    ctx.translate(size/2, size/2);
+
+    // rotation + subtle vertical bounce
+    const rot = Math.sin(t) * 0.12; // radians
+    const bounce = Math.sin(t*2) * 1.5;
+    ctx.rotate(rot);
+    ctx.translate(0, bounce);
+
+    // radial background
+    const g = ctx.createRadialGradient(0,0,6,0,0,size/2);
+    g.addColorStop(0, '#ffffff22');
+    g.addColorStop(0.2, '#8A2BE2');
+    g.addColorStop(1, '#4B0082');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(0,0,size/2 - 1, 0, Math.PI*2); ctx.fill();
+
+    // Draw RD with outline
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const scale = 1 + 0.08 * Math.sin(t*2);
+    ctx.font = (Math.floor(32 * scale)) + 'px Arial';
+    // outline
+    ctx.lineWidth = 6;
+    ctx.strokeStyle = 'rgba(0,0,0,0.35)';
+    ctx.strokeText('RD', 0, 2);
+    ctx.fillStyle = '#fff';
+    ctx.fillText('RD', 0, 2);
+
+    ctx.restore();
+
+    try{
+      const url = canvas.toDataURL('image/png');
+      // set both links to be safe across browsers
+      linkIcon.href = url;
+      linkShortcut.href = url;
+    }catch(e){/* ignore */}
+
+    t += 0.45;
+  }
+
+  function start(){
+    if(iv) clearInterval(iv);
+    drawOnce();
+    iv = setInterval(drawOnce, 120);
+  }
+
+  function stop(){ if(iv) { clearInterval(iv); iv = null; } }
+
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden) stop(); else start();
+  });
+
+  // try to start immediately
+  start();
+})();
+/* Simple canvas-based favicon animator.
+   Draws "RD" on a purple circular background with a subtle wobble.
+   Place this file at: src/assets/favicon-animator.js
+*/
+(function() {
+  const LINK_ID = 'favicon';
+
+  function getLink() {
+    let link = document.getElementById(LINK_ID);
+    if (!link) {
+      link = document.querySelector('link[rel="icon"]') || document.querySelector('link[rel="shortcut icon"]');
+      if (link) link.id = LINK_ID;
+      else {
+        link = document.createElement('link');
+        link.id = LINK_ID;
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+    }
+    link.rel = 'icon';
+    link.type = 'image/png';
+    return link;
+  }
+
+  const SIZE = 64; // canvas logical size in CSS px
+  let dpr = Math.max(1, window.devicePixelRatio || 1);
+  const canvas = document.createElement('canvas');
+  canvas.width = SIZE * dpr;
+  canvas.height = SIZE * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  let running = true;
+
+  function drawFrame(now) {
+    const t = (now || performance.now()) / 1000;
+    ctx.clearRect(0, 0, SIZE, SIZE);
+
+    const cx = SIZE / 2;
+    const cy = SIZE / 2;
+    const r = SIZE / 2 - 2;
+
+    // background gradient circle
+    const grad = ctx.createLinearGradient(0, 0, SIZE, SIZE);
+    grad.addColorStop(0, '#8A2BE2');
+    grad.addColorStop(1, '#4B0082');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fill();
+
+    // RD with wobble + subtle scale
+    ctx.save();
+    ctx.translate(cx, cy);
+    const wobble = Math.sin(t * 3) * 0.06; // radians
+    const scale = 1 + Math.sin(t * 2) * 0.03;
+    ctx.rotate(wobble);
+    ctx.scale(scale, scale);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 34px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('RD', 0, 2);
+    ctx.restore();
+
+    // write to link
+    const url = canvas.toDataURL('image/png');
+    const link = getLink();
+    if (link.href !== url) link.href = url;
+
+    if (running) window.requestAnimationFrame(drawFrame);
+  }
+
+  function start() {
+    // re-evaluate DPR (handles zoom changes)
+    dpr = Math.max(1, window.devicePixelRatio || 1);
+    canvas.width = SIZE * dpr;
+    canvas.height = SIZE * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    drawFrame();
+    try { console.info('[favicon-animator] started'); } catch (e) {}
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
+
+  // pause when hidden
+  document.addEventListener('visibilitychange', function() {
+    running = !document.hidden;
+    if (running) start();
+  });
+})();
 // Animated favicon using Canvas with debug and robust favicon updates
 (function() {
   const canvas = document.createElement('canvas');

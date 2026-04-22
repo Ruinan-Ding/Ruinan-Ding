@@ -22,6 +22,7 @@
     background: #0d1117;
     color: #c9d1d9;
     line-height: 1.6;
+    cursor: none; /* hide default cursor to show custom sparkle trail */
   }
 
   .container {
@@ -39,6 +40,45 @@
     width: 100%;
     max-width: 800px;
     height: auto;
+  }
+
+  /* Big animated GitHub Pages banner (below name) */
+  .page-link-banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 18px 0 6px 0;
+  }
+
+  .page-link-cta {
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 28px;
+    font-weight: 800;
+    color: white;
+    text-decoration: none;
+    letter-spacing: 0.6px;
+    text-transform: none;
+    box-shadow: 0 10px 30px rgba(138,43,226,0.18), 0 2px 6px rgba(0,0,0,0.25);
+    background: linear-gradient(90deg, #8A2BE2, #FF80BF, #4B0082);
+    background-size: 300% 100%;
+    animation: bannerShift 6s linear infinite, pulse 3s ease-in-out infinite;
+    transform-origin: center;
+  }
+
+  .page-link-cta:hover { transform: scale(1.03); }
+
+  @keyframes bannerShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
   }
 
   .skills {
@@ -75,13 +115,61 @@
   .badges {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 72px;
     margin: 20px 0;
     flex-wrap: wrap;
   }
 
   .badges img {
-    height: 28px;
+    height: 48px; /* larger icons */
+  }
+
+  .badge-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: 10px;
+    transition: transform 160ms ease, box-shadow 160ms ease;
+  }
+
+  .badge-cta img { display: block; }
+
+  .badge-cta:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 8px 20px rgba(138,43,226,0.18);
+  }
+
+  .badge-invite {
+    text-align: center;
+    color: #c9d1d9;
+    margin-top: 10px;
+    font-weight: 700;
+    font-size: 16px;
+    animation: invitePulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes invitePulse {
+    0% { transform: translateY(0); opacity: 0.95; }
+    50% { transform: translateY(-4px); opacity: 1; }
+    100% { transform: translateY(0); opacity: 0.95; }
+  }
+
+  /* sparkle cursor elements */
+  .sparkle {
+    position: fixed;
+    pointer-events: none;
+    border-radius: 50%;
+    transform-origin: center;
+    animation: sparkleAnim 700ms forwards ease-out;
+    mix-blend-mode: screen;
+    z-index: 99999;
+  }
+
+  @keyframes sparkleAnim {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    60% { transform: translateY(-12px) scale(1.2); opacity: 0.9; }
+    100% { transform: translateY(-24px) scale(0.6); opacity: 0; }
   }
 
   .about-section {
@@ -115,51 +203,25 @@
     width: 90%;
     max-width: 600px;
     border-radius: 10px;
-    margin: 20px 0;
+    margin: 8px 0; /* tighter spacing to match README */
   }
 
   .caption {
     font-family: 'Dancing Script', cursive;
-    font-size: 28px;
+    font-size: 24px;
     color: #8A2BE2;
-    margin: 10px 0;
+    margin: 6px 0;
   }
 
   /* Location lines (match README size and tighter spacing) */
   .location {
     text-align: center;
     display: block;
-    margin: 4px 0 0 0;
+    margin: 0;
     font-style: italic;
     color: #c9d1d9;
-    font-size: 16px;
+    font-size: 14px; /* slightly smaller to match README */
     line-height: 1.15;
-  }
-
-  /* Slow rainbow splitter */
-  .rainbow-splitter {
-    width: 60%;
-    height: 6px;
-    margin: 8px auto 0;
-    border-radius: 6px;
-    background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
-    background-size: 200% 100%;
-    animation: rainbow 10s linear infinite;
-    box-shadow: 0 0 8px rgba(0,0,0,0.12);
-  }
-
-  @keyframes rainbow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  .location {
-    text-align: center;
-    display: block;
-    margin-top: 8px;
-    font-style: italic;
-    color: #c9d1d9;
   }
 
   .collapsible {
@@ -292,13 +354,66 @@
       height: 150px;
     }
   }
+
+  /* Large animated custom cursor follower */
+  #custom-cursor {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 120px;
+    height: 120px;
+    transform: translate(-50%,-50%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: conic-gradient(#8A2BE2,#FF80BF,#00D4FF,#4B0082);
+    background-size: 200% 200%;
+    box-shadow: 0 10px 30px rgba(138,43,226,0.18), 0 3px 10px rgba(0,0,0,0.35);
+    transition: transform .12s ease, width .12s ease, height .12s ease;
+    mix-blend-mode: screen;
+    will-change: transform, left, top;
+  }
+
+  #custom-cursor .cursor-core {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08), rgba(255,255,255,0.02) 30%, transparent 60%), linear-gradient(180deg,#8A2BE2,#4B0082);
+    color: #fff;
+    font-weight: 800;
+    font-size: 28px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.45);
+    transform: translateZ(0);
+  }
+
+  #custom-cursor.cursor-enlarge { transform: translate(-50%,-50%) scale(1.35); width: 160px; height: 160px; }
+  #custom-cursor.cursor-click { transform: translate(-50%,-50%) scale(0.9); }
+
+  .mini-spark { position: fixed; pointer-events: none; border-radius: 50%; mix-blend-mode: screen; z-index: 999998; animation: miniSpark 700ms forwards cubic-bezier(.16,.9,.3,1); }
+
+  @keyframes miniSpark {
+    0% { opacity: 1; transform: translate(0,0) scale(1); }
+    70% { opacity: 0.9; transform: translate(var(--dx), var(--dy)) scale(0.9); }
+    100% { opacity: 0; transform: translate(calc(var(--dx)*1.4), calc(var(--dy)*1.4)) scale(0.35); }
+  }
 </style>
 
-<div class="container">
-  <!-- Header -->
+  <div class="container">
+   <!-- Header -->
   <div class="header">
     <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=120&section=header&text=Ruinan%20Ding&fontSize=50&fontAlignY=45&animation=fadeIn&fontColor=ffffff" alt="Ruinan Ding Header" width="100%" />
   </div>
+
+    <!-- Big animated GitHub Pages banner (below name) -->
+    <div class="page-link-banner">
+      <a class="page-link-cta" href="https://ruinan-ding.github.io/" target="_blank" rel="noopener noreferrer">Click here to check out my website</a>
+    </div>
 
   <!-- Skills -->
   <div class="skills">
@@ -311,10 +426,15 @@
   </div>
 
   <!-- Badges -->
-  <div class="badges">
-    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
-    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
-  </div>
+    <div class="badge-invite">Click on my GitHub and LinkedIn below — I'd love to connect!</div>
+    <div class="badges">
+      <a class="badge-cta" href="https://www.linkedin.com/in/ruinan-ding/" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+      </a>
+      <a class="badge-cta" href="https://github.com/Ruinan-Ding" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+      </a>
+    </div>
 
   <!-- About Section -->
   <div class="about-section">
@@ -331,13 +451,13 @@
   <!-- Images -->
   <div class="image-section">
     <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" alt="Animation" width="90%" />
-    <div class="caption">Tidal Basin during cherry blossom peak bloom 2025</div>
+    <img class="caption" src="https://readme-typing-svg.herokuapp.com?font=Pacifico&size=28&duration=2500&pause=500&color=FF80BF&center=true&vCenter=true&width=700&height=80&lines=Tidal+Basin+during+cherry+blossom+peak+bloom+2025" alt="Tidal Basin during cherry blossom peak bloom 2025" />
     <img src="https://user-images.githubusercontent.com/74038190/212284115-f47cd8ff-2ffb-4b04-b5bf-4d1c14c0247f.gif" alt="Animation" width="90%" />
     <img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/DCSpringCherry2025.gif" alt="Cherry Blossom" width="90%" style="border-radius: 10px; border: 3px solid #8A2BE2;" />
     <img src="https://user-images.githubusercontent.com/74038190/212284115-f47cd8ff-2ffb-4b04-b5bf-4d1c14c0247f.gif" alt="Animation" width="90%" />
     <p class="location"><em>Software Engineer based in Washington, DC</em></p>
     <p class="location"><em>In my free time, I love coding and exploring the city!</em></p>
-    <div class="rainbow-splitter" aria-hidden="true"></div>
+    <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" alt="rainbow" width="90%" style="margin-top:8px;" />
   </div>
 
   <!-- Spotify Section -->
