@@ -35,30 +35,19 @@
   // mark body so CSS can hide the native cursor only when the custom cursor exists
   document.body.classList.add('has-custom-cursor');
 
-  // find favicon link for flash effect
+  // find favicon link for flash effect (we'll use a temporary link so we don't overwrite the original)
   const faviconLink = document.getElementById('favicon');
   const originalFaviconHref = faviconLink ? faviconLink.getAttribute('href') : null;
   function flashFavicon() {
-    if (!faviconLink) return;
-    // glowing SVG suitable for small favicon sizes; briefly swap then restore
-    const svg = `<?xml version="1.0" encoding="UTF-8"?>
-      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
-        <defs>
-          <radialGradient id='g1' cx='40%' cy='35%' r='60%'>
-            <stop offset='0%' stop-color='#FF80BF' stop-opacity='1'/>
-            <stop offset='60%' stop-color='#8A2BE2' stop-opacity='0.95'/>
-            <stop offset='100%' stop-color='#4B0082' stop-opacity='0.85'/>
-          </radialGradient>
-          <filter id='glow' x='-50%' y='-50%' width='200%' height='200%'>
-            <feGaussianBlur stdDeviation='3' result='b'/>
-            <feMerge><feMergeNode in='b'/><feMergeNode in='SourceGraphic'/></feMerge>
-          </filter>
-        </defs>
-        <rect width='64' height='64' rx='12' fill='url(#g1)' filter='url(#glow)' />
-      </svg>`;
-    const data = 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
-    try { faviconLink.setAttribute('href', data); } catch(e) {}
-    setTimeout(() => { try { if (originalFaviconHref) faviconLink.setAttribute('href', originalFaviconHref); } catch(e) {} }, 260);
+    // Safer: briefly prepend a sparkle to the document title instead of swapping favicon links.
+    try {
+      const originalTitle = document.title || '';
+      document.title = '✨ ' + originalTitle;
+      setTimeout(() => { document.title = originalTitle; }, 360);
+      if (console && console.debug) console.debug('[custom-cursor] flashed title instead of favicon');
+    } catch (e) {
+      if (console && console.error) console.error('[custom-cursor] flashFavicon error', e);
+    }
   }
 
   let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
