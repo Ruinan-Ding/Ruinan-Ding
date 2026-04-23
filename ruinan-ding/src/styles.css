@@ -13,3 +13,79 @@ body {
 * {
   box-sizing: border-box;
 }
+
+/* Global custom cursor styles (moved from app component so body-level cursor element is styled) */
+/* Only hide the native cursor when the script actually creates the custom cursor. */
+body.has-custom-cursor {
+  cursor: none; /* hide native cursor to show animated custom cursor */
+}
+
+/* Pointy SVG cursor styles */
+
+#custom-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 80px;
+  height: 80px;
+  transform: none; /* we place the element so its top-left == pointer tip */
+  pointer-events: none;
+  z-index: 2147483647; /* max so it's always above other UI */
+  display: block;
+  will-change: transform, left, top;
+  transform-origin: 0 0; /* scale from the tip */
+}
+
+#custom-cursor .cursor-core {
+  width: 80px;
+  height: 80px;
+  display: block;
+}
+
+#custom-cursor .cursor-core svg { display:block; width:100%; height:100%; }
+
+/* enlarge and click use scale from the tip (0 0) */
+#custom-cursor.cursor-enlarge { transform: scale(1.6); }
+
+/* click pop animation */
+@keyframes cursorPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.9); }
+  100% { transform: scale(1); }
+}
+
+#custom-cursor.cursor-click { animation: cursorPop 280ms cubic-bezier(.2,.85,.32,1) forwards; }
+
+/* hidden state (when tab/window loses focus) */
+#custom-cursor.is-hidden { opacity: 0; transition: opacity 120ms linear; pointer-events: none; }
+
+.mini-spark { position: fixed; pointer-events: none; border-radius: 50%; mix-blend-mode: screen; z-index: 999998; animation: miniSpark 700ms forwards cubic-bezier(.16,.9,.3,1); }
+
+@keyframes miniSpark {
+  0% { opacity: 1; transform: translate(0,0) scale(1); }
+  70% { opacity: 0.9; transform: translate(var(--dx), var(--dy)) scale(0.9); }
+  100% { opacity: 0; transform: translate(calc(var(--dx)*1.4), calc(var(--dy)*1.4)) scale(0.35); }
+}
+
+/* Click ring/pop visual that appears on pointer down */
+.cursor-pop-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2147483646;
+  border: 2px solid rgba(255,255,255,0.95);
+  box-shadow: 0 0 18px rgba(255,128,191,0.95), 0 0 36px rgba(138,43,226,0.6);
+  transform: translate(-50%, -50%) scale(0.2);
+  transform-origin: center center;
+  animation: ringPop 420ms cubic-bezier(.2,.9,.2,1) forwards;
+}
+
+@keyframes ringPop {
+  0% { transform: translate(-50%, -50%) scale(0.2); opacity: 1; }
+  60% { transform: translate(-50%, -50%) scale(2.6); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(3.6); opacity: 0; }
+}

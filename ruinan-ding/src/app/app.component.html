@@ -354,54 +354,7 @@
       height: 150px;
     }
   }
-
-  /* Large animated custom cursor follower */
-  #custom-cursor {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    width: 120px;
-    height: 120px;
-    transform: translate(-50%,-50%);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 999999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: conic-gradient(#8A2BE2,#FF80BF,#00D4FF,#4B0082);
-    background-size: 200% 200%;
-    box-shadow: 0 10px 30px rgba(138,43,226,0.18), 0 3px 10px rgba(0,0,0,0.35);
-    transition: transform .12s ease, width .12s ease, height .12s ease;
-    mix-blend-mode: screen;
-    will-change: transform, left, top;
-  }
-
-  #custom-cursor .cursor-core {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08), rgba(255,255,255,0.02) 30%, transparent 60%), linear-gradient(180deg,#8A2BE2,#4B0082);
-    color: #fff;
-    font-weight: 800;
-    font-size: 28px;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.45);
-    transform: translateZ(0);
-  }
-
-  #custom-cursor.cursor-enlarge { transform: translate(-50%,-50%) scale(1.35); width: 160px; height: 160px; }
-  #custom-cursor.cursor-click { transform: translate(-50%,-50%) scale(0.9); }
-
-  .mini-spark { position: fixed; pointer-events: none; border-radius: 50%; mix-blend-mode: screen; z-index: 999998; animation: miniSpark 700ms forwards cubic-bezier(.16,.9,.3,1); }
-
-  @keyframes miniSpark {
-    0% { opacity: 1; transform: translate(0,0) scale(1); }
-    70% { opacity: 0.9; transform: translate(var(--dx), var(--dy)) scale(0.9); }
-    100% { opacity: 0; transform: translate(calc(var(--dx)*1.4), calc(var(--dy)*1.4)) scale(0.35); }
-  }
+  
 </style>
 
   <div class="container">
