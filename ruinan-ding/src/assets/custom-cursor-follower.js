@@ -38,15 +38,30 @@
   // find favicon link for flash effect (we'll use a temporary link so we don't overwrite the original)
   const faviconLink = document.getElementById('favicon');
   const originalFaviconHref = faviconLink ? faviconLink.getAttribute('href') : null;
-  function flashFavicon() {
-    // Safer: briefly prepend a sparkle to the document title instead of swapping favicon links.
+  function replayFavicon() {
+    // Re-insert the favicon link with a changing query param so the browser reloads the SVG
     try {
-      const originalTitle = document.title || '';
-      document.title = '✨ ' + originalTitle;
-      setTimeout(() => { document.title = originalTitle; }, 360);
-      if (console && console.debug) console.debug('[custom-cursor] flashed title instead of favicon');
+      const head = document.head || document.getElementsByTagName('head')[0];
+      // prefer element with id 'favicon' if present, else any icon link
+      const old = document.getElementById('favicon') || document.querySelector('link[rel~="icon"]');
+      const base = (old && old.getAttribute('href')) ? old.getAttribute('href').split('?')[0] : '/favicon.svg';
+      const newHref = base + (base.includes('?') ? '&' : '?') + 'r=' + Date.now();
+
+      const link = document.createElement('link');
+      link.rel = 'icon';
+      link.type = 'image/svg+xml';
+      link.id = 'favicon';
+      link.href = newHref;
+
+      // Append new link and remove previous to force the browser to load the fresh SVG
+      head.appendChild(link);
+      // slight delay before removing the old reference so some browsers pick up the change
+      if (old && old.parentNode) {
+        setTimeout(() => { try { old.parentNode.removeChild(old); } catch(e){} }, 40);
+      }
+      if (console && console.debug) console.debug('[custom-cursor] replayed favicon ->', newHref);
     } catch (e) {
-      if (console && console.error) console.error('[custom-cursor] flashFavicon error', e);
+      if (console && console.error) console.error('[custom-cursor] replayFavicon error', e);
     }
   }
 
@@ -125,8 +140,8 @@
     // clear animation style after it ends
     const onEnd = () => { el.style.animation = ''; el.removeEventListener('animationend', onEnd); };
     el.addEventListener('animationend', onEnd);
-    // flash favicon briefly with a glow
-    flashFavicon();
+    // restart the favicon SVG animation by reloading the favicon with a timestamp
+    replayFavicon();
   });
   // ensure any leftover state is cleared on pointerup
   document.addEventListener('mouseup', () => { el.style.animation = ''; });
