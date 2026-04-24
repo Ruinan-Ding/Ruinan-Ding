@@ -98,4 +98,3 @@ try:
     print('Saved static public/favicon.ico')
 except Exception as e:
     print('Failed to save ICO:', e)
-
