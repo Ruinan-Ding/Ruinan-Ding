@@ -59,7 +59,7 @@
       if (old && old.parentNode) {
         setTimeout(() => { try { old.parentNode.removeChild(old); } catch(e){} }, 40);
       }
-      if (console && console.debug) console.debug('[custom-cursor] replayed favicon ->', newHref);
+      // debug log removed for production
     } catch (e) {
       if (console && console.error) console.error('[custom-cursor] replayFavicon error', e);
     }
