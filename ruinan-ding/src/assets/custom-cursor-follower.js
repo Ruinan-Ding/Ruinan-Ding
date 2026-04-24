@@ -8,6 +8,11 @@
   // because some hybrid laptops report maxTouchPoints > 0 even when a mouse is present.
   if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
 
+  // runtime debug toggle: set `localStorage.RD_DEBUG = '1'` to enable debug logs in production
+  const RD_DEBUG = (function(){
+    try { return !!(window.localStorage && window.localStorage.getItem('RD_DEBUG') === '1'); } catch(e) { return false; }
+  })();
+
   const el = document.createElement('div');
   el.id = 'custom-cursor';
   const core = document.createElement('div');
@@ -61,7 +66,7 @@
       }
       // debug log removed for production
     } catch (e) {
-      if (console && console.error) console.error('[custom-cursor] replayFavicon error', e);
+      if (RD_DEBUG && console && console.error) console.error('[custom-cursor] replayFavicon error', e);
     }
   }
 
@@ -143,7 +148,7 @@
         head0.appendChild(link0);
         if (old0 && old0.parentNode) { setTimeout(() => { try { old0.parentNode.removeChild(old0); } catch(e){} }, 60); }
       } catch (e) {
-        if (console && console.error) console.error('[custom-cursor] initial favicon toDataURL failed', e);
+        if (RD_DEBUG && console && console.error) console.error('[custom-cursor] initial favicon toDataURL failed', e);
       }
 
       start = performance.now();
@@ -161,7 +166,7 @@
             head.appendChild(link);
             if (old && old.parentNode) { setTimeout(() => { try { old.parentNode.removeChild(old); } catch(e){} }, 60); }
           } catch (e) {
-            if (console && console.error) console.error('[custom-cursor] favicon canvas toDataURL failed', e);
+            if (RD_DEBUG && console && console.error) console.error('[custom-cursor] favicon canvas toDataURL failed', e);
           }
           lastFrame = now;
         }
@@ -170,7 +175,7 @@
 
       requestAnimationFrame(tick);
     } catch (e) {
-      if (console && console.error) console.error('[custom-cursor] animateFaviconSequence error', e);
+      if (RD_DEBUG && console && console.error) console.error('[custom-cursor] animateFaviconSequence error', e);
       // fallback to replayFavicon
       try { replayFavicon(); } catch (e2) {}
     }
@@ -180,7 +185,7 @@
   try {
     // Slight delay to allow head / index to stabilize
     setTimeout(() => {
-      try { animateFaviconSequence(); } catch (e) { if (console && console.error) console.error(e); }
+      try { animateFaviconSequence(); } catch (e) { if (RD_DEBUG && console && console.error) console.error(e); }
     }, 120);
   } catch (e) {}
 
