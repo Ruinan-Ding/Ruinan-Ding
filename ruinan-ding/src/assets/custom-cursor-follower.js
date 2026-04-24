@@ -77,11 +77,28 @@
       const ctx = canvas.getContext('2d');
       ctx.scale(pixelRatio, pixelRatio);
 
+      // small color helpers
+      function hexToRgb(hex) {
+        const m = hex.replace('#','');
+        const bigint = parseInt(m, 16);
+        return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
+      }
+      function rgbToHex(r,g,b) {
+        return '#' + [r,g,b].map(v => v.toString(16).padStart(2,'0')).join('');
+      }
+      function lerpColor(a,b,t){
+        const A = hexToRgb(a); const B = hexToRgb(b);
+        const r = Math.round(A.r + (B.r - A.r) * t);
+        const g = Math.round(A.g + (B.g - A.g) * t);
+        const bb = Math.round(A.b + (B.b - A.b) * t);
+        return rgbToHex(r,g,bb);
+      }
+
       // Paths copied from favicon.svg (matching viewBox 0..100)
       const pathR = new Path2D('M 28 35 L 28 60 M 28 35 L 38 35 Q 42 35 42 40 Q 42 45 38 45 L 28 45 M 42 45 L 48 60');
       const pathD = new Path2D('M 56 35 L 56 60 M 56 35 L 66 35 Q 70 35 70 47.5 Q 70 60 66 60 L 56 60');
 
-      const start = performance.now();
+      let start = performance.now();
       const frameInterval = 1000 / fps;
       let lastFrame = 0;
 
@@ -91,8 +108,9 @@
         // pulse for outer circle
         const pulse = 0.85 + 0.15 * Math.cos(2 * Math.PI * progress);
 
-        // background
-        ctx.fillStyle = '#f0f8ff';
+        // background transitions from red to light blue over the animation
+        const bgColor = lerpColor('#ff4d4d', '#f0f8ff', progress);
+        ctx.fillStyle = bgColor;
         ctx.beginPath(); ctx.arc(50,50,45,0,Math.PI*2); ctx.fill();
 
         // outer circle stroke with pulse (semi-transparent)
@@ -115,6 +133,20 @@
         ctx.beginPath(); ctx.stroke(pathD);
       }
 
+      // draw immediate first frame (red) so the favicon shows red instantly
+      draw(0);
+      try {
+        const data0 = canvas.toDataURL('image/png');
+        const head0 = document.head || document.getElementsByTagName('head')[0];
+        const old0 = document.getElementById('favicon') || document.querySelector('link[rel~="icon"]');
+        const link0 = document.createElement('link'); link0.rel = 'icon'; link0.type = 'image/png'; link0.id = 'favicon'; link0.href = data0;
+        head0.appendChild(link0);
+        if (old0 && old0.parentNode) { setTimeout(() => { try { old0.parentNode.removeChild(old0); } catch(e){} }, 60); }
+      } catch (e) {
+        if (console && console.error) console.error('[custom-cursor] initial favicon toDataURL failed', e);
+      }
+
+      start = performance.now();
       function tick(now) {
         const elapsed = now - start;
         const progress = Math.min(1, elapsed / duration);
@@ -143,6 +175,14 @@
       try { replayFavicon(); } catch (e2) {}
     }
   }
+
+  // Run the favicon animation once on page load so users see the full cycle without clicking
+  try {
+    // Slight delay to allow head / index to stabilize
+    setTimeout(() => {
+      try { animateFaviconSequence(); } catch (e) { if (console && console.error) console.error(e); }
+    }, 120);
+  } catch (e) {}
 
   let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
   let posX = mouseX, posY = mouseY;
