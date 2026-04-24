@@ -13,6 +13,11 @@
     try { return !!(window.localStorage && window.localStorage.getItem('RD_DEBUG') === '1'); } catch(e) { return false; }
   })();
 
+  // token to manage concurrent favicon animations: incrementing cancels previous runs
+  let currentFaviconAnimId = 0;
+  // single link element used for programmatic favicon updates
+  let rdFaviconLink = null;
+
   const el = document.createElement('div');
   el.id = 'custom-cursor';
   const core = document.createElement('div');
@@ -52,19 +57,18 @@
       const base = (old && old.getAttribute('href')) ? old.getAttribute('href').split('?')[0] : 'favicon.svg';
       const newHref = base + (base.includes('?') ? '&' : '?') + 'r=' + Date.now();
 
-      const link = document.createElement('link');
-      link.rel = 'icon';
-      link.type = 'image/svg+xml';
-      link.id = 'favicon';
-      link.href = newHref;
-
-      // Append new link and remove previous to force the browser to load the fresh SVG
-      head.appendChild(link);
-      // slight delay before removing the old reference so some browsers pick up the change
-      if (old && old.parentNode) {
-        setTimeout(() => { try { old.parentNode.removeChild(old); } catch(e){} }, 40);
+      // reuse a single link element for updates to avoid creating/removing nodes repeatedly
+      if (!rdFaviconLink) {
+        rdFaviconLink = old && old.cloneNode(false) || document.createElement('link');
+        rdFaviconLink.rel = 'icon';
+        rdFaviconLink.type = 'image/svg+xml';
+        rdFaviconLink.id = 'favicon';
+        head.appendChild(rdFaviconLink);
+        if (old && old !== rdFaviconLink && old.parentNode) {
+          setTimeout(() => { try { old.parentNode.removeChild(old); } catch(e){} }, 40);
+        }
       }
-      // debug log removed for production
+      rdFaviconLink.href = newHref;
     } catch (e) {
       if (RD_DEBUG && console && console.error) console.error('[custom-cursor] replayFavicon error', e);
     }
@@ -74,6 +78,8 @@
   // This forces a visible redraw in browsers that don't animate SVG favicons.
   function animateFaviconSequence(duration = 2500, fps = 30) {
     try {
+      // cancel any previous animation by advancing the global token
+      const thisAnimId = ++currentFaviconAnimId;
       const pixelRatio = Math.max(1, window.devicePixelRatio || 1);
       const size = 100; // match SVG viewBox
       const canvas = document.createElement('canvas');
@@ -144,9 +150,13 @@
         const data0 = canvas.toDataURL('image/png');
         const head0 = document.head || document.getElementsByTagName('head')[0];
         const old0 = document.getElementById('favicon') || document.querySelector('link[rel~="icon"]');
-        const link0 = document.createElement('link'); link0.rel = 'icon'; link0.type = 'image/png'; link0.id = 'favicon'; link0.href = data0;
-        head0.appendChild(link0);
-        if (old0 && old0.parentNode) { setTimeout(() => { try { old0.parentNode.removeChild(old0); } catch(e){} }, 60); }
+        if (!rdFaviconLink) {
+          rdFaviconLink = old0 && old0.cloneNode(false) || document.createElement('link');
+          rdFaviconLink.rel = 'icon'; rdFaviconLink.type = 'image/png'; rdFaviconLink.id = 'favicon';
+          head0.appendChild(rdFaviconLink);
+          if (old0 && old0 !== rdFaviconLink && old0.parentNode) { setTimeout(() => { try { old0.parentNode.removeChild(old0); } catch(e){} }, 60); }
+        }
+        rdFaviconLink.href = data0;
       } catch (e) {
         if (RD_DEBUG && console && console.error) console.error('[custom-cursor] initial favicon toDataURL failed', e);
       }
@@ -193,28 +203,34 @@
   let posX = mouseX, posY = mouseY;
   let raf = null;
 
-  function animate(){
-    posX += (mouseX - posX) * 0.18;
-    posY += (mouseY - posY) * 0.18;
-    // place the element so its top-left corner == pointer tip position
-    el.style.left = Math.round(posX) + 'px';
-    el.style.top = Math.round(posY) + 'px';
-    raf = requestAnimationFrame(animate);
-  }
-  animate();
+      function tick(now) {
+        // stop if a newer animation instance started
+        if (thisAnimId !== currentFaviconAnimId) return;
+        const elapsed = now - start;
+        const progress = Math.min(1, elapsed / duration);
+        if (now - lastFrame >= frameInterval || progress === 1) {
+          draw(progress);
+          // convert to PNG dataURL and set favicon
+          try {
+            const data = canvas.toDataURL('image/png');
+            const head = document.head || document.getElementsByTagName('head')[0];
+            const old = document.getElementById('favicon') || document.querySelector('link[rel~="icon"]');
+            if (!rdFaviconLink) {
+              rdFaviconLink = old && old.cloneNode(false) || document.createElement('link');
+              rdFaviconLink.rel = 'icon'; rdFaviconLink.type = 'image/png'; rdFaviconLink.id = 'favicon';
+              head.appendChild(rdFaviconLink);
+              if (old && old !== rdFaviconLink && old.parentNode) { setTimeout(() => { try { old.parentNode.removeChild(old); } catch(e){} }, 60); }
+            }
+            rdFaviconLink.href = data;
+          } catch (e) {
+            if (RD_DEBUG && console && console.error) console.error('[custom-cursor] favicon canvas toDataURL failed', e);
+          }
+          lastFrame = now;
+        }
+        if (elapsed < duration) requestAnimationFrame(tick);
+      }
 
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX; mouseY = e.clientY;
-    // If the custom cursor was hidden (e.g., after a blur/leave), snap it to the pointer and show it immediately
-    if (el.classList.contains('is-hidden')) {
-      posX = mouseX; posY = mouseY;
-      el.style.left = Math.round(posX) + 'px';
-      el.style.top = Math.round(posY) + 'px';
-      showCursorAfterFocus();
-    }
-  }, {passive:true});
-
-  const hoverSelectors = 'a, button, .badge-cta, .page-link-cta';
+      requestAnimationFrame(tick);
   document.addEventListener('mouseover', (e) => {
     if (e.target.closest && e.target.closest(hoverSelectors)) el.classList.add('cursor-enlarge');
   });
