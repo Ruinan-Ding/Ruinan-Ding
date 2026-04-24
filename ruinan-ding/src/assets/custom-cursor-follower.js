@@ -44,7 +44,7 @@
       const head = document.head || document.getElementsByTagName('head')[0];
       // prefer element with id 'favicon' if present, else any icon link
       const old = document.getElementById('favicon') || document.querySelector('link[rel~="icon"]');
-      const base = (old && old.getAttribute('href')) ? old.getAttribute('href').split('?')[0] : '/favicon.svg';
+      const base = (old && old.getAttribute('href')) ? old.getAttribute('href').split('?')[0] : 'favicon.svg';
       const newHref = base + (base.includes('?') ? '&' : '?') + 'r=' + Date.now();
 
       const link = document.createElement('link');
