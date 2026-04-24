@@ -200,6 +200,13 @@
 
   document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX; mouseY = e.clientY;
+    // If the custom cursor was hidden (e.g., after a blur/leave), snap it to the pointer and show it immediately
+    if (el.classList.contains('is-hidden')) {
+      posX = mouseX; posY = mouseY;
+      el.style.left = Math.round(posX) + 'px';
+      el.style.top = Math.round(posY) + 'px';
+      showCursorAfterFocus();
+    }
   }, {passive:true});
 
   const hoverSelectors = 'a, button, .badge-cta, .page-link-cta';
@@ -276,13 +283,25 @@
     if (!raf) animate();
   }
 
-  window.addEventListener('blur', hideCursorForBlur);
+  // Do NOT hide the cursor on window blur alone — that made the custom cursor disappear
+  // while users moved their mouse over the page without first clicking. Instead,
+  // hide when the document becomes hidden or when the pointer actually leaves the page.
   window.addEventListener('focus', showCursorAfterFocus);
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') hideCursorForBlur(); else showCursorAfterFocus();
   });
-  // pointer leaving the page
+
+  // pointer leaving/entering the document. Cover multiple event types for broader browser support.
   document.addEventListener('pointerleave', hideCursorForBlur);
-  document.addEventListener('pointerenter', showCursorAfterFocus);
+  document.addEventListener('pointerout', (e) => { if (!e.relatedTarget) hideCursorForBlur(); });
+  document.addEventListener('mouseout', (e) => { if (!e.relatedTarget) hideCursorForBlur(); });
+  document.addEventListener('pointerenter', (e) => {
+    if (e && typeof e.clientX === 'number') { mouseX = e.clientX; mouseY = e.clientY; }
+    // snap to pointer and show when re-entering
+    posX = mouseX; posY = mouseY;
+    el.style.left = Math.round(posX) + 'px';
+    el.style.top = Math.round(posY) + 'px';
+    showCursorAfterFocus();
+  });
 
 })();
