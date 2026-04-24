@@ -65,6 +65,85 @@
     }
   }
 
+  // Canvas-based favicon animation fallback: draw frames on a canvas and set data-URL favicons
+  // This forces a visible redraw in browsers that don't animate SVG favicons.
+  function animateFaviconSequence(duration = 2500, fps = 30) {
+    try {
+      const pixelRatio = Math.max(1, window.devicePixelRatio || 1);
+      const size = 100; // match SVG viewBox
+      const canvas = document.createElement('canvas');
+      canvas.width = size * pixelRatio;
+      canvas.height = size * pixelRatio;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(pixelRatio, pixelRatio);
+
+      // Paths copied from favicon.svg (matching viewBox 0..100)
+      const pathR = new Path2D('M 28 35 L 28 60 M 28 35 L 38 35 Q 42 35 42 40 Q 42 45 38 45 L 28 45 M 42 45 L 48 60');
+      const pathD = new Path2D('M 56 35 L 56 60 M 56 35 L 66 35 Q 70 35 70 47.5 Q 70 60 66 60 L 56 60');
+
+      const start = performance.now();
+      const frameInterval = 1000 / fps;
+      let lastFrame = 0;
+
+      function draw(progress) {
+        // clear
+        ctx.clearRect(0, 0, size, size);
+        // pulse for outer circle
+        const pulse = 0.85 + 0.15 * Math.cos(2 * Math.PI * progress);
+
+        // background
+        ctx.fillStyle = '#f0f8ff';
+        ctx.beginPath(); ctx.arc(50,50,45,0,Math.PI*2); ctx.fill();
+
+        // outer circle stroke with pulse (semi-transparent)
+        ctx.save();
+        ctx.globalAlpha = 0.5 * pulse;
+        ctx.strokeStyle = '#0066cc'; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(50,50,47,0,Math.PI*2); ctx.stroke();
+        ctx.restore();
+
+        // draw R with dash effect
+        const rProg = Math.min(1, Math.max(0, progress / 0.4));
+        ctx.strokeStyle = '#0066cc'; ctx.lineWidth = 3.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        ctx.setLineDash([180]); ctx.lineDashOffset = 180 * (1 - rProg);
+        ctx.beginPath(); ctx.stroke(pathR);
+
+        // draw D with delayed dash effect
+        let dProg = 0;
+        if (progress <= 0.4) dProg = 0; else if (progress <= 0.8) dProg = (progress - 0.4) / 0.4; else dProg = 1;
+        ctx.setLineDash([160]); ctx.lineDashOffset = 160 * (1 - dProg);
+        ctx.beginPath(); ctx.stroke(pathD);
+      }
+
+      function tick(now) {
+        const elapsed = now - start;
+        const progress = Math.min(1, elapsed / duration);
+        if (now - lastFrame >= frameInterval || progress === 1) {
+          draw(progress);
+          // convert to PNG dataURL and set favicon
+          try {
+            const data = canvas.toDataURL('image/png');
+            const head = document.head || document.getElementsByTagName('head')[0];
+            const old = document.getElementById('favicon') || document.querySelector('link[rel~="icon"]');
+            const link = document.createElement('link'); link.rel = 'icon'; link.type = 'image/png'; link.id = 'favicon'; link.href = data;
+            head.appendChild(link);
+            if (old && old.parentNode) { setTimeout(() => { try { old.parentNode.removeChild(old); } catch(e){} }, 60); }
+          } catch (e) {
+            if (console && console.error) console.error('[custom-cursor] favicon canvas toDataURL failed', e);
+          }
+          lastFrame = now;
+        }
+        if (elapsed < duration) requestAnimationFrame(tick);
+      }
+
+      requestAnimationFrame(tick);
+    } catch (e) {
+      if (console && console.error) console.error('[custom-cursor] animateFaviconSequence error', e);
+      // fallback to replayFavicon
+      try { replayFavicon(); } catch (e2) {}
+    }
+  }
+
   let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
   let posX = mouseX, posY = mouseY;
   let raf = null;
@@ -140,8 +219,8 @@
     // clear animation style after it ends
     const onEnd = () => { el.style.animation = ''; el.removeEventListener('animationend', onEnd); };
     el.addEventListener('animationend', onEnd);
-    // restart the favicon SVG animation by reloading the favicon with a timestamp
-    replayFavicon();
+    // restart the favicon animation: prefer canvas-based animation, fallback to replaying the SVG
+    try { animateFaviconSequence(); } catch (e) { try { replayFavicon(); } catch (e2) {} }
   });
   // ensure any leftover state is cleared on pointerup
   document.addEventListener('mouseup', () => { el.style.animation = ''; });
