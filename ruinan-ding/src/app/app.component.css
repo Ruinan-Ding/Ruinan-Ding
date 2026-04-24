@@ -1,0 +1,355 @@
+:host {
+	--primary-color: #8A2BE2;
+	--text-dark: #1a1a1a;
+	--text-light: #666666;
+	--bg-light: #f9f9f9;
+	--border-color: #e0e0e0;
+
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background: #0d1117;
+	color: #c9d1d9;
+	line-height: 1.6;
+}
+
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.header {
+	text-align: center;
+	margin-bottom: 40px;
+}
+
+.header img {
+	width: 100%;
+	max-width: 800px;
+	height: auto;
+}
+
+/* Big animated GitHub Pages banner (below name) */
+.page-link-banner {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 18px 0 6px 0;
+}
+
+.page-link-cta {
+	display: inline-block;
+	padding: 14px 28px;
+	border-radius: 12px;
+	font-size: 28px;
+	font-weight: 800;
+	color: white;
+	text-decoration: none;
+	letter-spacing: 0.6px;
+	text-transform: none;
+	box-shadow: 0 10px 30px rgba(138,43,226,0.18), 0 2px 6px rgba(0,0,0,0.25);
+	background: linear-gradient(90deg, #8A2BE2, #FF80BF, #4B0082);
+	background-size: 300% 100%;
+	animation: bannerShift 6s linear infinite, pulse 3s ease-in-out infinite;
+	transform-origin: center;
+}
+
+.page-link-cta:hover { transform: scale(1.03); }
+
+@keyframes bannerShift {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse {
+	0% { transform: scale(1); }
+	50% { transform: scale(1.02); }
+	100% { transform: scale(1); }
+}
+
+.skills {
+	text-align: center;
+	margin: 30px 0;
+}
+
+.skills img {
+	height: 40px;
+}
+
+.typing-animation {
+	font-family: 'Fira Code', monospace;
+	font-size: 16px;
+	color: #8A2BE2;
+	text-align: center;
+	margin: 20px 0;
+	white-space: nowrap;
+	overflow: hidden;
+	border-right: 2px solid #8A2BE2;
+	animation: typing 4s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+	from { width: 0; }
+	to { width: 100%; }
+}
+
+@keyframes blink-caret {
+	from, to { border-color: transparent; }
+	50% { border-color: #8A2BE2; }
+}
+
+.badges {
+	display: flex;
+	justify-content: center;
+	gap: 72px;
+	margin: 20px 0;
+	flex-wrap: wrap;
+}
+
+.badges img {
+	height: 48px; /* larger icons */
+}
+
+.badge-cta {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 6px;
+	border-radius: 10px;
+	transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.badge-cta img { display: block; }
+
+.badge-cta:hover {
+	transform: translateY(-4px) scale(1.04);
+	box-shadow: 0 8px 20px rgba(138,43,226,0.18);
+}
+
+.badge-invite {
+	text-align: center;
+	color: #c9d1d9;
+	margin-top: 10px;
+	font-weight: 700;
+	font-size: 16px;
+	animation: invitePulse 2.4s ease-in-out infinite;
+}
+
+@keyframes invitePulse {
+	0% { transform: translateY(0); opacity: 0.95; }
+	50% { transform: translateY(-4px); opacity: 1; }
+	100% { transform: translateY(0); opacity: 0.95; }
+}
+
+/* sparkle cursor elements */
+.sparkle {
+	position: fixed;
+	pointer-events: none;
+	border-radius: 50%;
+	transform-origin: center;
+	animation: sparkleAnim 700ms forwards ease-out;
+	mix-blend-mode: screen;
+	z-index: 99999;
+}
+
+@keyframes sparkleAnim {
+	0% { transform: translateY(0) scale(1); opacity: 1; }
+	60% { transform: translateY(-12px) scale(1.2); opacity: 0.9; }
+	100% { transform: translateY(-24px) scale(0.6); opacity: 0; }
+}
+
+.about-section {
+	text-align: center;
+	margin: 40px 0;
+}
+
+.focus-badges {
+	display: flex;
+	justify-content: center;
+	gap: 15px;
+	margin: 20px 0;
+	flex-wrap: wrap;
+}
+
+.focus-badge {
+	background: linear-gradient(135deg, #8A2BE2, #4B0082);
+	color: white;
+	padding: 8px 16px;
+	border-radius: 20px;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.image-section {
+	text-align: center;
+	margin: 40px 0;
+}
+
+.image-section img {
+	width: 90%;
+	max-width: 600px;
+	border-radius: 10px;
+	margin: 8px 0; /* tighter spacing to match README */
+}
+
+.caption {
+	font-family: 'Dancing Script', cursive;
+	font-size: 24px;
+	color: #8A2BE2;
+	margin: 6px 0;
+}
+
+/* Location lines (match README size and tighter spacing) */
+.location {
+	text-align: center;
+	display: block;
+	margin: 0;
+	font-style: italic;
+	color: #c9d1d9;
+	font-size: 14px; /* slightly smaller to match README */
+	line-height: 1.15;
+}
+
+.collapsible {
+	background: #161b22;
+	border: 1px solid #30363d;
+	border-radius: 6px;
+	margin: 20px 0;
+}
+
+.collapsible summary {
+	padding: 16px;
+	cursor: pointer;
+	font-weight: bold;
+	color: #c9d1d9;
+	font-size: 18px;
+}
+
+.collapsible summary:hover {
+	background: #21262d;
+}
+
+.collapsible-content {
+	padding: 16px;
+	border-top: 1px solid #30363d;
+}
+
+.tech-stack {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+}
+
+.tech-badge {
+	background: #238636;
+	color: white;
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 12px;
+}
+
+.projects {
+	margin: 40px 0;
+}
+
+.project {
+	background: #161b22;
+	border: 1px solid #30363d;
+	border-radius: 6px;
+	padding: 20px;
+	margin: 20px 0;
+}
+
+.project h3 {
+	color: #58a6ff;
+	margin-top: 0;
+}
+
+.project p {
+	color: #c9d1d9;
+}
+
+.github-stats {
+	text-align: center;
+	margin: 40px 0;
+}
+
+.github-stats img {
+	height: 180px;
+	margin: 10px;
+}
+
+.connect {
+	text-align: center;
+	margin: 40px 0;
+}
+
+.connect-links {
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	margin: 20px 0;
+}
+
+.connect-links a img {
+	width: 40px;
+	height: 40px;
+}
+
+.footer {
+	text-align: center;
+	margin: 40px 0;
+}
+
+.footer img {
+	width: 100%;
+	max-width: 800px;
+	height: auto;
+}
+
+.quote {
+	text-align: center;
+	margin: 40px 0;
+}
+
+.quote img {
+	max-width: 600px;
+}
+
+@media (max-width: 768px) {
+	.container {
+		padding: 10px;
+	}
+
+	.focus-badges {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.badges {
+		justify-content: center;
+	}
+
+	.connect-links {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.github-stats img {
+		height: 150px;
+	}
+}
+
