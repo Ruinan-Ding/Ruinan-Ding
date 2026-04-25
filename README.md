@@ -177,6 +177,7 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=OpenAI-YouTube-Transcriber&theme=radical)](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber)
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=ChessPlusPlus&theme=radical)](https://github.com/Ruinan-Ding/ChessPlusPlus)
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding)
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding.github.io&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding.github.io)
   
 </div>
 </details>
@@ -185,40 +186,8 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
 
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=150&height=60&vCenter=true&lines=%F0%9F%8C%9F+Projects" alt="Projects" />
 
-### <a href="https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=FF7139&repeat=false&width=400&lines=📹+OpenAI+YouTube+Transcriber" alt="Project 1" /></a>
-[View source code](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber) or click the header above. A comprehensive Python application for working with YouTube content:
-- 🎬 Automatic download of audio/video streams from YouTube URLs
-- 🔊 Transcription using OpenAI's Whisper AI
-- 🌐 Multi-language support and detection
-- ⚙️ Profile system for saving configurations
-- 📁 Local media file processing
-- 🔄 Format conversion via ffmpeg
-
-> *Note: All core features are fully functional. I'm currently refactoring the codebase to enhance organization and maintainability. Contributions to documentation and code structure improvements are welcome!*
-
-*I welcome contributions, feedback, and collaboration for this project.*
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/sindresorhus/awesome/main/media/logo.svg" width="500" />
-</div>
-
-### <a href="https://github.com/Ruinan-Ding/ChessPlusPlus"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=DD0031&repeat=false&width=250&lines=♟️+ChessPlusPlus" alt="Project 2" /></a>
-[Explore repository](https://github.com/Ruinan-Ding/ChessPlusPlus) or click the header above. Multiplayer strategy turn-based game:
-- 🎮 Angular frontend with interactive game board
-- 🔌 Django backend with WebSocket communication
-- 👥 Real-time multiplayer capabilities
-- 🎲 Custom game mechanics and rule system
-
-> *Note: This project is currently in active development. The core architecture is in place, but some features are still being implemented.*
-
-*I welcome contributions, feedback, and collaboration for this project.*
-
-<div align="center">
-  <img src="https://user-images.githubusercontent.com/74038190/219923809-b86dc415-a0c2-4a38-bc88-ad6cf06395a8.gif" width="500">
-</div>
-
-### <a href="https://github.com/Ruinan-Ding/Ruinan-Ding"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=4B8BBE&repeat=false&width=650&lines=🎨+Dynamic+GitHub+Profile+README+(What+You're+Seeing+Now)!" alt="Project 3" /></a>
-[See the code](https://github.com/Ruinan-Ding/Ruinan-Ding) or click the header above. This very GitHub profile you're currently exploring — visually enhanced developer profile using modern web techniques:
+### <a href="https://github.com/Ruinan-Ding/Ruinan-Ding"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=4B8BBE&repeat=false&width=650&lines=🎨+Dynamic+GitHub+Profile+README+(What+You're+Seeing+Now)!" alt="Dynamic Profile" /></a>
+<a href="https://github.com/Ruinan-Ding/Ruinan-Ding" target="_blank" rel="noopener noreferrer">See the code</a> or click the header above. This very GitHub profile you're currently exploring — visually enhanced developer profile using modern web techniques:
 - 🌊 Animated headers and footers via Capsule Render API
 - ✨ Dynamic typing animations with README Typing SVG
 - 🛠️ Tech stack visualization using SkillIcons and Shields.io
@@ -230,8 +199,35 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
 
 *Check out how this profile was built and perhaps adapt these techniques for your own GitHub presence! Feedback welcomed!*
 
+### <a href="https://github.com/Ruinan-Ding/Ruinan-Ding.github.io"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=00A6FF&repeat=false&width=450&lines=%E2%8F%B1%EF%B8%8F+Study+Timer+App" alt="Study Timer App" /></a>
+<a href="https://github.com/Ruinan-Ding/Ruinan-Ding.github.io" target="_blank" rel="noopener noreferrer">View source code</a> or click the header above. A lightweight Study Timer application written in Angular and deployed to GitHub Pages — ideal for focused study sessions and Pomodoro-style workflows.
+
+### <a href="https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=FF7139&repeat=false&width=400&lines=📹+OpenAI+YouTube+Transcriber" alt="OpenAI YouTube Transcriber" /></a>
+<a href="https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber" target="_blank" rel="noopener noreferrer">View source code</a> or click the header above. A comprehensive Python application for working with YouTube content:
+- 🎬 Automatic download of audio/video streams from YouTube URLs
+- 🔊 Transcription using OpenAI's Whisper AI
+- 🌐 Multi-language support and detection
+- ⚙️ Profile system for saving configurations
+- 📁 Local media file processing
+- 🔄 Format conversion via ffmpeg
+
+> *Note: All core features are fully functional. I'm currently refactoring the codebase to enhance organization and maintainability. Contributions to documentation and code structure improvements are welcome!*
+
+*I welcome contributions, feedback, and collaboration for this project.*
+
+### <a href="https://github.com/Ruinan-Ding/ChessPlusPlus"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=DD0031&repeat=false&width=250&lines=♟️+ChessPlusPlus" alt="ChessPlusPlus" /></a>
+<a href="https://github.com/Ruinan-Ding/ChessPlusPlus" target="_blank" rel="noopener noreferrer">Explore repository</a> or click the header above. Multiplayer strategy turn-based game:
+- 🎮 Angular frontend with interactive game board
+- 🔌 Django backend with WebSocket communication
+- 👥 Real-time multiplayer capabilities
+- 🎲 Custom game mechanics and rule system
+
+> *Note: This project is currently in active development. The core architecture is in place, but some features are still being implemented.*
+
+*I welcome contributions, feedback, and collaboration for this project.*
+
 <div align="center">
-  <img src="https://user-images.githubusercontent.com/74038190/212284087-bbe7e430-757e-4901-90bf-4cd2ce3e1852.gif" width="500">
+  <img src="https://user-images.githubusercontent.com/74038190/219923809-b86dc415-a0c2-4a38-bc88-ad6cf06395a8.gif" width="500">
 </div>
 
 <div align="center">
