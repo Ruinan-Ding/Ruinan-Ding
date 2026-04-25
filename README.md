@@ -5,8 +5,12 @@
 
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=16&duration=2000&pause=1000&color=8A2BE2&center=false&vCenter=true&repeat=false&width=900&lines=Software+Engineer+%7C+Java+Developer+%7C+CompTIA+Security%2B+Certified+April+2021" alt="Typing SVG" />
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ruinan-ding/)
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Ruinan-Ding)
+[a href="https://www.linkedin.com/in/ruinan-ding/" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+</a>
+<a href="https://github.com/Ruinan-Ding" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+</a>
 
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=40&duration=3000&pause=1000&color=8A2BE2&center=true&vCenter=true&width=850&height=80&lines=Java+Development;Spring+Boot+Microservices;AWS+Cloud+Architecture;Kafka+Event+Streaming" alt="Typing SVG" />
@@ -22,7 +26,7 @@
 </div>
 
 Software engineer with a strong background in Java, Spring Boot, and AWS. 6+ years of professional experience building enterprise applications and a passion for continuous learning and open-source contributions.
-Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories) for some cool open-source projects and connect on [LinkedIn](https://www.linkedin.com/in/ruinan-ding/) to engage in some interesting thoughts!
+Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_blank" rel="noopener noreferrer">GitHub repository</a> for some cool open-source projects and connect on <a href="https://www.linkedin.com/in/ruinan-ding/" target="_blank" rel="noopener noreferrer">LinkedIn</a> to engage in some interesting thoughts!
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="90%" />
@@ -44,7 +48,7 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="90%" />
   
   <h3>🎵 Coding Playlist and My Recent Tracks</h3>
-  <a href="https://open.spotify.com/playlist/37i9dQZF1DWYoYGBbGKurt">
+  <a href="https://open.spotify.com/playlist/37i9dQZF1DWYoYGBbGKurt" target="_blank" rel="noopener noreferrer">
     <img src="https://img.shields.io/badge/Spotify-Deep%20Focus%20Coding-1DB954?style=for-the-badge&logo=spotify&logoColor=white" alt="Spotify Playlist" />
   </a>
   <br>
@@ -166,7 +170,22 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
 <details>
 <summary><b>📊 Contribution Activity</b></summary>
 <div align="center">
-  <img alt="Activity Graph" src="https://github-readme-activity-graph.vercel.app/graph?username=Ruinan-Ding&theme=github-compact&hide_border=true&area=true" />
+</div>
+</details>
+
+<details>
+<summary><b>🔍 Recent Projects</b></summary>
+<div align="center">
+  
+  <a href="https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber" target="_blank" rel="noopener noreferrer"><img alt="Readme Card" src="https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=OpenAI-YouTube-Transcriber&theme=radical" /></a>
+  <a href="https://github.com/Ruinan-Ding/ChessPlusPlus" target="_blank" rel="noopener noreferrer"><img alt="Readme Card" src="https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=ChessPlusPlus&theme=radical" /></a>
+  <a href="https://github.com/Ruinan-Ding/Ruinan-Ding" target="_blank" rel="noopener noreferrer"><img alt="Readme Card" src="https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding&theme=radical" /></a>
+  <a href="https://github.com/Ruinan-Ding/Ruinan-Ding.github.io" target="_blank" rel="noopener noreferrer"><img alt="Readme Card" src="https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding.github.io&theme=radical" /></a>
+  
+</div>
+</details>
+
+<br>
 </div>
 </details>
 
@@ -242,9 +261,10 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
 
 ### 📊 GitHub Stats & Languages
 <div align="center">
-<a href="https://github.com/Ruinan-Ding">
+<a href="https://github.com/Ruinan-Ding" target="_blank" rel="noopener noreferrer">
   <img height="180em" src="https://github-readme-stats.vercel.app/api?username=Ruinan-Ding&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true"/>
   <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Ruinan-Ding&layout=compact&langs_count=7&theme=tokyonight"/>
+</a>
 </div>
 
 ### 🏆 GitHub Achievements
@@ -259,11 +279,11 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=160&height=60&vCenter=true&lines=%F0%9F%93%AB+Connect" alt="Connect" />
 
 <p align="center">
-  <a href="https://www.linkedin.com/in/ruinan-ding/">
+  <a href="https://www.linkedin.com/in/ruinan-ding/" target="_blank" rel="noopener noreferrer">
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" width="40" height="40" />
   </a>
   &nbsp;&nbsp;&nbsp;
-  <a href="https://github.com/Ruinan-Ding">
+  <a href="https://github.com/Ruinan-Ding" target="_blank" rel="noopener noreferrer">
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="40" height="40" />
   </a>
 </p>
