@@ -177,6 +177,7 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=OpenAI-YouTube-Transcriber&theme=radical)](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber)
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=ChessPlusPlus&theme=radical)](https://github.com/Ruinan-Ding/ChessPlusPlus)
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding)
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding.github.io&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding.github.io)
   
 </div>
 </details>
@@ -197,6 +198,9 @@ Check out my [GitHub repository](https://github.com/Ruinan-Ding?tab=repositories
 > *Note: All core features are fully functional. I'm currently refactoring the codebase to enhance organization and maintainability. Contributions to documentation and code structure improvements are welcome!*
 
 *I welcome contributions, feedback, and collaboration for this project.*
+
+### <a href="https://github.com/Ruinan-Ding/Ruinan-Ding.github.io"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=00A6FF&repeat=false&width=450&lines=%E2%8F%B1%EF%B8%8F+Study+Timer+App" alt="Study Timer App" /></a>
+[View source code](https://github.com/Ruinan-Ding/Ruinan-Ding.github.io) or click the header above. A lightweight Study Timer application written in Angular and deployed to GitHub Pages — ideal for focused study sessions and Pomodoro-style workflows.
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/sindresorhus/awesome/main/media/logo.svg" width="500" />
