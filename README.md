@@ -5,7 +5,7 @@
 
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=16&duration=2000&pause=1000&color=8A2BE2&center=false&vCenter=true&repeat=false&width=900&lines=Software+Engineer+%7C+Java+Developer+%7C+CompTIA+Security%2B+Certified+April+2021" alt="Typing SVG" />
 
-[a href="https://www.linkedin.com/in/ruinan-ding/" target="_blank" rel="noopener noreferrer">
+<a href="https://www.linkedin.com/in/ruinan-ding/" target="_blank" rel="noopener noreferrer">
   <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
 </a>
 <a href="https://github.com/Ruinan-Ding" target="_blank" rel="noopener noreferrer">
@@ -186,18 +186,6 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
 </details>
 
 <br>
-</div>
-</details>
-
-<details>
-<summary><b>🔍 Recent Projects</b></summary>
-<div align="center">
-  
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=OpenAI-YouTube-Transcriber&theme=radical)](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber)
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=ChessPlusPlus&theme=radical)](https://github.com/Ruinan-Ding/ChessPlusPlus)
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding)
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding.github.io&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding.github.io)
-  
 </div>
 </details>
 
