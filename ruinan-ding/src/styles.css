@@ -17,7 +17,17 @@ body {
 /* Global custom cursor styles (moved from app component so body-level cursor element is styled) */
 /* Only hide the native cursor when the script actually creates the custom cursor. */
 body.has-custom-cursor,
-body.has-custom-cursor * {
+body.has-custom-cursor *,
+body.has-custom-cursor *::before,
+body.has-custom-cursor *::after,
+body.has-custom-cursor a,
+body.has-custom-cursor a:hover,
+body.has-custom-cursor a:active,
+body.has-custom-cursor button,
+body.has-custom-cursor button:hover,
+body.has-custom-cursor summary,
+body.has-custom-cursor summary:hover,
+body.has-custom-cursor [role="button"] {
   /* !important beats the UA's cursor:pointer on links/buttons/summary,
      which otherwise shows the native cursor on top of the custom one */
   cursor: none !important;
