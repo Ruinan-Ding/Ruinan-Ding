@@ -41,8 +41,6 @@
       <path d="M1 1 L18 12 L12 14 L14 20 L10 18 L8 24 L6 23 L6 14 L1 1 Z" fill="url(#g1)" filter="url(#shadow)" />
     </svg>
   `;
-  const cursorPath = core.querySelector('path');
-  const cursorStops = Array.from(core.querySelectorAll('stop'));
   el.appendChild(core);
   document.body.appendChild(el);
   // mark body so CSS can hide the native cursor only when the custom cursor exists
@@ -79,7 +77,7 @@
 
   // Canvas-based favicon animation fallback: draw frames on a canvas and set data-URL favicons
   // This forces a visible redraw in browsers that don't animate SVG favicons.
-  function animateFaviconSequence(duration = 2500, fps = 30) {
+  function animateFaviconSequence(duration = 2500, fps = 15) {
     try {
       // cancel any previous animation by advancing the global token
       const thisAnimId = ++currentFaviconAnimId;
@@ -171,14 +169,11 @@
         const progress = Math.min(1, elapsed / duration);
         if (now - lastFrame >= frameInterval || progress === 1) {
           draw(progress);
-          // convert to PNG dataURL and set favicon
+          // convert to PNG dataURL and update the single reusable favicon
+          // link; creating a fresh <link> per frame churned the <head> and
+          // stalled the main thread during rapid clicking
           try {
-            const data = canvas.toDataURL('image/png');
-            const head = document.head || document.getElementsByTagName('head')[0];
-            const old = document.getElementById('favicon') || document.querySelector('link[rel~="icon"]');
-            const link = document.createElement('link'); link.rel = 'icon'; link.type = 'image/png'; link.id = 'favicon'; link.href = data;
-            head.appendChild(link);
-            if (old && old.parentNode) { setTimeout(() => { try { old.parentNode.removeChild(old); } catch(e){} }, 60); }
+            if (rdFaviconLink) rdFaviconLink.href = canvas.toDataURL('image/png');
           } catch (e) {
             if (RD_DEBUG && console && console.error) console.error('[custom-cursor] favicon canvas toDataURL failed', e);
           }
@@ -205,7 +200,7 @@
 
   function triggerFaviconFeedback() {
     const now = performance.now();
-    if (now - lastFaviconAnimationAt < 220) return;
+    if (now - lastFaviconAnimationAt < 700) return;
     lastFaviconAnimationAt = now;
     try { animateFaviconSequence(); } catch (e) { try { replayFavicon(); } catch (e2) {} }
   }
@@ -216,7 +211,7 @@
   let raf = null;
   let hoverTarget = null;
   let idleTimer = null;
-  let cursorHue = 0;
+  let clickTimer = null;
   let isIdle = true;
   const hoverSelectors = 'a, button, input, select, textarea, summary, details, [role="button"], .page-link-cta, .badge-cta, .focus-badge, .project, .connect-links a, .collapsible';
 
@@ -232,26 +227,15 @@
     idleTimer = window.setTimeout(() => setIdleState(true), 140);
   }
 
-  function updateCursorColors() {
-    cursorHue = (cursorHue + 2.2) % 360;
-    const h1 = cursorHue;
-    const h2 = (cursorHue + 48) % 360;
-    const h3 = (cursorHue + 128) % 360;
-    if (cursorStops[0]) cursorStops[0].setAttribute('stop-color', `hsl(${h1} 100% 98%)`);
-    if (cursorStops[1]) cursorStops[1].setAttribute('stop-color', `hsl(${h2} 100% 70%)`);
-    if (cursorStops[2]) cursorStops[2].setAttribute('stop-color', `hsl(${h3} 90% 58%)`);
-    if (cursorPath) {
-      cursorPath.setAttribute('fill', 'url(#g1)');
-    }
-  }
-
+  // Rainbow color cycling is handled entirely by the CSS `cursorRainbow`
+  // hue-rotate animation; mutating SVG gradient stops per frame forced an
+  // SVG re-render every tick and fought with the CSS filter.
   function animateCursor() {
     const easing = 0.22;
     posX += (targetX - posX) * easing;
     posY += (targetY - posY) * easing;
     el.style.left = Math.round(posX) + 'px';
     el.style.top = Math.round(posY) + 'px';
-    updateCursorColors();
     raf = window.requestAnimationFrame(animateCursor);
   }
 
@@ -358,15 +342,16 @@
     handlePointerActivity(e.clientX, e.clientY);
     // spawn a visible ring at the pointer for a stronger pop
     spawnClickRing(e.clientX, e.clientY);
+    // restart the pop animation cleanly even during rapid clicks: a single
+    // reusable timer avoids stale animationend listeners piling up
+    clearTimeout(clickTimer);
+    el.classList.remove('cursor-click');
+    void el.offsetWidth; // reflow so re-adding the class restarts the animation
     el.classList.add('cursor-click');
-    // clear animation class after it ends
-    const onEnd = () => { el.classList.remove('cursor-click'); el.removeEventListener('animationend', onEnd); };
-    el.addEventListener('animationend', onEnd);
+    clickTimer = window.setTimeout(() => el.classList.remove('cursor-click'), 300);
     // restart the favicon animation: prefer canvas-based animation, fallback to replaying the SVG
     triggerFaviconFeedback();
   });
-  // ensure any leftover state is cleared on pointerup
-  document.addEventListener('mouseup', () => { el.classList.remove('cursor-click'); });
 
   function hideCursorForBlur(){
     // Only hide when the document is actually hidden. Avoid hiding for transient blur events.
@@ -380,9 +365,12 @@
   }
 
   function showCursorAfterFocus(){
-    el.classList.remove('is-hidden');
-    el.style.opacity = '1';
-    el.style.visibility = 'visible';
+    // avoid redundant style writes on every pointer event
+    if (el.classList.contains('is-hidden')) {
+      el.classList.remove('is-hidden');
+      el.style.opacity = '1';
+      el.style.visibility = 'visible';
+    }
     if (!raf) {
       updateCursorPosition(mouseX, mouseY);
     }
