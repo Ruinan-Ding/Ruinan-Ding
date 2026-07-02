@@ -43,7 +43,10 @@ jobs:
         run: npm ci --prefix ruinan-ding
 
       - name: Build Angular application
-        run: npm run build --prefix ruinan-ding -- --base-href /Ruinan-Ding/
+        run: npm run build --prefix ruinan-ding -- --configuration production --base-href /Ruinan-Ding/
+
+      - name: Add Pages marker file
+        run: touch ruinan-ding/dist/browser/.nojekyll
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -58,6 +61,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
