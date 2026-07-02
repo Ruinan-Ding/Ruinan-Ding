@@ -201,47 +201,49 @@
 
   let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
   let posX = mouseX, posY = mouseY;
+  let targetX = mouseX, targetY = mouseY;
   let raf = null;
+  const hoverSelectors = 'a, button, input, select, textarea, summary, details, [role="button"], .page-link-cta, .badge-cta, .focus-badge, .project, .connect-links a, .collapsible';
 
-      function tick(now) {
-        // stop if a newer animation instance started
-        if (thisAnimId !== currentFaviconAnimId) return;
-        const elapsed = now - start;
-        const progress = Math.min(1, elapsed / duration);
-        if (now - lastFrame >= frameInterval || progress === 1) {
-          draw(progress);
-          // convert to PNG dataURL and set favicon
-          try {
-            const data = canvas.toDataURL('image/png');
-            const head = document.head || document.getElementsByTagName('head')[0];
-            const old = document.getElementById('favicon') || document.querySelector('link[rel~="icon"]');
-            if (!rdFaviconLink) {
-              rdFaviconLink = old && old.cloneNode(false) || document.createElement('link');
-              rdFaviconLink.rel = 'icon'; rdFaviconLink.type = 'image/png'; rdFaviconLink.id = 'favicon';
-              head.appendChild(rdFaviconLink);
-              if (old && old !== rdFaviconLink && old.parentNode) { setTimeout(() => { try { old.parentNode.removeChild(old); } catch(e){} }, 60); }
-            }
-            rdFaviconLink.href = data;
-          } catch (e) {
-            if (RD_DEBUG && console && console.error) console.error('[custom-cursor] favicon canvas toDataURL failed', e);
-          }
-          lastFrame = now;
-        }
-        if (elapsed < duration) requestAnimationFrame(tick);
-      }
+  function animateCursor(now) {
+    const easing = 0.22;
+    posX += (targetX - posX) * easing;
+    posY += (targetY - posY) * easing;
+    el.style.left = Math.round(posX) + 'px';
+    el.style.top = Math.round(posY) + 'px';
+    raf = window.requestAnimationFrame(animateCursor);
+  }
 
-      requestAnimationFrame(tick);
+  function updateCursorPosition(x, y) {
+    targetX = x;
+    targetY = y;
+    if (!raf) {
+      posX = x;
+      posY = y;
+      el.style.left = Math.round(posX) + 'px';
+      el.style.top = Math.round(posY) + 'px';
+      raf = window.requestAnimationFrame(animateCursor);
+    }
+  }
+
   document.addEventListener('mouseover', (e) => {
-    if (e.target.closest && e.target.closest(hoverSelectors)) el.classList.add('cursor-enlarge');
+    const target = e.target;
+    if (target && typeof target.closest === 'function' && target.closest(hoverSelectors)) {
+      el.classList.add('cursor-enlarge');
+    }
   });
   document.addEventListener('mouseout', (e) => {
-    if (e.target.closest && e.target.closest(hoverSelectors)) el.classList.remove('cursor-enlarge');
+    const target = e.target;
+    if (target && typeof target.closest === 'function' && target.closest(hoverSelectors)) {
+      el.classList.remove('cursor-enlarge');
+    }
   });
 
   // spawn mini-sparks near pointer while moving
   let last = 0;
   document.addEventListener('mousemove', (e) => {
     const now = performance.now();
+    updateCursorPosition(e.clientX, e.clientY);
     if (now - last > 60) { spawnMiniSparks(e.clientX, e.clientY); last = now; }
   }, {passive:true});
 
@@ -277,21 +279,18 @@
 
   // click feedback
   document.addEventListener('mousedown', (e) => {
+    updateCursorPosition(e.clientX, e.clientY);
     // spawn a visible ring at the pointer for a stronger pop
     spawnClickRing(e.clientX, e.clientY);
-    // reliably restart the pop animation by toggling the inline animation style
-    el.style.animation = 'none';
-    // force reflow
-    void el.offsetWidth;
-    el.style.animation = 'cursorPop 320ms cubic-bezier(.2,.85,.32,1) forwards';
-    // clear animation style after it ends
-    const onEnd = () => { el.style.animation = ''; el.removeEventListener('animationend', onEnd); };
+    el.classList.add('cursor-click');
+    // clear animation class after it ends
+    const onEnd = () => { el.classList.remove('cursor-click'); el.removeEventListener('animationend', onEnd); };
     el.addEventListener('animationend', onEnd);
     // restart the favicon animation: prefer canvas-based animation, fallback to replaying the SVG
     try { animateFaviconSequence(); } catch (e) { try { replayFavicon(); } catch (e2) {} }
   });
   // ensure any leftover state is cleared on pointerup
-  document.addEventListener('mouseup', () => { el.style.animation = ''; });
+  document.addEventListener('mouseup', () => { el.classList.remove('cursor-click'); });
 
   function hideCursorForBlur(){
     // hide and stop animating
@@ -301,7 +300,9 @@
   }
   function showCursorAfterFocus(){
     el.classList.remove('is-hidden');
-    if (!raf) animate();
+    if (!raf) {
+      updateCursorPosition(mouseX, mouseY);
+    }
   }
 
   // Do NOT hide the cursor on window blur alone — that made the custom cursor disappear
@@ -319,9 +320,7 @@
   document.addEventListener('pointerenter', (e) => {
     if (e && typeof e.clientX === 'number') { mouseX = e.clientX; mouseY = e.clientY; }
     // snap to pointer and show when re-entering
-    posX = mouseX; posY = mouseY;
-    el.style.left = Math.round(posX) + 'px';
-    el.style.top = Math.round(posY) + 'px';
+    updateCursorPosition(mouseX, mouseY);
     showCursorAfterFocus();
   });
 
