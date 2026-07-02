@@ -41,6 +41,8 @@
       <path d="M1 1 L18 12 L12 14 L14 20 L10 18 L8 24 L6 23 L6 14 L1 1 Z" fill="url(#g1)" filter="url(#shadow)" />
     </svg>
   `;
+  const cursorPath = core.querySelector('path');
+  const cursorStops = Array.from(core.querySelectorAll('stop'));
   el.appendChild(core);
   document.body.appendChild(el);
   // mark body so CSS can hide the native cursor only when the custom cursor exists
@@ -213,7 +215,35 @@
   let targetX = mouseX, targetY = mouseY;
   let raf = null;
   let hoverTarget = null;
+  let idleTimer = null;
+  let cursorHue = 0;
+  let isIdle = true;
   const hoverSelectors = 'a, button, input, select, textarea, summary, details, [role="button"], .page-link-cta, .badge-cta, .focus-badge, .project, .connect-links a, .collapsible';
+
+  function setIdleState(nextIdle) {
+    if (isIdle === nextIdle) return;
+    isIdle = nextIdle;
+    el.classList.toggle('idle', nextIdle);
+  }
+
+  function resetIdleState() {
+    clearTimeout(idleTimer);
+    setIdleState(false);
+    idleTimer = window.setTimeout(() => setIdleState(true), 140);
+  }
+
+  function updateCursorColors() {
+    cursorHue = (cursorHue + 2.2) % 360;
+    const h1 = cursorHue;
+    const h2 = (cursorHue + 48) % 360;
+    const h3 = (cursorHue + 128) % 360;
+    if (cursorStops[0]) cursorStops[0].setAttribute('stop-color', `hsl(${h1} 100% 98%)`);
+    if (cursorStops[1]) cursorStops[1].setAttribute('stop-color', `hsl(${h2} 100% 70%)`);
+    if (cursorStops[2]) cursorStops[2].setAttribute('stop-color', `hsl(${h3} 90% 58%)`);
+    if (cursorPath) {
+      cursorPath.setAttribute('fill', 'url(#g1)');
+    }
+  }
 
   function animateCursor() {
     const easing = 0.22;
@@ -221,6 +251,7 @@
     posY += (targetY - posY) * easing;
     el.style.left = Math.round(posX) + 'px';
     el.style.top = Math.round(posY) + 'px';
+    updateCursorColors();
     raf = window.requestAnimationFrame(animateCursor);
   }
 
@@ -364,6 +395,7 @@
     }
     updateCursorPosition(mouseX, mouseY);
     showCursorAfterFocus();
+    resetIdleState();
   }
 
   // Keep the custom cursor visible during normal interaction and only hide it when the document truly becomes hidden.
@@ -377,5 +409,7 @@
     handlePointerActivity(e && typeof e.clientX === 'number' ? e.clientX : mouseX,
       e && typeof e.clientY === 'number' ? e.clientY : mouseY);
   });
+
+  resetIdleState();
 
 })();
