@@ -1,4 +1,4 @@
-ggggg/* Large animated custom cursor follower
+/* Large animated custom cursor follower
    - Creates a single large cursor element that follows the pointer.
    - Spawns small sparkles on movement for a sprinkly effect.
    - Disabled on touch devices.
