@@ -238,6 +238,7 @@
   }
 
   document.addEventListener('mouseover', (e) => {
+    showCursorAfterFocus();
     setHoverState(e.target);
   });
   document.addEventListener('mouseout', (e) => {
@@ -255,6 +256,7 @@
   document.addEventListener('mousemove', (e) => {
     const now = performance.now();
     updateCursorPosition(e.clientX, e.clientY);
+    showCursorAfterFocus();
     if (now - last > 60) { spawnMiniSparks(e.clientX, e.clientY); last = now; }
   }, {passive:true});
 
@@ -291,6 +293,7 @@
   // click feedback
   document.addEventListener('mousedown', (e) => {
     updateCursorPosition(e.clientX, e.clientY);
+    showCursorAfterFocus();
     // spawn a visible ring at the pointer for a stronger pop
     spawnClickRing(e.clientX, e.clientY);
     el.classList.add('cursor-click');
@@ -316,21 +319,14 @@
     }
   }
 
-  // Do NOT hide the cursor on window blur alone — that made the custom cursor disappear
-  // while users moved their mouse over the page without first clicking. Instead,
-  // hide when the document becomes hidden or when the pointer actually leaves the page.
+  // Keep the custom cursor visible during normal interaction and only hide it when the document truly becomes hidden.
   window.addEventListener('focus', showCursorAfterFocus);
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') hideCursorForBlur(); else showCursorAfterFocus();
   });
 
-  // pointer leaving/entering the document. Cover multiple event types for broader browser support.
-  document.addEventListener('pointerleave', hideCursorForBlur);
-  document.addEventListener('pointerout', (e) => { if (!e.relatedTarget) hideCursorForBlur(); });
-  document.addEventListener('mouseout', (e) => { if (!e.relatedTarget) hideCursorForBlur(); });
   document.addEventListener('pointerenter', (e) => {
     if (e && typeof e.clientX === 'number') { mouseX = e.clientX; mouseY = e.clientY; }
-    // snap to pointer and show when re-entering
     updateCursorPosition(mouseX, mouseY);
     showCursorAfterFocus();
   });
