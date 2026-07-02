@@ -1,4 +1,4 @@
-/* Large animated custom cursor follower
+ggggg/* Large animated custom cursor follower
    - Creates a single large cursor element that follows the pointer.
    - Spawns small sparkles on movement for a sprinkly effect.
    - Disabled on touch devices.
@@ -203,9 +203,10 @@
   let posX = mouseX, posY = mouseY;
   let targetX = mouseX, targetY = mouseY;
   let raf = null;
+  let hoverTarget = null;
   const hoverSelectors = 'a, button, input, select, textarea, summary, details, [role="button"], .page-link-cta, .badge-cta, .focus-badge, .project, .connect-links a, .collapsible';
 
-  function animateCursor(now) {
+  function animateCursor() {
     const easing = 0.22;
     posX += (targetX - posX) * easing;
     posY += (targetY - posY) * easing;
@@ -226,17 +227,27 @@
     }
   }
 
-  document.addEventListener('mouseover', (e) => {
-    const target = e.target;
+  function setHoverState(target) {
+    if (hoverTarget === target) return;
+    hoverTarget = target;
     if (target && typeof target.closest === 'function' && target.closest(hoverSelectors)) {
       el.classList.add('cursor-enlarge');
-    }
-  });
-  document.addEventListener('mouseout', (e) => {
-    const target = e.target;
-    if (target && typeof target.closest === 'function' && target.closest(hoverSelectors)) {
+    } else {
       el.classList.remove('cursor-enlarge');
     }
+  }
+
+  document.addEventListener('mouseover', (e) => {
+    setHoverState(e.target);
+  });
+  document.addEventListener('mouseout', (e) => {
+    const related = e.relatedTarget;
+    if (related && typeof related.closest === 'function' && related.closest(hoverSelectors)) {
+      setHoverState(related);
+      return;
+    }
+    hoverTarget = null;
+    el.classList.remove('cursor-enlarge');
   });
 
   // spawn mini-sparks near pointer while moving

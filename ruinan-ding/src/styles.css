@@ -132,6 +132,9 @@ body.has-custom-cursor {
   background-size: 300% 100%;
   animation: bannerShift 6s linear infinite, pulse 3s ease-in-out infinite;
   transform-origin: center;
+  cursor: none;
+  position: relative;
+  isolation: isolate;
 }
 
 .page-link-cta:hover {
