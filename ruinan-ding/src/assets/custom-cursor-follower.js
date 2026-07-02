@@ -1,30 +1,244 @@
-/* Large animated custom cursor follower
-   - Creates a single large cursor element that follows the pointer.
-   - Spawns small sparkles on movement for a sprinkly effect.
-   - Disabled on touch devices.
-*/
-(function(){
-  // Avoid running on touch-first devices. Use pointer coarse detection
-  // because some hybrid laptops report maxTouchPoints > 0 even when a mouse is present.
+/* Custom animated cursor with sparkle/click effects and favicon feedback.
+ *
+ * Layout of this file:
+ *   1. Guards + configuration
+ *   2. Favicon feedback (canvas-rendered replay of the R/D logo draw-in)
+ *   3. Cursor element + motion loop
+ *   4. Hover / idle state
+ *   5. Movement + click effects
+ *   6. Visibility handling + event wiring
+ *
+ * Loaded as a plain deferred script (see index.html), so no module syntax.
+ * Disabled on touch-first devices.
+ */
+(function () {
+  'use strict';
+
+  // ------------------------------------------------ 1. Guards + configuration
+
+  // Pointer-coarse detection rather than maxTouchPoints: hybrid laptops report
+  // touch points even when a mouse is present.
   if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
 
-  // runtime debug toggle: set `localStorage.RD_DEBUG = '1'` to enable debug logs in production
-  const RD_DEBUG = (function(){
-    try { return !!(window.localStorage && window.localStorage.getItem('RD_DEBUG') === '1'); } catch(e) { return false; }
+  // Runtime debug toggle: set localStorage.RD_DEBUG = '1' to log in production.
+  const RD_DEBUG = (function () {
+    try { return window.localStorage.getItem('RD_DEBUG') === '1'; } catch (e) { return false; }
   })();
 
-  // token to manage concurrent favicon animations: incrementing cancels previous runs
-  let currentFaviconAnimId = 0;
-  let lastFaviconAnimationAt = 0;
-  // single link element used for programmatic favicon updates
-  let rdFaviconLink = null;
+  function debugError(label, err) {
+    if (RD_DEBUG && window.console && console.error) console.error('[custom-cursor] ' + label, err);
+  }
+
+  // Tunables gathered in one place.
+  const FOLLOW_EASING = 0.22;      // fraction of remaining distance per frame
+  const SETTLE_EPSILON_PX = 0.1;   // park the motion loop once this close
+  const IDLE_DELAY_MS = 140;       // pointer quiet time before the idle shrink
+  const SPARK_INTERVAL_MS = 90;    // minimum gap between sparkle bursts
+  const MAX_SPARKLES = 28;
+  const MAX_CLICK_RINGS = 8;
+  const POP_DURATION_MS = 280;
+  const FAVICON_DURATION_MS = 2500;
+  const FAVICON_FPS = 15;
+  const FAVICON_SIZE = 100;        // matches the favicon.svg viewBox
+  const FAVICON_RESTORE_DELAY_MS = 400;
+
+  const HOVER_SELECTORS = 'a, button, input, select, textarea, summary, details, ' +
+    '[role="button"], .page-link-cta, .badge-cta, .focus-badge, .project, ' +
+    '.connect-links a, .collapsible';
+
+  // --------------------------------------------------- 2. Favicon feedback
+
+  // The favicon replays the logo draw-in animation on click. Frames are drawn
+  // to a canvas and encoded asynchronously (toBlob) so the main thread — and
+  // therefore the cursor — never blocks on PNG encoding. A single <link>
+  // element is reused for every update; its type is kept in sync with the
+  // content it carries, and the original SVG icon is restored when the
+  // animation finishes.
+
+  const originalFavicon = (function () {
+    const link = document.getElementById('favicon') || document.querySelector('link[rel~="icon"]');
+    return {
+      href: (link && link.getAttribute('href')) || 'favicon.svg',
+      type: (link && link.getAttribute('type')) || 'image/svg+xml'
+    };
+  })();
+
+  let faviconLink = null;       // single reusable <link rel="icon"> element
+  let faviconAnimId = 0;        // token: bumping invalidates in-flight async frames
+  let faviconAnimRunning = false;
+  let faviconObjectUrl = null;  // current blob URL, revoked on replacement
+
+  function ensureFaviconLink(type) {
+    if (!faviconLink || !faviconLink.isConnected) {
+      const head = document.head || document.getElementsByTagName('head')[0];
+      const old = document.getElementById('favicon') || document.querySelector('link[rel~="icon"]');
+      faviconLink = document.createElement('link');
+      faviconLink.rel = 'icon';
+      faviconLink.id = 'favicon';
+      head.appendChild(faviconLink);
+      if (old && old !== faviconLink && old.parentNode) old.parentNode.removeChild(old);
+    }
+    faviconLink.type = type;
+    return faviconLink;
+  }
+
+  function setFavicon(href, type) {
+    const link = ensureFaviconLink(type);
+    link.href = href;
+    // Re-append the existing node: some browsers only rescan icons when a
+    // link is inserted, and moving the same node is far cheaper than
+    // creating a fresh one per frame.
+    if (link.parentNode) link.parentNode.appendChild(link);
+  }
+
+  function setFaviconBlob(blob) {
+    const previousUrl = faviconObjectUrl;
+    faviconObjectUrl = URL.createObjectURL(blob);
+    setFavicon(faviconObjectUrl, 'image/png');
+    if (previousUrl) URL.revokeObjectURL(previousUrl);
+  }
+
+  function restoreOriginalFavicon() {
+    setFavicon(originalFavicon.href, originalFavicon.type);
+    if (faviconObjectUrl) {
+      URL.revokeObjectURL(faviconObjectUrl);
+      faviconObjectUrl = null;
+    }
+  }
+
+  function runFaviconAnimation() {
+    // Let an in-flight run finish: restarting on every click kept resetting
+    // the animation to its first frame, so it never visibly completed.
+    if (faviconAnimRunning) return;
+    faviconAnimRunning = true;
+    const animId = ++faviconAnimId;
+
+    try {
+      const pixelRatio = Math.max(1, window.devicePixelRatio || 1);
+      const canvas = document.createElement('canvas');
+      canvas.width = FAVICON_SIZE * pixelRatio;
+      canvas.height = FAVICON_SIZE * pixelRatio;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(pixelRatio, pixelRatio);
+
+      function hexToRgb(hex) {
+        const bigint = parseInt(hex.replace('#', ''), 16);
+        return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
+      }
+
+      function lerpColor(a, b, t) {
+        const A = hexToRgb(a);
+        const B = hexToRgb(b);
+        const channel = (x, y) => Math.round(x + (y - x) * t).toString(16).padStart(2, '0');
+        return '#' + channel(A.r, B.r) + channel(A.g, B.g) + channel(A.b, B.b);
+      }
+
+      // Paths copied from favicon.svg (viewBox 0..100).
+      const pathR = new Path2D('M 28 35 L 28 60 M 28 35 L 38 35 Q 42 35 42 40 Q 42 45 38 45 L 28 45 M 42 45 L 48 60');
+      const pathD = new Path2D('M 56 35 L 56 60 M 56 35 L 66 35 Q 70 35 70 47.5 Q 70 60 66 60 L 56 60');
+
+      function draw(progress) {
+        ctx.clearRect(0, 0, FAVICON_SIZE, FAVICON_SIZE);
+
+        // background transitions from red to light blue over the animation
+        ctx.fillStyle = lerpColor('#ff4d4d', '#f0f8ff', progress);
+        ctx.beginPath();
+        ctx.arc(50, 50, 45, 0, Math.PI * 2);
+        ctx.fill();
+
+        // outer circle stroke with pulse (semi-transparent)
+        const pulse = 0.85 + 0.15 * Math.cos(2 * Math.PI * progress);
+        ctx.save();
+        ctx.globalAlpha = 0.5 * pulse;
+        ctx.strokeStyle = '#0066cc';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(50, 50, 47, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+
+        // draw R with dash effect
+        const rProgress = Math.min(1, progress / 0.4);
+        ctx.strokeStyle = '#0066cc';
+        ctx.lineWidth = 3.5;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.setLineDash([180]);
+        ctx.lineDashOffset = 180 * (1 - rProgress);
+        ctx.beginPath();
+        ctx.stroke(pathR);
+
+        // draw D with delayed dash effect
+        const dProgress = Math.min(1, Math.max(0, (progress - 0.4) / 0.4));
+        ctx.setLineDash([160]);
+        ctx.lineDashOffset = 160 * (1 - dProgress);
+        ctx.beginPath();
+        ctx.stroke(pathD);
+      }
+
+      let lastAppliedAt = 0; // drops async frames that arrive out of order
+
+      function pushFrame(drawnAt) {
+        if (typeof canvas.toBlob === 'function') {
+          canvas.toBlob(function (blob) {
+            if (!blob || animId !== faviconAnimId || drawnAt <= lastAppliedAt) return;
+            lastAppliedAt = drawnAt;
+            setFaviconBlob(blob);
+          }, 'image/png');
+        } else {
+          // Synchronous fallback for browsers without toBlob.
+          lastAppliedAt = drawnAt;
+          setFavicon(canvas.toDataURL('image/png'), 'image/png');
+        }
+      }
+
+      const frameInterval = 1000 / FAVICON_FPS;
+      const start = performance.now();
+      let lastFrameAt = start;
+
+      function tick(now) {
+        if (animId !== faviconAnimId) return;
+        const progress = Math.min(1, (now - start) / FAVICON_DURATION_MS);
+        // Skip drawing while hidden; nobody sees the frames and rAF is
+        // throttled there anyway.
+        const visible = document.visibilityState !== 'hidden';
+        if (visible && (now - lastFrameAt >= frameInterval || progress === 1)) {
+          draw(progress);
+          pushFrame(now);
+          lastFrameAt = now;
+        }
+        if (progress < 1) {
+          window.requestAnimationFrame(tick);
+        } else {
+          faviconAnimRunning = false;
+          // Hand back to the crisp SVG icon once the raster frames have shown.
+          window.setTimeout(function () {
+            if (animId === faviconAnimId) restoreOriginalFavicon();
+          }, FAVICON_RESTORE_DELAY_MS);
+        }
+      }
+
+      // Draw the first frame immediately so the red flash is visible at once.
+      draw(0);
+      pushFrame(start);
+      window.requestAnimationFrame(tick);
+    } catch (err) {
+      debugError('favicon animation failed', err);
+      faviconAnimRunning = false;
+      try { restoreOriginalFavicon(); } catch (e) { /* leave whatever icon is set */ }
+    }
+  }
+
+  // Run once on page load so users see the full cycle without clicking.
+  window.setTimeout(runFaviconAnimation, 120);
+
+  // ------------------------------------------- 3. Cursor element + motion loop
 
   const el = document.createElement('div');
   el.id = 'custom-cursor';
   const core = document.createElement('div');
   core.className = 'cursor-core';
-  /* Insert a stylized pointy cursor SVG where the tip is at the element's top-left.
-     The shape is intentionally sharp and elegant; you can tweak colors/path later. */
+  /* Stylized pointy cursor SVG; the tip sits at the element's top-left. */
   core.innerHTML = `
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
       <defs>
@@ -43,177 +257,54 @@
   `;
   el.appendChild(core);
   document.body.appendChild(el);
-  // mark body so CSS can hide the native cursor only when the custom cursor exists
+  // mark body so CSS hides the native cursor only when the custom one exists
   document.body.classList.add('has-custom-cursor');
 
-  // find favicon link for flash effect (we'll use a temporary link so we don't overwrite the original)
-  const faviconLink = document.getElementById('favicon');
-  const originalFaviconHref = faviconLink ? faviconLink.getAttribute('href') : null;
-  function replayFavicon() {
-    // Re-insert the favicon link with a changing query param so the browser reloads the SVG
-    try {
-      const head = document.head || document.getElementsByTagName('head')[0];
-      // prefer element with id 'favicon' if present, else any icon link
-      const old = document.getElementById('favicon') || document.querySelector('link[rel~="icon"]');
-      const base = (old && old.getAttribute('href')) ? old.getAttribute('href').split('?')[0] : 'favicon.svg';
-      const newHref = base + (base.includes('?') ? '&' : '?') + 'r=' + Date.now();
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let posX = mouseX;
+  let posY = mouseY;
+  let rafId = null;
+  let snapOnNextMove = true; // jump straight to the pointer on first use / after hide
 
-      // reuse a single link element for updates to avoid creating/removing nodes repeatedly
-      if (!rdFaviconLink) {
-        rdFaviconLink = old && old.cloneNode(false) || document.createElement('link');
-        rdFaviconLink.rel = 'icon';
-        rdFaviconLink.type = 'image/svg+xml';
-        rdFaviconLink.id = 'favicon';
-        head.appendChild(rdFaviconLink);
-        if (old && old !== rdFaviconLink && old.parentNode) {
-          setTimeout(() => { try { old.parentNode.removeChild(old); } catch(e){} }, 40);
-        }
-      }
-      rdFaviconLink.href = newHref;
-    } catch (e) {
-      if (RD_DEBUG && console && console.error) console.error('[custom-cursor] replayFavicon error', e);
+  function applyPosition() {
+    // translate3d keeps the cursor compositor-only; writing left/top forced a
+    // layout pass on every frame.
+    el.style.transform = 'translate3d(' + posX + 'px,' + posY + 'px,0)';
+  }
+
+  function motionStep() {
+    const dx = mouseX - posX;
+    const dy = mouseY - posY;
+    if (Math.abs(dx) < SETTLE_EPSILON_PX && Math.abs(dy) < SETTLE_EPSILON_PX) {
+      posX = mouseX;
+      posY = mouseY;
+      applyPosition();
+      rafId = null; // park the loop; pointer activity restarts it
+      return;
+    }
+    posX += dx * FOLLOW_EASING;
+    posY += dy * FOLLOW_EASING;
+    applyPosition();
+    rafId = window.requestAnimationFrame(motionStep);
+  }
+
+  function startMotion() {
+    if (rafId === null) rafId = window.requestAnimationFrame(motionStep);
+  }
+
+  function stopMotion() {
+    if (rafId !== null) {
+      window.cancelAnimationFrame(rafId);
+      rafId = null;
     }
   }
 
-  // Canvas-based favicon animation fallback: draw frames on a canvas and set data-URL favicons
-  // This forces a visible redraw in browsers that don't animate SVG favicons.
-  function animateFaviconSequence(duration = 2500, fps = 15) {
-    try {
-      // cancel any previous animation by advancing the global token
-      const thisAnimId = ++currentFaviconAnimId;
-      const pixelRatio = Math.max(1, window.devicePixelRatio || 1);
-      const size = 100; // match SVG viewBox
-      const canvas = document.createElement('canvas');
-      canvas.width = size * pixelRatio;
-      canvas.height = size * pixelRatio;
-      const ctx = canvas.getContext('2d');
-      ctx.scale(pixelRatio, pixelRatio);
+  // ------------------------------------------------- 4. Hover / idle state
 
-      // small color helpers
-      function hexToRgb(hex) {
-        const m = hex.replace('#','');
-        const bigint = parseInt(m, 16);
-        return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
-      }
-      function rgbToHex(r,g,b) {
-        return '#' + [r,g,b].map(v => v.toString(16).padStart(2,'0')).join('');
-      }
-      function lerpColor(a,b,t){
-        const A = hexToRgb(a); const B = hexToRgb(b);
-        const r = Math.round(A.r + (B.r - A.r) * t);
-        const g = Math.round(A.g + (B.g - A.g) * t);
-        const bb = Math.round(A.b + (B.b - A.b) * t);
-        return rgbToHex(r,g,bb);
-      }
-
-      // Paths copied from favicon.svg (matching viewBox 0..100)
-      const pathR = new Path2D('M 28 35 L 28 60 M 28 35 L 38 35 Q 42 35 42 40 Q 42 45 38 45 L 28 45 M 42 45 L 48 60');
-      const pathD = new Path2D('M 56 35 L 56 60 M 56 35 L 66 35 Q 70 35 70 47.5 Q 70 60 66 60 L 56 60');
-
-      let start = performance.now();
-      const frameInterval = 1000 / fps;
-      let lastFrame = 0;
-
-      function draw(progress) {
-        // clear
-        ctx.clearRect(0, 0, size, size);
-        // pulse for outer circle
-        const pulse = 0.85 + 0.15 * Math.cos(2 * Math.PI * progress);
-
-        // background transitions from red to light blue over the animation
-        const bgColor = lerpColor('#ff4d4d', '#f0f8ff', progress);
-        ctx.fillStyle = bgColor;
-        ctx.beginPath(); ctx.arc(50,50,45,0,Math.PI*2); ctx.fill();
-
-        // outer circle stroke with pulse (semi-transparent)
-        ctx.save();
-        ctx.globalAlpha = 0.5 * pulse;
-        ctx.strokeStyle = '#0066cc'; ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.arc(50,50,47,0,Math.PI*2); ctx.stroke();
-        ctx.restore();
-
-        // draw R with dash effect
-        const rProg = Math.min(1, Math.max(0, progress / 0.4));
-        ctx.strokeStyle = '#0066cc'; ctx.lineWidth = 3.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-        ctx.setLineDash([180]); ctx.lineDashOffset = 180 * (1 - rProg);
-        ctx.beginPath(); ctx.stroke(pathR);
-
-        // draw D with delayed dash effect
-        let dProg = 0;
-        if (progress <= 0.4) dProg = 0; else if (progress <= 0.8) dProg = (progress - 0.4) / 0.4; else dProg = 1;
-        ctx.setLineDash([160]); ctx.lineDashOffset = 160 * (1 - dProg);
-        ctx.beginPath(); ctx.stroke(pathD);
-      }
-
-      // draw immediate first frame (red) so the favicon shows red instantly
-      draw(0);
-      try {
-        const data0 = canvas.toDataURL('image/png');
-        const head0 = document.head || document.getElementsByTagName('head')[0];
-        const old0 = document.getElementById('favicon') || document.querySelector('link[rel~="icon"]');
-        if (!rdFaviconLink) {
-          rdFaviconLink = old0 && old0.cloneNode(false) || document.createElement('link');
-          rdFaviconLink.rel = 'icon'; rdFaviconLink.type = 'image/png'; rdFaviconLink.id = 'favicon';
-          head0.appendChild(rdFaviconLink);
-          if (old0 && old0 !== rdFaviconLink && old0.parentNode) { setTimeout(() => { try { old0.parentNode.removeChild(old0); } catch(e){} }, 60); }
-        }
-        rdFaviconLink.href = data0;
-      } catch (e) {
-        if (RD_DEBUG && console && console.error) console.error('[custom-cursor] initial favicon toDataURL failed', e);
-      }
-
-      start = performance.now();
-      function tick(now) {
-        if (thisAnimId !== currentFaviconAnimId) return;
-        const elapsed = now - start;
-        const progress = Math.min(1, elapsed / duration);
-        if (now - lastFrame >= frameInterval || progress === 1) {
-          draw(progress);
-          // convert to PNG dataURL and update the single reusable favicon
-          // link; creating a fresh <link> per frame churned the <head> and
-          // stalled the main thread during rapid clicking
-          try {
-            if (rdFaviconLink) rdFaviconLink.href = canvas.toDataURL('image/png');
-          } catch (e) {
-            if (RD_DEBUG && console && console.error) console.error('[custom-cursor] favicon canvas toDataURL failed', e);
-          }
-          lastFrame = now;
-        }
-        if (elapsed < duration) requestAnimationFrame(tick);
-      }
-
-      requestAnimationFrame(tick);
-    } catch (e) {
-      if (RD_DEBUG && console && console.error) console.error('[custom-cursor] animateFaviconSequence error', e);
-      // fallback to replayFavicon
-      try { replayFavicon(); } catch (e2) {}
-    }
-  }
-
-  // Run the favicon animation once on page load so users see the full cycle without clicking
-  try {
-    // Slight delay to allow head / index to stabilize
-    setTimeout(() => {
-      try { animateFaviconSequence(); } catch (e) { if (RD_DEBUG && console && console.error) console.error(e); }
-    }, 120);
-  } catch (e) {}
-
-  function triggerFaviconFeedback() {
-    const now = performance.now();
-    if (now - lastFaviconAnimationAt < 700) return;
-    lastFaviconAnimationAt = now;
-    try { animateFaviconSequence(); } catch (e) { try { replayFavicon(); } catch (e2) {} }
-  }
-
-  let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
-  let posX = mouseX, posY = mouseY;
-  let targetX = mouseX, targetY = mouseY;
-  let raf = null;
   let hoverTarget = null;
   let idleTimer = null;
-  let clickTimer = null;
   let isIdle = true;
-  const hoverSelectors = 'a, button, input, select, textarea, summary, details, [role="button"], .page-link-cta, .badge-cta, .focus-badge, .project, .connect-links a, .collapsible';
 
   function setIdleState(nextIdle) {
     if (isIdle === nextIdle) return;
@@ -222,158 +313,101 @@
   }
 
   function resetIdleState() {
-    clearTimeout(idleTimer);
+    window.clearTimeout(idleTimer);
     setIdleState(false);
-    idleTimer = window.setTimeout(() => setIdleState(true), 140);
-  }
-
-  // Rainbow color cycling is handled entirely by the CSS `cursorRainbow`
-  // hue-rotate animation; mutating SVG gradient stops per frame forced an
-  // SVG re-render every tick and fought with the CSS filter.
-  function animateCursor() {
-    const easing = 0.22;
-    posX += (targetX - posX) * easing;
-    posY += (targetY - posY) * easing;
-    el.style.left = Math.round(posX) + 'px';
-    el.style.top = Math.round(posY) + 'px';
-    raf = window.requestAnimationFrame(animateCursor);
-  }
-
-  function updateCursorPosition(x, y) {
-    targetX = x;
-    targetY = y;
-    if (!raf) {
-      posX = x;
-      posY = y;
-      el.style.left = Math.round(posX) + 'px';
-      el.style.top = Math.round(posY) + 'px';
-      raf = window.requestAnimationFrame(animateCursor);
-    }
+    idleTimer = window.setTimeout(function () { setIdleState(true); }, IDLE_DELAY_MS);
   }
 
   function setHoverState(target) {
     if (hoverTarget === target) return;
     hoverTarget = target;
-    if (target && typeof target.closest === 'function' && target.closest(hoverSelectors)) {
+    if (target && typeof target.closest === 'function' && target.closest(HOVER_SELECTORS)) {
       el.classList.add('cursor-enlarge');
     } else {
       el.classList.remove('cursor-enlarge');
     }
   }
 
-  document.addEventListener('mouseover', (e) => {
-    handlePointerActivity(e.clientX, e.clientY);
-    setHoverState(e.target);
-  });
-  document.addEventListener('mouseout', (e) => {
-    const related = e.relatedTarget;
-    if (related && typeof related.closest === 'function' && related.closest(hoverSelectors)) {
-      setHoverState(related);
-      return;
-    }
-    hoverTarget = null;
-    el.classList.remove('cursor-enlarge');
-  });
+  // -------------------------------------------- 5. Movement + click effects
 
-  // spawn mini-sparks near pointer while moving
-  let last = 0;
+  // Shared bookkeeping for short-lived effect nodes: evict the oldest past
+  // the cap and remove each node when its CSS animation ends.
+  function spawnTracked(node, pool, cap) {
+    while (pool.length >= cap) {
+      const oldest = pool.shift();
+      if (oldest && oldest.parentNode) oldest.parentNode.removeChild(oldest);
+    }
+    document.body.appendChild(node);
+    pool.push(node);
+    node.addEventListener('animationend', function () {
+      const index = pool.indexOf(node);
+      if (index >= 0) pool.splice(index, 1);
+      if (node.parentNode) node.parentNode.removeChild(node);
+    }, { once: true });
+  }
+
+  const SPARK_COLORS = ['#FF80BF', '#FFD166', '#8A2BE2', '#4B0082', '#00D4FF', '#7CFFB2'];
   const activeSparkles = [];
-  const maxActiveSparkles = 28;
-  document.addEventListener('mousemove', (e) => {
-    const now = performance.now();
-    handlePointerActivity(e.clientX, e.clientY);
-    if (now - last > 90) { spawnMiniSparks(e.clientX, e.clientY); last = now; }
-  }, {passive:true});
+  let lastSparkAt = 0;
 
-  function spawnMiniSparks(x,y){
-    while (activeSparkles.length >= maxActiveSparkles) {
-      const oldSpark = activeSparkles.shift();
-      if (oldSpark && oldSpark.parentNode) oldSpark.parentNode.removeChild(oldSpark);
-    }
-
-    const colors = ['#FF80BF','#FFD166','#8A2BE2','#4B0082','#00D4FF','#7CFFB2'];
-    const count = 2 + Math.floor(Math.random()*2);
-    for (let i=0;i<count;i++){
-      const s = document.createElement('div');
-      s.className = 'mini-spark';
-      const size = 4 + Math.random()*8;
-      s.style.width = size + 'px'; s.style.height = size + 'px';
-      s.style.background = colors[Math.floor(Math.random()*colors.length)];
-      s.style.left = (x - size/2) + 'px'; s.style.top = (y - size/2) + 'px';
-      const angle = Math.random()*Math.PI*2;
-      const dist = 14 + Math.random()*24;
-      const dx = Math.cos(angle)*dist; const dy = Math.sin(angle)*dist;
-      s.style.setProperty('--dx', dx + 'px');
-      s.style.setProperty('--dy', dy + 'px');
-      document.body.appendChild(s);
-      activeSparkles.push(s);
-      s.addEventListener('animationend', () => {
-        const idx = activeSparkles.indexOf(s);
-        if (idx >= 0) activeSparkles.splice(idx, 1);
-        if (s.parentNode) s.parentNode.removeChild(s);
-      }, {once:true});
+  function spawnMiniSparks(x, y) {
+    const count = 2 + Math.floor(Math.random() * 2);
+    for (let i = 0; i < count; i++) {
+      const spark = document.createElement('div');
+      spark.className = 'mini-spark';
+      const size = 4 + Math.random() * 8;
+      spark.style.width = size + 'px';
+      spark.style.height = size + 'px';
+      spark.style.background = SPARK_COLORS[Math.floor(Math.random() * SPARK_COLORS.length)];
+      spark.style.left = (x - size / 2) + 'px';
+      spark.style.top = (y - size / 2) + 'px';
+      const angle = Math.random() * Math.PI * 2;
+      const distance = 14 + Math.random() * 24;
+      spark.style.setProperty('--dx', Math.cos(angle) * distance + 'px');
+      spark.style.setProperty('--dy', Math.sin(angle) * distance + 'px');
+      spawnTracked(spark, activeSparkles, MAX_SPARKLES);
     }
   }
 
-  // spawn a visible ring on click for a stronger pop effect
   const activeRings = [];
-  const maxActiveRings = 8;
-  function spawnClickRing(x,y){
-    while (activeRings.length >= maxActiveRings) {
-      const oldRing = activeRings.shift();
-      if (oldRing && oldRing.parentNode) oldRing.parentNode.removeChild(oldRing);
-    }
 
-    const r = document.createElement('div');
-    r.className = 'cursor-pop-ring';
-    r.style.left = x + 'px';
-    r.style.top = y + 'px';
-    document.body.appendChild(r);
-    activeRings.push(r);
-    r.addEventListener('animationend', () => {
-      const idx = activeRings.indexOf(r);
-      if (idx >= 0) activeRings.splice(idx, 1);
-      if (r.parentNode) r.parentNode.removeChild(r);
-    }, {once:true});
+  function spawnClickRing(x, y) {
+    const ring = document.createElement('div');
+    ring.className = 'cursor-pop-ring';
+    ring.style.left = x + 'px';
+    ring.style.top = y + 'px';
+    spawnTracked(ring, activeRings, MAX_CLICK_RINGS);
   }
 
-  // click feedback
-  document.addEventListener('mousedown', (e) => {
-    handlePointerActivity(e.clientX, e.clientY);
-    // spawn a visible ring at the pointer for a stronger pop
-    spawnClickRing(e.clientX, e.clientY);
-    // restart the pop animation cleanly even during rapid clicks: a single
-    // reusable timer avoids stale animationend listeners piling up
-    clearTimeout(clickTimer);
-    el.classList.remove('cursor-click');
-    void el.offsetWidth; // reflow so re-adding the class restarts the animation
-    el.classList.add('cursor-click');
-    clickTimer = window.setTimeout(() => el.classList.remove('cursor-click'), 300);
-    // restart the favicon animation: prefer canvas-based animation, fallback to replaying the SVG
-    triggerFaviconFeedback();
-  });
+  // Click pop via the Web Animations API: each call restarts natively — no
+  // class juggling, no forced reflow, no cleanup timer to desync from CSS.
+  let popAnimation = null;
 
-  function hideCursorForBlur(){
-    // Only hide when the document is actually hidden. Avoid hiding for transient blur events.
-    if (document.visibilityState === 'hidden') {
-      el.classList.add('is-hidden');
-      el.classList.remove('cursor-click','cursor-enlarge');
-      if (raf) { cancelAnimationFrame(raf); raf = null; }
-    } else {
-      showCursorAfterFocus();
-    }
+  function playClickPop() {
+    if (typeof core.animate !== 'function') return;
+    if (popAnimation) popAnimation.cancel();
+    popAnimation = core.animate(
+      [
+        { transform: 'scale(1)' },
+        { transform: 'scale(1.9)', offset: 0.4 },
+        { transform: 'scale(1)' }
+      ],
+      { duration: POP_DURATION_MS, easing: 'cubic-bezier(.2,.85,.32,1)' }
+    );
+    popAnimation.onfinish = function () { popAnimation = null; };
   }
 
-  function showCursorAfterFocus(){
-    // avoid redundant style writes on every pointer event
-    if (el.classList.contains('is-hidden')) {
-      el.classList.remove('is-hidden');
-      el.style.opacity = '1';
-      el.style.visibility = 'visible';
+  // ------------------------------- 6. Visibility handling + event wiring
+
+  function hideCursor() {
+    el.classList.add('is-hidden');
+    el.classList.remove('cursor-enlarge');
+    if (popAnimation) {
+      popAnimation.cancel();
+      popAnimation = null;
     }
-    if (!raf) {
-      updateCursorPosition(mouseX, mouseY);
-    }
+    stopMotion();
+    snapOnNextMove = true;
   }
 
   function handlePointerActivity(x, y) {
@@ -381,23 +415,71 @@
       mouseX = x;
       mouseY = y;
     }
-    updateCursorPosition(mouseX, mouseY);
-    showCursorAfterFocus();
+    if (snapOnNextMove) {
+      posX = mouseX;
+      posY = mouseY;
+      snapOnNextMove = false;
+      applyPosition();
+    }
+    el.classList.remove('is-hidden');
+    startMotion();
     resetIdleState();
   }
 
-  // Keep the custom cursor visible during normal interaction and only hide it when the document truly becomes hidden.
-  window.addEventListener('focus', showCursorAfterFocus);
-  window.addEventListener('blur', showCursorAfterFocus);
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') hideCursorForBlur(); else showCursorAfterFocus();
+  document.addEventListener('mousemove', function (e) {
+    handlePointerActivity(e.clientX, e.clientY);
+    const now = performance.now();
+    if (now - lastSparkAt > SPARK_INTERVAL_MS) {
+      spawnMiniSparks(e.clientX, e.clientY);
+      lastSparkAt = now;
+    }
+  }, { passive: true });
+
+  document.addEventListener('mouseover', function (e) {
+    handlePointerActivity(e.clientX, e.clientY);
+    setHoverState(e.target);
   });
 
-  document.addEventListener('pointerenter', (e) => {
-    handlePointerActivity(e && typeof e.clientX === 'number' ? e.clientX : mouseX,
-      e && typeof e.clientY === 'number' ? e.clientY : mouseY);
+  document.addEventListener('mouseout', function (e) {
+    const related = e.relatedTarget;
+    if (related && typeof related.closest === 'function' && related.closest(HOVER_SELECTORS)) {
+      setHoverState(related);
+      return;
+    }
+    hoverTarget = null;
+    el.classList.remove('cursor-enlarge');
   });
 
+  document.addEventListener('mousedown', function (e) {
+    handlePointerActivity(e.clientX, e.clientY);
+    spawnClickRing(e.clientX, e.clientY);
+    playClickPop();
+    runFaviconAnimation();
+  });
+
+  document.addEventListener('pointerenter', function (e) {
+    handlePointerActivity(
+      e && typeof e.clientX === 'number' ? e.clientX : mouseX,
+      e && typeof e.clientY === 'number' ? e.clientY : mouseY
+    );
+  });
+
+  // Hide only when the document truly becomes hidden; transient blur events
+  // must not blank the cursor mid-interaction.
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') {
+      hideCursor();
+    } else {
+      el.classList.remove('is-hidden');
+      startMotion();
+    }
+  });
+
+  window.addEventListener('focus', function () {
+    el.classList.remove('is-hidden');
+    startMotion();
+  });
+
+  applyPosition();
   resetIdleState();
-
 })();

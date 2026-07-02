@@ -35,42 +35,53 @@ body.has-custom-cursor [role="button"] {
 
 /* Pointy SVG cursor styles */
 
+/* The element is positioned by the script via transform: translate3d so the
+   cursor stays compositor-only; scale states (idle shrink, hover enlarge,
+   click pop) live on the inner .cursor-core so they never fight the
+   per-frame position transform. */
 #custom-cursor {
   position: fixed;
   left: 0;
   top: 0;
   width: 80px;
   height: 80px;
-  transform: none; /* we place the element so its top-left == pointer tip */
   pointer-events: none;
   z-index: 2147483647; /* max so it's always above other UI */
   display: block;
-  will-change: transform, left, top;
-  transform-origin: 0 0; /* scale from the tip */
-  transition: transform 180ms cubic-bezier(.2,.9,.2,1), opacity 120ms linear;
+  will-change: transform;
+  transition: opacity 120ms linear;
 }
 
 #custom-cursor .cursor-core {
-  width: 80px;
-  height: 80px;
+  width: 100%;
+  height: 100%;
   display: block;
+  transform-origin: 0 0; /* scale from the pointer tip */
+  transition: transform 180ms cubic-bezier(.2,.9,.2,1);
+  will-change: transform;
 }
 
 #custom-cursor .cursor-core svg {
-  display:block;
-  width:100%;
-  height:100%;
+  display: block;
+  width: 100%;
+  height: 100%;
   animation: cursorFloat 900ms ease-in-out infinite alternate, cursorRainbow 2.4s linear infinite;
   transform-origin: center center;
-  transition: transform 220ms ease;
 }
 
-#custom-cursor.idle .cursor-core svg {
+#custom-cursor.idle .cursor-core {
   transform: scale(0.78) rotate(-2deg);
 }
 
-#custom-cursor:not(.idle) .cursor-core svg {
-  transform: scale(1) rotate(0deg);
+/* enlarge wins over idle while parked on an interactive element */
+#custom-cursor.cursor-enlarge .cursor-core {
+  transform: scale(1.6);
+}
+
+/* speed up the rainbow cycle while hovering an interactive element
+   (first duration = cursorFloat, second = cursorRainbow) */
+#custom-cursor.cursor-enlarge .cursor-core svg {
+  animation-duration: 900ms, 0.8s;
 }
 
 @keyframes cursorFloat {
@@ -83,26 +94,8 @@ body.has-custom-cursor [role="button"] {
   100% { filter: hue-rotate(360deg) saturate(1.1); }
 }
 
-/* enlarge and click use scale from the tip (0 0) */
-#custom-cursor.cursor-enlarge { transform: scale(1.6); }
-
-/* speed up the rainbow cycle while hovering an interactive element
-   (first duration = cursorFloat, second = cursorRainbow) */
-#custom-cursor.cursor-enlarge .cursor-core svg {
-  animation-duration: 900ms, 0.8s;
-}
-
-/* click pop animation */
-@keyframes cursorPop {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.9); }
-  100% { transform: scale(1); }
-}
-
-#custom-cursor.cursor-click { animation: cursorPop 280ms cubic-bezier(.2,.85,.32,1) forwards; }
-
-/* hidden state (when tab/window loses focus) */
-#custom-cursor.is-hidden { opacity: 0; transition: opacity 120ms linear; pointer-events: none; }
+/* hidden state (when the tab becomes hidden) */
+#custom-cursor.is-hidden { opacity: 0; }
 
 .mini-spark { position: fixed; pointer-events: none; border-radius: 50%; mix-blend-mode: screen; z-index: 999998; animation: miniSpark 700ms forwards cubic-bezier(.16,.9,.3,1); }
 
