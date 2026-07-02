@@ -130,24 +130,41 @@ body.has-custom-cursor {
   box-shadow: 0 10px 30px rgba(138,43,226,0.18), 0 2px 6px rgba(0,0,0,0.25);
   background: linear-gradient(90deg, #8A2BE2, #FF80BF, #4B0082);
   background-size: 300% 100%;
-  animation: bannerShift 6s linear infinite, pulse 3s ease-in-out infinite;
+  animation: bannerShift 6s linear infinite;
   transform-origin: center;
   cursor: none;
   position: relative;
   isolation: isolate;
-  transition: transform 180ms cubic-bezier(.2,.85,.32,1), box-shadow 180ms ease, filter 180ms ease, background-position 500ms ease;
+  overflow: hidden;
+  transition: transform 220ms cubic-bezier(.2,.85,.32,1), box-shadow 220ms ease, filter 220ms ease, background-position 500ms ease, letter-spacing 220ms ease;
+}
+
+.page-link-cta::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.35) 45%, rgba(255,255,255,0) 90%);
+  transform: translateX(-120%) skewX(-20deg);
+  transition: transform 480ms ease;
+  z-index: -1;
 }
 
 .page-link-cta:hover,
 .page-link-cta:focus-visible {
-  transform: translateY(-5px) scale(1.06) rotate(-1deg);
-  box-shadow: 0 18px 38px rgba(138,43,226,0.32), 0 0 0 1px rgba(255,255,255,0.14) inset;
-  filter: brightness(1.08) saturate(1.08);
+  transform: translateY(-6px) scale(1.08) rotate(-1.2deg);
+  box-shadow: 0 18px 42px rgba(138,43,226,0.34), 0 0 0 1px rgba(255,255,255,0.16) inset;
+  filter: brightness(1.1) saturate(1.14);
   background-position: 100% 50%;
+  letter-spacing: 0.9px;
+}
+
+.page-link-cta:hover::before,
+.page-link-cta:focus-visible::before {
+  transform: translateX(120%) skewX(-20deg);
 }
 
 .page-link-cta:active {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(-2px) scale(1.03);
 }
 
 @keyframes bannerShift {
