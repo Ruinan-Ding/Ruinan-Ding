@@ -238,7 +238,7 @@
   }
 
   document.addEventListener('mouseover', (e) => {
-    showCursorAfterFocus();
+    handlePointerActivity(e.clientX, e.clientY);
     setHoverState(e.target);
   });
   document.addEventListener('mouseout', (e) => {
@@ -255,8 +255,7 @@
   let last = 0;
   document.addEventListener('mousemove', (e) => {
     const now = performance.now();
-    updateCursorPosition(e.clientX, e.clientY);
-    showCursorAfterFocus();
+    handlePointerActivity(e.clientX, e.clientY);
     if (now - last > 60) { spawnMiniSparks(e.clientX, e.clientY); last = now; }
   }, {passive:true});
 
@@ -292,8 +291,7 @@
 
   // click feedback
   document.addEventListener('mousedown', (e) => {
-    updateCursorPosition(e.clientX, e.clientY);
-    showCursorAfterFocus();
+    handlePointerActivity(e.clientX, e.clientY);
     // spawn a visible ring at the pointer for a stronger pop
     spawnClickRing(e.clientX, e.clientY);
     el.classList.add('cursor-click');
@@ -307,28 +305,44 @@
   document.addEventListener('mouseup', () => { el.classList.remove('cursor-click'); });
 
   function hideCursorForBlur(){
-    // hide and stop animating
-    el.classList.add('is-hidden');
-    el.classList.remove('cursor-click','cursor-enlarge');
-    if (raf) { cancelAnimationFrame(raf); raf = null; }
+    // Only hide when the document is actually hidden. Avoid hiding for transient blur events.
+    if (document.visibilityState === 'hidden') {
+      el.classList.add('is-hidden');
+      el.classList.remove('cursor-click','cursor-enlarge');
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
+    } else {
+      showCursorAfterFocus();
+    }
   }
+
   function showCursorAfterFocus(){
     el.classList.remove('is-hidden');
+    el.style.opacity = '1';
+    el.style.visibility = 'visible';
     if (!raf) {
       updateCursorPosition(mouseX, mouseY);
     }
   }
 
+  function handlePointerActivity(x, y) {
+    if (typeof x === 'number' && typeof y === 'number') {
+      mouseX = x;
+      mouseY = y;
+    }
+    updateCursorPosition(mouseX, mouseY);
+    showCursorAfterFocus();
+  }
+
   // Keep the custom cursor visible during normal interaction and only hide it when the document truly becomes hidden.
   window.addEventListener('focus', showCursorAfterFocus);
+  window.addEventListener('blur', showCursorAfterFocus);
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') hideCursorForBlur(); else showCursorAfterFocus();
   });
 
   document.addEventListener('pointerenter', (e) => {
-    if (e && typeof e.clientX === 'number') { mouseX = e.clientX; mouseY = e.clientY; }
-    updateCursorPosition(mouseX, mouseY);
-    showCursorAfterFocus();
+    handlePointerActivity(e && typeof e.clientX === 'number' ? e.clientX : mouseX,
+      e && typeof e.clientY === 'number' ? e.clientY : mouseY);
   });
 
 })();
