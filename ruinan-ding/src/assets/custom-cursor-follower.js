@@ -15,6 +15,7 @@
 
   // token to manage concurrent favicon animations: incrementing cancels previous runs
   let currentFaviconAnimId = 0;
+  let lastFaviconAnimationAt = 0;
   // single link element used for programmatic favicon updates
   let rdFaviconLink = null;
 
@@ -163,6 +164,7 @@
 
       start = performance.now();
       function tick(now) {
+        if (thisAnimId !== currentFaviconAnimId) return;
         const elapsed = now - start;
         const progress = Math.min(1, elapsed / duration);
         if (now - lastFrame >= frameInterval || progress === 1) {
@@ -198,6 +200,13 @@
       try { animateFaviconSequence(); } catch (e) { if (RD_DEBUG && console && console.error) console.error(e); }
     }, 120);
   } catch (e) {}
+
+  function triggerFaviconFeedback() {
+    const now = performance.now();
+    if (now - lastFaviconAnimationAt < 220) return;
+    lastFaviconAnimationAt = now;
+    try { animateFaviconSequence(); } catch (e) { try { replayFavicon(); } catch (e2) {} }
+  }
 
   let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
   let posX = mouseX, posY = mouseY;
@@ -253,40 +262,64 @@
 
   // spawn mini-sparks near pointer while moving
   let last = 0;
+  const activeSparkles = [];
+  const maxActiveSparkles = 28;
   document.addEventListener('mousemove', (e) => {
     const now = performance.now();
     handlePointerActivity(e.clientX, e.clientY);
-    if (now - last > 60) { spawnMiniSparks(e.clientX, e.clientY); last = now; }
+    if (now - last > 90) { spawnMiniSparks(e.clientX, e.clientY); last = now; }
   }, {passive:true});
 
   function spawnMiniSparks(x,y){
+    while (activeSparkles.length >= maxActiveSparkles) {
+      const oldSpark = activeSparkles.shift();
+      if (oldSpark && oldSpark.parentNode) oldSpark.parentNode.removeChild(oldSpark);
+    }
+
     const colors = ['#FF80BF','#FFD166','#8A2BE2','#4B0082','#00D4FF','#7CFFB2'];
-    const count = 3 + Math.floor(Math.random()*4);
+    const count = 2 + Math.floor(Math.random()*2);
     for (let i=0;i<count;i++){
       const s = document.createElement('div');
       s.className = 'mini-spark';
-      const size = 4 + Math.random()*10;
+      const size = 4 + Math.random()*8;
       s.style.width = size + 'px'; s.style.height = size + 'px';
       s.style.background = colors[Math.floor(Math.random()*colors.length)];
       s.style.left = (x - size/2) + 'px'; s.style.top = (y - size/2) + 'px';
       const angle = Math.random()*Math.PI*2;
-      const dist = 18 + Math.random()*36;
+      const dist = 14 + Math.random()*24;
       const dx = Math.cos(angle)*dist; const dy = Math.sin(angle)*dist;
       s.style.setProperty('--dx', dx + 'px');
       s.style.setProperty('--dy', dy + 'px');
       document.body.appendChild(s);
-      s.addEventListener('animationend', () => s.remove(), {once:true});
+      activeSparkles.push(s);
+      s.addEventListener('animationend', () => {
+        const idx = activeSparkles.indexOf(s);
+        if (idx >= 0) activeSparkles.splice(idx, 1);
+        if (s.parentNode) s.parentNode.removeChild(s);
+      }, {once:true});
     }
   }
 
   // spawn a visible ring on click for a stronger pop effect
+  const activeRings = [];
+  const maxActiveRings = 8;
   function spawnClickRing(x,y){
+    while (activeRings.length >= maxActiveRings) {
+      const oldRing = activeRings.shift();
+      if (oldRing && oldRing.parentNode) oldRing.parentNode.removeChild(oldRing);
+    }
+
     const r = document.createElement('div');
     r.className = 'cursor-pop-ring';
     r.style.left = x + 'px';
     r.style.top = y + 'px';
     document.body.appendChild(r);
-    r.addEventListener('animationend', () => r.remove(), {once:true});
+    activeRings.push(r);
+    r.addEventListener('animationend', () => {
+      const idx = activeRings.indexOf(r);
+      if (idx >= 0) activeRings.splice(idx, 1);
+      if (r.parentNode) r.parentNode.removeChild(r);
+    }, {once:true});
   }
 
   // click feedback
@@ -299,7 +332,7 @@
     const onEnd = () => { el.classList.remove('cursor-click'); el.removeEventListener('animationend', onEnd); };
     el.addEventListener('animationend', onEnd);
     // restart the favicon animation: prefer canvas-based animation, fallback to replaying the SVG
-    try { animateFaviconSequence(); } catch (e) { try { replayFavicon(); } catch (e2) {} }
+    triggerFaviconFeedback();
   });
   // ensure any leftover state is cleared on pointerup
   document.addEventListener('mouseup', () => { el.classList.remove('cursor-click'); });

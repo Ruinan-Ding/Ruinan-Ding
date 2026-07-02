@@ -34,6 +34,7 @@ body.has-custom-cursor {
   display: block;
   will-change: transform, left, top;
   transform-origin: 0 0; /* scale from the tip */
+  transition: transform 180ms cubic-bezier(.2,.9,.2,1), opacity 120ms linear;
 }
 
 #custom-cursor .cursor-core {
@@ -42,7 +43,27 @@ body.has-custom-cursor {
   display: block;
 }
 
-#custom-cursor .cursor-core svg { display:block; width:100%; height:100%; }
+#custom-cursor .cursor-core svg {
+  display:block;
+  width:100%;
+  height:100%;
+  animation: cursorFloat 900ms ease-in-out infinite alternate;
+  transform-origin: center center;
+  transition: transform 220ms ease;
+}
+
+#custom-cursor.idle .cursor-core svg {
+  transform: scale(0.78) rotate(-2deg);
+}
+
+#custom-cursor:not(.idle) .cursor-core svg {
+  transform: scale(1) rotate(0deg);
+}
+
+@keyframes cursorFloat {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(4deg) scale(1.02); }
+}
 
 /* enlarge and click use scale from the tip (0 0) */
 #custom-cursor.cursor-enlarge { transform: scale(1.6); }
