@@ -134,7 +134,10 @@ body.has-custom-cursor {
   transform-origin: center;
 }
 
-.page-link-cta:hover { transform: scale(1.03); }
+.page-link-cta:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 14px 34px rgba(138,43,226,0.28), 0 2px 10px rgba(0,0,0,0.28);
+}
 
 @keyframes bannerShift {
   0% { background-position: 0% 50%; }
@@ -203,8 +206,8 @@ body.has-custom-cursor {
 .badge-cta img { display: block; }
 
 .badge-cta:hover {
-  transform: translateY(-4px) scale(1.04);
-  box-shadow: 0 8px 20px rgba(138,43,226,0.18);
+  transform: translateY(-4px) scale(1.06);
+  box-shadow: 0 10px 24px rgba(138,43,226,0.22);
 }
 
 .badge-invite {
@@ -259,6 +262,13 @@ body.has-custom-cursor {
   border-radius: 20px;
   font-weight: bold;
   font-size: 14px;
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+
+.focus-badge:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 18px rgba(138,43,226,0.22);
+  filter: brightness(1.08);
 }
 
 .image-section {
