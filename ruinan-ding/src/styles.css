@@ -16,8 +16,11 @@ body {
 
 /* Global custom cursor styles (moved from app component so body-level cursor element is styled) */
 /* Only hide the native cursor when the script actually creates the custom cursor. */
-body.has-custom-cursor {
-  cursor: none; /* hide native cursor to show animated custom cursor */
+body.has-custom-cursor,
+body.has-custom-cursor * {
+  /* !important beats the UA's cursor:pointer on links/buttons/summary,
+     which otherwise shows the native cursor on top of the custom one */
+  cursor: none !important;
 }
 
 /* Pointy SVG cursor styles */
@@ -72,6 +75,12 @@ body.has-custom-cursor {
 
 /* enlarge and click use scale from the tip (0 0) */
 #custom-cursor.cursor-enlarge { transform: scale(1.6); }
+
+/* speed up the rainbow cycle while hovering an interactive element
+   (first duration = cursorFloat, second = cursorRainbow) */
+#custom-cursor.cursor-enlarge .cursor-core svg {
+  animation-duration: 900ms, 0.8s;
+}
 
 /* click pop animation */
 @keyframes cursorPop {
