@@ -52,6 +52,27 @@ body.has-custom-cursor [role="button"] {
   transition: opacity 120ms linear;
 }
 
+/* Click-pop scales this layer (via the Web Animations API) independently of
+   .cursor-core's idle/enlarge CSS transform, so the two compose instead of
+   one overriding the other mid-click. */
+#custom-cursor .cursor-pop-layer {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 0 0;
+}
+
+@keyframes cursorPopFallback {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.9); }
+  100% { transform: scale(1); }
+}
+
+/* Fallback for browsers without the Web Animations API. */
+.cursor-pop-layer.cursor-pop-fallback {
+  animation: cursorPopFallback 280ms cubic-bezier(.2,.85,.32,1);
+}
+
 #custom-cursor .cursor-core {
   width: 100%;
   height: 100%;
@@ -170,7 +191,6 @@ body.has-custom-cursor [role="button"] {
   background-size: 300% 100%;
   animation: bannerShift 6s linear infinite;
   transform-origin: center;
-  cursor: none;
   position: relative;
   isolation: isolate;
   overflow: hidden;

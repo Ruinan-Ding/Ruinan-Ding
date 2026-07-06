@@ -66,13 +66,16 @@
   let faviconLink = null;       // single reusable <link rel="icon"> element
   let faviconAnimId = 0;        // token: bumping invalidates in-flight async frames
   let faviconAnimRunning = false;
+  let faviconRestartPending = false; // a click landed mid-animation; replay once this run ends
   let faviconObjectUrl = null;  // current blob URL, revoked on replacement
 
   function ensureFaviconLink(type) {
     if (!faviconLink || !faviconLink.isConnected) {
       const head = document.head || document.getElementsByTagName('head')[0];
       const old = document.getElementById('favicon') || document.querySelector('link[rel~="icon"]');
-      faviconLink = document.createElement('link');
+      // Clone rather than create bare: preserves any extra attributes
+      // (sizes, media, ...) the original tag might carry.
+      faviconLink = (old && old.cloneNode(false)) || document.createElement('link');
       faviconLink.rel = 'icon';
       faviconLink.id = 'favicon';
       head.appendChild(faviconLink);
@@ -92,24 +95,49 @@
   }
 
   function setFaviconBlob(blob) {
+    const newUrl = URL.createObjectURL(blob);
+    try {
+      setFavicon(newUrl, 'image/png');
+    } catch (err) {
+      URL.revokeObjectURL(newUrl); // never applied; don't leak it
+      throw err;
+    }
     const previousUrl = faviconObjectUrl;
-    faviconObjectUrl = URL.createObjectURL(blob);
-    setFavicon(faviconObjectUrl, 'image/png');
+    faviconObjectUrl = newUrl;
     if (previousUrl) URL.revokeObjectURL(previousUrl);
   }
 
   function restoreOriginalFavicon() {
-    setFavicon(originalFavicon.href, originalFavicon.type);
-    if (faviconObjectUrl) {
-      URL.revokeObjectURL(faviconObjectUrl);
-      faviconObjectUrl = null;
+    try {
+      setFavicon(originalFavicon.href, originalFavicon.type);
+    } finally {
+      if (faviconObjectUrl) {
+        URL.revokeObjectURL(faviconObjectUrl);
+        faviconObjectUrl = null;
+      }
+    }
+  }
+
+  // Canvas-independent fallback: cache-bust the original SVG href so the
+  // browser still flashes/reloads the icon once, even when canvas setup
+  // itself failed (blocked by an extension/CSP, unsupported, etc).
+  function flashFallbackFavicon() {
+    try {
+      setFavicon(originalFavicon.href.split('?')[0] + '?r=' + Math.round(performance.now()), originalFavicon.type);
+    } catch (err) {
+      debugError('favicon fallback flash failed', err);
     }
   }
 
   function runFaviconAnimation() {
     // Let an in-flight run finish: restarting on every click kept resetting
     // the animation to its first frame, so it never visibly completed.
-    if (faviconAnimRunning) return;
+    // Queue one restart instead of dropping the click's feedback entirely.
+    if (faviconAnimRunning) {
+      faviconRestartPending = true;
+      return;
+    }
+    faviconRestartPending = false;
     faviconAnimRunning = true;
     const animId = ++faviconAnimId;
 
@@ -181,14 +209,22 @@
       function pushFrame(drawnAt) {
         if (typeof canvas.toBlob === 'function') {
           canvas.toBlob(function (blob) {
-            if (!blob || animId !== faviconAnimId || drawnAt <= lastAppliedAt) return;
-            lastAppliedAt = drawnAt;
-            setFaviconBlob(blob);
+            try {
+              if (!blob || animId !== faviconAnimId || drawnAt <= lastAppliedAt) return;
+              lastAppliedAt = drawnAt;
+              setFaviconBlob(blob);
+            } catch (err) {
+              debugError('favicon frame apply failed', err);
+            }
           }, 'image/png');
         } else {
           // Synchronous fallback for browsers without toBlob.
-          lastAppliedAt = drawnAt;
-          setFavicon(canvas.toDataURL('image/png'), 'image/png');
+          try {
+            lastAppliedAt = drawnAt;
+            setFavicon(canvas.toDataURL('image/png'), 'image/png');
+          } catch (err) {
+            debugError('favicon frame apply failed (toDataURL fallback)', err);
+          }
         }
       }
 
@@ -196,25 +232,50 @@
       const start = performance.now();
       let lastFrameAt = start;
 
+      function finishAnimation() {
+        faviconAnimRunning = false;
+        if (faviconRestartPending) {
+          // A click landed while this run was still playing; replay now
+          // instead of restoring, so rapid clicking still gets feedback.
+          faviconRestartPending = false;
+          runFaviconAnimation();
+          return;
+        }
+        // Hand back to the crisp SVG icon once the raster frames have shown.
+        window.setTimeout(function () {
+          if (animId === faviconAnimId) {
+            // Bump the token so a late-arriving toBlob callback for this
+            // finished run can no longer clobber the restore that follows.
+            faviconAnimId++;
+            restoreOriginalFavicon();
+          }
+        }, FAVICON_RESTORE_DELAY_MS);
+      }
+
       function tick(now) {
         if (animId !== faviconAnimId) return;
-        const progress = Math.min(1, (now - start) / FAVICON_DURATION_MS);
-        // Skip drawing while hidden; nobody sees the frames and rAF is
-        // throttled there anyway.
-        const visible = document.visibilityState !== 'hidden';
-        if (visible && (now - lastFrameAt >= frameInterval || progress === 1)) {
-          draw(progress);
-          pushFrame(now);
-          lastFrameAt = now;
-        }
-        if (progress < 1) {
-          window.requestAnimationFrame(tick);
-        } else {
+        try {
+          const progress = Math.min(1, (now - start) / FAVICON_DURATION_MS);
+          // Skip drawing while hidden; nobody sees the frames and rAF is
+          // throttled there anyway.
+          const visible = document.visibilityState !== 'hidden';
+          if (visible && (now - lastFrameAt >= frameInterval || progress === 1)) {
+            draw(progress);
+            pushFrame(now);
+            lastFrameAt = now;
+          }
+          if (progress < 1) {
+            window.requestAnimationFrame(tick);
+          } else {
+            finishAnimation();
+          }
+        } catch (err) {
+          // Without this catch, a throw here left faviconAnimRunning stuck
+          // true forever — every future click would silently no-op.
+          debugError('favicon tick failed', err);
           faviconAnimRunning = false;
-          // Hand back to the crisp SVG icon once the raster frames have shown.
-          window.setTimeout(function () {
-            if (animId === faviconAnimId) restoreOriginalFavicon();
-          }, FAVICON_RESTORE_DELAY_MS);
+          faviconAnimId++;
+          try { restoreOriginalFavicon(); } catch (e) { /* leave whatever icon is set */ }
         }
       }
 
@@ -225,7 +286,7 @@
     } catch (err) {
       debugError('favicon animation failed', err);
       faviconAnimRunning = false;
-      try { restoreOriginalFavicon(); } catch (e) { /* leave whatever icon is set */ }
+      flashFallbackFavicon();
     }
   }
 
@@ -236,6 +297,12 @@
 
   const el = document.createElement('div');
   el.id = 'custom-cursor';
+  // The click-pop animates this dedicated layer via the Web Animations API.
+  // It sits between #custom-cursor (position) and .cursor-core (idle/enlarge
+  // CSS transform) so the pop composes with whatever state is already
+  // showing instead of overriding the same element's transform property.
+  const popLayer = document.createElement('div');
+  popLayer.className = 'cursor-pop-layer';
   const core = document.createElement('div');
   core.className = 'cursor-core';
   /* Stylized pointy cursor SVG; the tip sits at the element's top-left. */
@@ -255,7 +322,8 @@
       <path d="M1 1 L18 12 L12 14 L14 20 L10 18 L8 24 L6 23 L6 14 L1 1 Z" fill="url(#g1)" filter="url(#shadow)" />
     </svg>
   `;
-  el.appendChild(core);
+  popLayer.appendChild(core);
+  el.appendChild(popLayer);
   document.body.appendChild(el);
   // mark body so CSS hides the native cursor only when the custom one exists
   document.body.classList.add('has-custom-cursor');
@@ -269,8 +337,9 @@
 
   function applyPosition() {
     // translate3d keeps the cursor compositor-only; writing left/top forced a
-    // layout pass on every frame.
-    el.style.transform = 'translate3d(' + posX + 'px,' + posY + 'px,0)';
+    // layout pass on every frame. Round to whole pixels so the SVG stays
+    // crisp when parked instead of sitting on a blurred sub-pixel offset.
+    el.style.transform = 'translate3d(' + Math.round(posX) + 'px,' + Math.round(posY) + 'px,0)';
   }
 
   function motionStep() {
@@ -328,6 +397,15 @@
     }
   }
 
+  // Re-derive hover state from the last known pointer position. Needed after
+  // a tab hide/show cycle: if the pointer never left the hovered element, no
+  // mouseover/mouseout fires to naturally refresh setHoverState's target.
+  function refreshHoverState() {
+    if (typeof document.elementFromPoint === 'function') {
+      setHoverState(document.elementFromPoint(mouseX, mouseY));
+    }
+  }
+
   // -------------------------------------------- 5. Movement + click effects
 
   // Shared bookkeeping for short-lived effect nodes: evict the oldest past
@@ -380,13 +458,21 @@
   }
 
   // Click pop via the Web Animations API: each call restarts natively — no
-  // class juggling, no forced reflow, no cleanup timer to desync from CSS.
+  // cleanup timer to desync from CSS. Falls back to a CSS class restart only
+  // on browsers without Element.animate().
   let popAnimation = null;
 
   function playClickPop() {
-    if (typeof core.animate !== 'function') return;
+    if (typeof popLayer.animate !== 'function') {
+      // Rare pre-Web-Animations-API browsers: fall back to a plain CSS
+      // animation restart (no forwards fill, so it self-resets on end).
+      popLayer.classList.remove('cursor-pop-fallback');
+      void popLayer.offsetWidth;
+      popLayer.classList.add('cursor-pop-fallback');
+      return;
+    }
     if (popAnimation) popAnimation.cancel();
-    popAnimation = core.animate(
+    popAnimation = popLayer.animate(
       [
         { transform: 'scale(1)' },
         { transform: 'scale(1.9)', offset: 0.4 },
@@ -401,6 +487,7 @@
 
   function hideCursor() {
     el.classList.add('is-hidden');
+    hoverTarget = null;
     el.classList.remove('cursor-enlarge');
     if (popAnimation) {
       popAnimation.cancel();
@@ -420,8 +507,10 @@
       posY = mouseY;
       snapOnNextMove = false;
       applyPosition();
+      // Only reveal the cursor once its position is resynced — revealing it
+      // immediately on tab-return would flash it at the stale pre-hide spot.
+      el.classList.remove('is-hidden');
     }
-    el.classList.remove('is-hidden');
     startMotion();
     resetIdleState();
   }
@@ -446,8 +535,7 @@
       setHoverState(related);
       return;
     }
-    hoverTarget = null;
-    el.classList.remove('cursor-enlarge');
+    setHoverState(null);
   });
 
   document.addEventListener('mousedown', function (e) {
@@ -458,10 +546,7 @@
   });
 
   document.addEventListener('pointerenter', function (e) {
-    handlePointerActivity(
-      e && typeof e.clientX === 'number' ? e.clientX : mouseX,
-      e && typeof e.clientY === 'number' ? e.clientY : mouseY
-    );
+    handlePointerActivity(e && e.clientX, e && e.clientY);
   });
 
   // Hide only when the document truly becomes hidden; transient blur events
@@ -470,14 +555,14 @@
     if (document.visibilityState === 'hidden') {
       hideCursor();
     } else {
-      el.classList.remove('is-hidden');
       startMotion();
+      refreshHoverState();
     }
   });
 
   window.addEventListener('focus', function () {
-    el.classList.remove('is-hidden');
     startMotion();
+    refreshHoverState();
   });
 
   applyPosition();
