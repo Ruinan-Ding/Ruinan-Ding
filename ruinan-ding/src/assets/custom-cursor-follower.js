@@ -149,16 +149,37 @@
       const ctx = canvas.getContext('2d');
       ctx.scale(pixelRatio, pixelRatio);
 
-      function hexToRgb(hex) {
-        const bigint = parseInt(hex.replace('#', ''), 16);
-        return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
+      // Star field for the click-burst background: generated once per run
+      // (not per frame) so each star's sine-based twinkle stays smooth
+      // across frames instead of jittering with a fresh random seed on
+      // every draw. Reuses the cursor's own SPARK_COLORS palette so the
+      // favicon burst matches the on-screen sparkle trail.
+      const stars = [];
+      for (let i = 0; i < 20; i++) {
+        stars.push({
+          x: 8 + Math.random() * 84,
+          y: 8 + Math.random() * 84,
+          r: 0.6 + Math.random() * 1.3,
+          phase: Math.random() * Math.PI * 2,
+          speed: 2 + Math.random() * 2.5,
+          color: SPARK_COLORS[Math.floor(Math.random() * SPARK_COLORS.length)]
+        });
       }
 
-      function lerpColor(a, b, t) {
-        const A = hexToRgb(a);
-        const B = hexToRgb(b);
-        const channel = (x, y) => Math.round(x + (y - x) * t).toString(16).padStart(2, '0');
-        return '#' + channel(A.r, B.r) + channel(A.g, B.g) + channel(A.b, B.b);
+      function drawStar(star, progress) {
+        // Steady twinkle, plus a brief brighter/bigger flash right at the
+        // start of the run so a click still reads as an instant "pop" --
+        // just via stars igniting instead of the old red flash.
+        const twinkle = 0.35 + 0.65 * Math.abs(Math.sin(progress * star.speed * Math.PI * 2 + star.phase));
+        const ignite = Math.max(0, 1 - progress / 0.15);
+        const flare = ignite * ignite;
+        ctx.save();
+        ctx.globalAlpha = Math.min(1, twinkle + flare * 0.6);
+        ctx.fillStyle = star.color;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.r * (1 + flare * 1.8), 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
       }
 
       // Paths copied from favicon.svg (viewBox 0..100).
@@ -168,29 +189,53 @@
       function draw(progress) {
         ctx.clearRect(0, 0, FAVICON_SIZE, FAVICON_SIZE);
 
-        // background transitions from red to light blue over the animation
-        ctx.fillStyle = lerpColor('#ff4d4d', '#f0f8ff', progress);
+        // Dark starry-sky background instead of the old red-to-light-blue
+        // flash, matching the site's dark theme.
+        const sky = ctx.createRadialGradient(50, 50, 4, 50, 50, 46);
+        sky.addColorStop(0, '#1c0f33');
+        sky.addColorStop(1, '#05060a');
+        ctx.fillStyle = sky;
         ctx.beginPath();
         ctx.arc(50, 50, 45, 0, Math.PI * 2);
         ctx.fill();
 
-        // outer circle stroke with pulse (semi-transparent)
+        // Clip the star field to the badge circle so stars never draw past
+        // its edge.
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(50, 50, 45, 0, Math.PI * 2);
+        ctx.clip();
+        for (let i = 0; i < stars.length; i++) drawStar(stars[i], progress);
+        ctx.restore();
+
+        // outer circle stroke with pulse (semi-transparent), recolored to
+        // the site's rainbow/purple palette instead of plain blue
         const pulse = 0.85 + 0.15 * Math.cos(2 * Math.PI * progress);
         ctx.save();
         ctx.globalAlpha = 0.5 * pulse;
-        ctx.strokeStyle = '#0066cc';
+        ctx.strokeStyle = '#8A2BE2';
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.arc(50, 50, 47, 0, Math.PI * 2);
         ctx.stroke();
         ctx.restore();
 
-        // draw R with dash effect
-        const rProgress = Math.min(1, progress / 0.4);
-        ctx.strokeStyle = '#0066cc';
+        // R/D letters: gradient stroke + soft glow instead of flat blue
+        const letterGradient = ctx.createLinearGradient(28, 35, 70, 60);
+        letterGradient.addColorStop(0, '#FF80BF');
+        letterGradient.addColorStop(0.5, '#8A2BE2');
+        letterGradient.addColorStop(1, '#00D4FF');
+
+        ctx.save();
+        ctx.strokeStyle = letterGradient;
+        ctx.shadowColor = '#8A2BE2';
+        ctx.shadowBlur = 6;
         ctx.lineWidth = 3.5;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
+
+        // draw R with dash effect
+        const rProgress = Math.min(1, progress / 0.4);
         ctx.setLineDash([180]);
         ctx.lineDashOffset = 180 * (1 - rProgress);
         ctx.beginPath();
@@ -202,6 +247,7 @@
         ctx.lineDashOffset = 160 * (1 - dProgress);
         ctx.beginPath();
         ctx.stroke(pathD);
+        ctx.restore();
       }
 
       let lastAppliedAt = 0; // drops async frames that arrive out of order
