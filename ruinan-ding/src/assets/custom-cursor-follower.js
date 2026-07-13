@@ -172,12 +172,15 @@
       // progress so nothing jumps when the cycle wraps. Reuses the cursor's
       // own SPARK_COLORS palette so the favicon matches the on-screen
       // sparkle trail.
+      // Star sizes here look huge in viewBox terms but render at a 16-32px
+      // tab size -- anything smaller than ~1.5 viewBox units is sub-pixel
+      // there and simply invisible.
       const stars = [];
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 14; i++) {
         stars.push({
-          x: 8 + Math.random() * 84,
-          y: 8 + Math.random() * 84,
-          r: 0.6 + Math.random() * 1.3,
+          x: 4 + Math.random() * 92,
+          y: 4 + Math.random() * 92,
+          r: 1.6 + Math.random() * 2.6,
           phase: Math.random() * Math.PI * 2,
           speed: 2 + Math.random() * 2.5,
           color: SPARK_COLORS[Math.floor(Math.random() * SPARK_COLORS.length)]
@@ -187,7 +190,7 @@
       function drawStar(star, now, flash) {
         // Steady twinkle, plus a brighter/bigger flare while a click flash
         // is active -- stars igniting instead of the old red flash.
-        const twinkle = 0.35 + 0.65 * Math.abs(Math.sin((now / 1000) * star.speed + star.phase));
+        const twinkle = 0.5 + 0.5 * Math.abs(Math.sin((now / 1000) * star.speed + star.phase));
         const flare = flash * flash;
         ctx.save();
         ctx.globalAlpha = Math.min(1, twinkle + flare * 0.6);
@@ -205,9 +208,11 @@
       // Gradients are built once for the loop, not per frame: their
       // coordinates and color stops never depend on time, so recreating
       // them on every draw() call would just be wasted allocation.
-      const sky = ctx.createRadialGradient(50, 50, 4, 50, 50, 46);
-      sky.addColorStop(0, '#1c0f33');
-      sky.addColorStop(1, '#05060a');
+      // Radius 72 reaches the square's corners now that the sky fills the
+      // whole frame instead of a circular badge.
+      const sky = ctx.createRadialGradient(50, 50, 6, 50, 50, 72);
+      sky.addColorStop(0, '#241340');
+      sky.addColorStop(1, '#080a12');
 
       const letterGradient = ctx.createLinearGradient(28, 35, 70, 60);
       letterGradient.addColorStop(0, '#FF80BF');
@@ -226,37 +231,32 @@
 
         ctx.clearRect(0, 0, 100, 100);
 
-        // Dark starry-sky background instead of the old red-to-light-blue
-        // flash, matching the site's dark theme.
+        // Dark starry sky filling the whole square, matching the site's
+        // dark theme. The old circular badge wasted the icon's edges --
+        // at 16px tab size that left the actual artwork a few pixels wide.
         ctx.fillStyle = sky;
-        ctx.beginPath();
-        ctx.arc(50, 50, 45, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillRect(0, 0, 100, 100);
 
-        // Clip the star field to the badge circle so stars never draw past
-        // its edge.
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(50, 50, 45, 0, Math.PI * 2);
-        ctx.clip();
         for (let i = 0; i < stars.length; i++) drawStar(stars[i], now, flash);
-        ctx.restore();
 
-        // Outer circle stroke, recolored to the site's rainbow/purple
-        // palette instead of plain blue. It pulses once per cycle (cosine
-        // is periodic, so no jump at the wrap) and brightens with the flash.
-        const pulse = 0.85 + 0.15 * Math.cos(2 * Math.PI * progress);
-        ctx.save();
-        ctx.globalAlpha = Math.min(1, 0.5 * pulse + 0.4 * flash);
-        ctx.strokeStyle = '#8A2BE2';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.arc(50, 50, 47, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.restore();
+        // Click flash: briefly wash the whole icon so the click reads even
+        // at tab size, on top of the individual star flares.
+        if (flash > 0) {
+          ctx.save();
+          ctx.globalAlpha = 0.35 * flash;
+          ctx.fillStyle = '#FF80BF';
+          ctx.fillRect(0, 0, 100, 100);
+          ctx.restore();
+        }
 
-        // R/D letters: gradient stroke + soft glow instead of flat blue
+        // R/D letters: gradient stroke + soft glow instead of flat blue.
+        // The paths' bounding box (~24..74 x ~31..64 including stroke) only
+        // spans half the viewBox, which made the letters unreadably small
+        // at tab-icon size -- zoom them out to fill the frame.
         ctx.save();
+        ctx.translate(50, 50);
+        ctx.scale(1.9, 1.9);
+        ctx.translate(-49, -47.5);
         ctx.globalAlpha = progress < 0.9 ? 1 : 1 - (progress - 0.9) / 0.1;
         ctx.strokeStyle = letterGradient;
         ctx.shadowColor = '#8A2BE2';
