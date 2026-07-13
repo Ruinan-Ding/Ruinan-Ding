@@ -201,23 +201,30 @@
         ctx.restore();
       }
 
-      // Paths copied from favicon.svg (viewBox 0..100).
+      // Letter paths, based on favicon.svg (viewBox 0..100). The D's bowl
+      // is widened versus the SVG original (out to x=72 instead of x=70,
+      // with a flatter top and bottom) so it matches the R's width and
+      // reads as a capital D -- the narrow rounded original looked like a
+      // lowercase b at tab-icon size.
       const pathR = new Path2D('M 28 35 L 28 60 M 28 35 L 38 35 Q 42 35 42 40 Q 42 45 38 45 L 28 45 M 42 45 L 48 60');
-      const pathD = new Path2D('M 56 35 L 56 60 M 56 35 L 66 35 Q 70 35 70 47.5 Q 70 60 66 60 L 56 60');
+      const pathD = new Path2D('M 56 35 L 56 60 M 56 35 L 64 35 Q 72 36 72 47.5 Q 72 59 64 60 L 56 60');
 
       // Gradients are built once for the loop, not per frame: their
       // coordinates and color stops never depend on time, so recreating
       // them on every draw() call would just be wasted allocation.
-      // Radius 72 reaches the square's corners now that the sky fills the
-      // whole frame instead of a circular badge.
+      // Light sky: browser tab strips are dark in dark themes, so a
+      // near-black icon just disappeared into them; a light background
+      // stands out there and still reads fine on light themes. Radius 72
+      // reaches the square's corners.
       const sky = ctx.createRadialGradient(50, 50, 6, 50, 50, 72);
-      sky.addColorStop(0, '#241340');
-      sky.addColorStop(1, '#080a12');
+      sky.addColorStop(0, '#fdf4ff');
+      sky.addColorStop(1, '#c8d4f2');
 
-      const letterGradient = ctx.createLinearGradient(28, 35, 70, 60);
-      letterGradient.addColorStop(0, '#FF80BF');
-      letterGradient.addColorStop(0.5, '#8A2BE2');
-      letterGradient.addColorStop(1, '#00D4FF');
+      // Dark, saturated stops for contrast against the light sky.
+      const letterGradient = ctx.createLinearGradient(28, 35, 72, 60);
+      letterGradient.addColorStop(0, '#D61F7E');
+      letterGradient.addColorStop(0.5, '#6A0DAD');
+      letterGradient.addColorStop(1, '#0B5FBF');
 
       const loopStart = performance.now();
 
@@ -231,37 +238,38 @@
 
         ctx.clearRect(0, 0, 100, 100);
 
-        // Dark starry sky filling the whole square, matching the site's
-        // dark theme. The old circular badge wasted the icon's edges --
-        // at 16px tab size that left the actual artwork a few pixels wide.
+        // Light starry sky filling the whole square. The old circular badge
+        // wasted the icon's edges -- at 16px tab size that left the actual
+        // artwork a few pixels wide.
         ctx.fillStyle = sky;
         ctx.fillRect(0, 0, 100, 100);
 
         for (let i = 0; i < stars.length; i++) drawStar(stars[i], now, flash);
 
         // Click flash: briefly wash the whole icon so the click reads even
-        // at tab size, on top of the individual star flares.
+        // at tab size, on top of the individual star flares. Purple, since
+        // the old pink wash barely registered on the light sky.
         if (flash > 0) {
           ctx.save();
           ctx.globalAlpha = 0.35 * flash;
-          ctx.fillStyle = '#FF80BF';
+          ctx.fillStyle = '#8A2BE2';
           ctx.fillRect(0, 0, 100, 100);
           ctx.restore();
         }
 
-        // R/D letters: gradient stroke + soft glow instead of flat blue.
-        // The paths' bounding box (~24..74 x ~31..64 including stroke) only
+        // R/D letters: dark gradient stroke over the light sky.
+        // The paths' bounding box (~24..76 x ~31..64 including stroke) only
         // spans half the viewBox, which made the letters unreadably small
         // at tab-icon size -- zoom them out to fill the frame.
         ctx.save();
         ctx.translate(50, 50);
         ctx.scale(1.9, 1.9);
-        ctx.translate(-49, -47.5);
+        ctx.translate(-50, -47.5);
         ctx.globalAlpha = progress < 0.9 ? 1 : 1 - (progress - 0.9) / 0.1;
         ctx.strokeStyle = letterGradient;
-        ctx.shadowColor = '#8A2BE2';
-        ctx.shadowBlur = 6;
-        ctx.lineWidth = 3.5;
+        ctx.shadowColor = 'rgba(74, 20, 140, 0.35)';
+        ctx.shadowBlur = 4;
+        ctx.lineWidth = 4.2;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
 
