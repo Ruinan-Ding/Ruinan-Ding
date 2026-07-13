@@ -2,7 +2,7 @@
  *
  * Layout of this file:
  *   1. Guards + configuration
- *   2. Favicon feedback (canvas-rendered replay of the R/D logo draw-in)
+ *   2. Favicon feedback (looping canvas-rendered R/D logo + click flash)
  *   3. Cursor element + motion loop
  *   4. Hover / idle state
  *   5. Movement + click effects
@@ -37,10 +37,10 @@
   const MAX_SPARKLES = 28;
   const MAX_CLICK_RINGS = 8;
   const POP_DURATION_MS = 280;
-  const FAVICON_DURATION_MS = 2500;
-  const FAVICON_FPS = 15;
-  const FAVICON_SIZE = 100;        // matches the favicon.svg viewBox
-  const FAVICON_RESTORE_DELAY_MS = 400;
+  const FAVICON_LOOP_MS = 3000;    // one full R/D draw-in + hold + fade cycle
+  const FAVICON_FPS = 10;          // tab icons don't benefit from more
+  const FAVICON_FLASH_MS = 450;    // click flash overlay duration
+  const FAVICON_CANVAS_PX = 64;    // fixed backing store; icons display at 16-32px
 
   const HOVER_SELECTORS = 'a, button, input, select, textarea, summary, details, ' +
     '[role="button"], .page-link-cta, .badge-cta, .focus-badge, .project, ' +
@@ -48,12 +48,13 @@
 
   // --------------------------------------------------- 2. Favicon feedback
 
-  // The favicon replays the logo draw-in animation on click. Frames are drawn
-  // to a canvas and encoded asynchronously (toBlob) so the main thread — and
-  // therefore the cursor — never blocks on PNG encoding. A single <link>
-  // element is reused for every update; its type is kept in sync with the
-  // content it carries, and the original SVG icon is restored when the
-  // animation finishes.
+  // The favicon is a small canvas that perpetually loops the "R D" logo
+  // draw-in; clicking layers a short flash/burst over the running loop.
+  // Frames are encoded asynchronously (toBlob) so the main thread — and
+  // therefore the cursor — never blocks on PNG encoding, and a single
+  // <link> element is reused for every update. Cost stays negligible: a
+  // fixed 64px canvas, ~10 frames/sec, paths/gradients/stars built once,
+  // and no drawing or encoding at all while the tab is hidden.
 
   const originalFavicon = (function () {
     const link = document.getElementById('favicon') || document.querySelector('link[rel~="icon"]');
@@ -63,11 +64,11 @@
     };
   })();
 
-  let faviconLink = null;       // single reusable <link rel="icon"> element
-  let faviconAnimId = 0;        // token: bumping invalidates in-flight async frames
-  let faviconAnimRunning = false;
-  let faviconRestartPending = false; // a click landed mid-animation; replay once this run ends
-  let faviconObjectUrl = null;  // current blob URL, revoked on replacement
+  let faviconLink = null;        // single reusable <link rel="icon"> element
+  let faviconObjectUrl = null;   // current blob URL, revoked (deferred) on replacement
+  let faviconLoopStarted = false;
+  let faviconLoopStopped = false; // unrecoverable error: blocks any stale async frames
+  let faviconFlashUntil = 0;      // performance.now() deadline for the click flash
 
   function ensureFaviconLink(type) {
     if (!faviconLink || !faviconLink.isConnected) {
@@ -80,6 +81,15 @@
       faviconLink.id = 'favicon';
       head.appendChild(faviconLink);
       if (old && old !== faviconLink && old.parentNode) old.parentNode.removeChild(old);
+    }
+    // Something else (an extension, another script) may have inserted its
+    // own icon link alongside ours since we last checked; without removing
+    // it the browser can end up rendering that one instead of the frames
+    // this module is actively animating.
+    const duplicates = document.querySelectorAll('link[rel~="icon"]');
+    for (let i = 0; i < duplicates.length; i++) {
+      const node = duplicates[i];
+      if (node !== faviconLink && node.parentNode) node.parentNode.removeChild(node);
     }
     faviconLink.type = type;
     return faviconLink;
@@ -104,17 +114,22 @@
     }
     const previousUrl = faviconObjectUrl;
     faviconObjectUrl = newUrl;
-    if (previousUrl) URL.revokeObjectURL(previousUrl);
+    if (previousUrl) {
+      // Defer the revoke instead of doing it in the same tick as the href
+      // swap -- gives the browser's icon fetch a moment to finish reading
+      // the old blob before the URL backing it is invalidated.
+      window.setTimeout(function () { URL.revokeObjectURL(previousUrl); }, 200);
+    }
   }
 
   function restoreOriginalFavicon() {
-    try {
-      setFavicon(originalFavicon.href, originalFavicon.type);
-    } finally {
-      if (faviconObjectUrl) {
-        URL.revokeObjectURL(faviconObjectUrl);
-        faviconObjectUrl = null;
-      }
+    // Only revoke once the href swap actually succeeds -- revoking
+    // unconditionally (even on failure) would leave the <link> pointing at
+    // a blob URL that's already been invalidated.
+    setFavicon(originalFavicon.href, originalFavicon.type);
+    if (faviconObjectUrl) {
+      URL.revokeObjectURL(faviconObjectUrl);
+      faviconObjectUrl = null;
     }
   }
 
@@ -126,34 +141,37 @@
       setFavicon(originalFavicon.href.split('?')[0] + '?r=' + Math.round(performance.now()), originalFavicon.type);
     } catch (err) {
       debugError('favicon fallback flash failed', err);
+    } finally {
+      // This bypasses setFaviconBlob/restoreOriginalFavicon, so it must do
+      // their object-URL cleanup itself or a prior run's blob URL leaks.
+      if (faviconObjectUrl) {
+        URL.revokeObjectURL(faviconObjectUrl);
+        faviconObjectUrl = null;
+      }
     }
   }
 
-  function runFaviconAnimation() {
-    // Let an in-flight run finish: restarting on every click kept resetting
-    // the animation to its first frame, so it never visibly completed.
-    // Queue one restart instead of dropping the click's feedback entirely.
-    if (faviconAnimRunning) {
-      faviconRestartPending = true;
-      return;
-    }
-    faviconRestartPending = false;
-    faviconAnimRunning = true;
-    const animId = ++faviconAnimId;
+  function startFaviconLoop() {
+    if (faviconLoopStarted || faviconLoopStopped) return;
+    faviconLoopStarted = true;
 
     try {
-      const pixelRatio = Math.max(1, window.devicePixelRatio || 1);
+      // Fixed-size backing store: tab icons display at 16-32px, so a
+      // constant 64px canvas is already oversampled and keeps the encode
+      // cost flat regardless of devicePixelRatio. All drawing code stays in
+      // favicon.svg's 0..100 coordinate space via this one scale.
       const canvas = document.createElement('canvas');
-      canvas.width = FAVICON_SIZE * pixelRatio;
-      canvas.height = FAVICON_SIZE * pixelRatio;
+      canvas.width = FAVICON_CANVAS_PX;
+      canvas.height = FAVICON_CANVAS_PX;
       const ctx = canvas.getContext('2d');
-      ctx.scale(pixelRatio, pixelRatio);
+      if (!ctx) throw new Error('2d context unavailable');
+      ctx.scale(FAVICON_CANVAS_PX / 100, FAVICON_CANVAS_PX / 100);
 
-      // Star field for the click-burst background: generated once per run
-      // (not per frame) so each star's sine-based twinkle stays smooth
-      // across frames instead of jittering with a fresh random seed on
-      // every draw. Reuses the cursor's own SPARK_COLORS palette so the
-      // favicon burst matches the on-screen sparkle trail.
+      // Star field for the background: generated once for the loop's whole
+      // lifetime, and twinkling from absolute time rather than cycle
+      // progress so nothing jumps when the cycle wraps. Reuses the cursor's
+      // own SPARK_COLORS palette so the favicon matches the on-screen
+      // sparkle trail.
       const stars = [];
       for (let i = 0; i < 20; i++) {
         stars.push({
@@ -166,13 +184,11 @@
         });
       }
 
-      function drawStar(star, progress) {
-        // Steady twinkle, plus a brief brighter/bigger flash right at the
-        // start of the run so a click still reads as an instant "pop" --
-        // just via stars igniting instead of the old red flash.
-        const twinkle = 0.35 + 0.65 * Math.abs(Math.sin(progress * star.speed * Math.PI * 2 + star.phase));
-        const ignite = Math.max(0, 1 - progress / 0.15);
-        const flare = ignite * ignite;
+      function drawStar(star, now, flash) {
+        // Steady twinkle, plus a brighter/bigger flare while a click flash
+        // is active -- stars igniting instead of the old red flash.
+        const twinkle = 0.35 + 0.65 * Math.abs(Math.sin((now / 1000) * star.speed + star.phase));
+        const flare = flash * flash;
         ctx.save();
         ctx.globalAlpha = Math.min(1, twinkle + flare * 0.6);
         ctx.fillStyle = star.color;
@@ -186,14 +202,32 @@
       const pathR = new Path2D('M 28 35 L 28 60 M 28 35 L 38 35 Q 42 35 42 40 Q 42 45 38 45 L 28 45 M 42 45 L 48 60');
       const pathD = new Path2D('M 56 35 L 56 60 M 56 35 L 66 35 Q 70 35 70 47.5 Q 70 60 66 60 L 56 60');
 
-      function draw(progress) {
-        ctx.clearRect(0, 0, FAVICON_SIZE, FAVICON_SIZE);
+      // Gradients are built once for the loop, not per frame: their
+      // coordinates and color stops never depend on time, so recreating
+      // them on every draw() call would just be wasted allocation.
+      const sky = ctx.createRadialGradient(50, 50, 4, 50, 50, 46);
+      sky.addColorStop(0, '#1c0f33');
+      sky.addColorStop(1, '#05060a');
+
+      const letterGradient = ctx.createLinearGradient(28, 35, 70, 60);
+      letterGradient.addColorStop(0, '#FF80BF');
+      letterGradient.addColorStop(0.5, '#8A2BE2');
+      letterGradient.addColorStop(1, '#00D4FF');
+
+      const loopStart = performance.now();
+
+      function draw(now) {
+        // Position within the current cycle: R draws in over 0-0.4, D over
+        // 0.4-0.8, hold until 0.9, then the letters fade out so the next
+        // cycle's draw-in starts from a clean sky.
+        const progress = ((now - loopStart) % FAVICON_LOOP_MS) / FAVICON_LOOP_MS;
+        // 1 at the moment of a click, easing back to 0 over FAVICON_FLASH_MS.
+        const flash = Math.max(0, Math.min(1, (faviconFlashUntil - now) / FAVICON_FLASH_MS));
+
+        ctx.clearRect(0, 0, 100, 100);
 
         // Dark starry-sky background instead of the old red-to-light-blue
         // flash, matching the site's dark theme.
-        const sky = ctx.createRadialGradient(50, 50, 4, 50, 50, 46);
-        sky.addColorStop(0, '#1c0f33');
-        sky.addColorStop(1, '#05060a');
         ctx.fillStyle = sky;
         ctx.beginPath();
         ctx.arc(50, 50, 45, 0, Math.PI * 2);
@@ -205,14 +239,15 @@
         ctx.beginPath();
         ctx.arc(50, 50, 45, 0, Math.PI * 2);
         ctx.clip();
-        for (let i = 0; i < stars.length; i++) drawStar(stars[i], progress);
+        for (let i = 0; i < stars.length; i++) drawStar(stars[i], now, flash);
         ctx.restore();
 
-        // outer circle stroke with pulse (semi-transparent), recolored to
-        // the site's rainbow/purple palette instead of plain blue
+        // Outer circle stroke, recolored to the site's rainbow/purple
+        // palette instead of plain blue. It pulses once per cycle (cosine
+        // is periodic, so no jump at the wrap) and brightens with the flash.
         const pulse = 0.85 + 0.15 * Math.cos(2 * Math.PI * progress);
         ctx.save();
-        ctx.globalAlpha = 0.5 * pulse;
+        ctx.globalAlpha = Math.min(1, 0.5 * pulse + 0.4 * flash);
         ctx.strokeStyle = '#8A2BE2';
         ctx.lineWidth = 1.5;
         ctx.beginPath();
@@ -221,12 +256,8 @@
         ctx.restore();
 
         // R/D letters: gradient stroke + soft glow instead of flat blue
-        const letterGradient = ctx.createLinearGradient(28, 35, 70, 60);
-        letterGradient.addColorStop(0, '#FF80BF');
-        letterGradient.addColorStop(0.5, '#8A2BE2');
-        letterGradient.addColorStop(1, '#00D4FF');
-
         ctx.save();
+        ctx.globalAlpha = progress < 0.9 ? 1 : 1 - (progress - 0.9) / 0.1;
         ctx.strokeStyle = letterGradient;
         ctx.shadowColor = '#8A2BE2';
         ctx.shadowBlur = 6;
@@ -256,7 +287,7 @@
         if (typeof canvas.toBlob === 'function') {
           canvas.toBlob(function (blob) {
             try {
-              if (!blob || animId !== faviconAnimId || drawnAt <= lastAppliedAt) return;
+              if (!blob || faviconLoopStopped || drawnAt <= lastAppliedAt) return;
               lastAppliedAt = drawnAt;
               setFaviconBlob(blob);
             } catch (err) {
@@ -275,69 +306,64 @@
       }
 
       const frameInterval = 1000 / FAVICON_FPS;
-      const start = performance.now();
-      let lastFrameAt = start;
-
-      function finishAnimation() {
-        faviconAnimRunning = false;
-        if (faviconRestartPending) {
-          // A click landed while this run was still playing; replay now
-          // instead of restoring, so rapid clicking still gets feedback.
-          faviconRestartPending = false;
-          runFaviconAnimation();
-          return;
-        }
-        // Hand back to the crisp SVG icon once the raster frames have shown.
-        window.setTimeout(function () {
-          if (animId === faviconAnimId) {
-            // Bump the token so a late-arriving toBlob callback for this
-            // finished run can no longer clobber the restore that follows.
-            faviconAnimId++;
-            restoreOriginalFavicon();
-          }
-        }, FAVICON_RESTORE_DELAY_MS);
-      }
+      let lastFrameAt = 0; // 0 forces an immediate first frame
 
       function tick(now) {
-        if (animId !== faviconAnimId) return;
+        if (faviconLoopStopped) return;
         try {
-          const progress = Math.min(1, (now - start) / FAVICON_DURATION_MS);
-          // Skip drawing while hidden; nobody sees the frames and rAF is
-          // throttled there anyway.
-          const visible = document.visibilityState !== 'hidden';
-          if (visible && (now - lastFrameAt >= frameInterval || progress === 1)) {
-            draw(progress);
+          // Skip drawing while hidden: nobody sees the frames, and rAF is
+          // throttled or paused there anyway. The loop resumes on its own
+          // when the tab becomes visible and rAF starts firing again.
+          if (document.visibilityState !== 'hidden' && now - lastFrameAt >= frameInterval) {
+            draw(now);
             pushFrame(now);
             lastFrameAt = now;
           }
-          if (progress < 1) {
-            window.requestAnimationFrame(tick);
-          } else {
-            finishAnimation();
-          }
+          window.requestAnimationFrame(tick);
         } catch (err) {
-          // Without this catch, a throw here left faviconAnimRunning stuck
-          // true forever — every future click would silently no-op.
-          debugError('favicon tick failed', err);
-          faviconAnimRunning = false;
-          faviconAnimId++;
+          // Without this catch a throw would silently kill the loop and
+          // leave a half-drawn frame as the permanent icon; stop cleanly
+          // and hand back to the crisp SVG instead. faviconLoopStopped also
+          // blocks any still-in-flight toBlob callbacks from clobbering
+          // the restored icon.
+          debugError('favicon loop failed', err);
+          faviconLoopStopped = true;
           try { restoreOriginalFavicon(); } catch (e) { /* leave whatever icon is set */ }
         }
       }
 
-      // Draw the first frame immediately so the red flash is visible at once.
-      draw(0);
-      pushFrame(start);
+      // Ignite the stars on the very first frames too, so page load gets
+      // the same "pop" a click does.
+      faviconFlashUntil = loopStart + FAVICON_FLASH_MS;
       window.requestAnimationFrame(tick);
     } catch (err) {
-      debugError('favicon animation failed', err);
-      faviconAnimRunning = false;
+      debugError('favicon loop setup failed', err);
+      faviconLoopStopped = true;
       flashFallbackFavicon();
     }
   }
 
-  // Run once on page load so users see the full cycle without clicking.
-  window.setTimeout(runFaviconAnimation, 120);
+  // Click feedback: extend the flash deadline and let the running loop pick
+  // it up on its next frame -- at 10fps that lands within ~100ms, well
+  // inside the 450ms flash window, so the pop is never missed. Rapid
+  // clicking just keeps pushing the deadline out; there is no queue to
+  // glitch through.
+  function flashFavicon() {
+    faviconFlashUntil = performance.now() + FAVICON_FLASH_MS;
+    if (faviconLoopStopped) {
+      // Loop unavailable (canvas blocked by an extension/CSP, earlier
+      // unrecoverable error): at least cache-bust the static icon so a
+      // click still nudges the tab once.
+      flashFallbackFavicon();
+    } else if (!faviconLoopStarted) {
+      // A click can land before the startup timeout below fires.
+      startFaviconLoop();
+    }
+  }
+
+  // Start the loop shortly after load; the small delay keeps favicon work
+  // clear of the page's first paint.
+  window.setTimeout(startFaviconLoop, 120);
 
   // ------------------------------------------- 3. Cursor element + motion loop
 
@@ -349,6 +375,9 @@
   // showing instead of overriding the same element's transform property.
   const popLayer = document.createElement('div');
   popLayer.className = 'cursor-pop-layer';
+  // Single source of truth for the fallback CSS animation's duration too
+  // (see .cursor-pop-fallback in styles.css), so the two paths can't drift.
+  popLayer.style.setProperty('--pop-duration', POP_DURATION_MS + 'ms');
   const core = document.createElement('div');
   core.className = 'cursor-core';
   /* Stylized pointy cursor SVG; the tip sits at the element's top-left. */
@@ -420,6 +449,7 @@
   let hoverTarget = null;
   let idleTimer = null;
   let isIdle = true;
+  let hoverRefreshPending = false; // see refreshHoverState
 
   function setIdleState(nextIdle) {
     if (isIdle === nextIdle) return;
@@ -446,6 +476,10 @@
   // Re-derive hover state from the last known pointer position. Needed after
   // a tab hide/show cycle: if the pointer never left the hovered element, no
   // mouseover/mouseout fires to naturally refresh setHoverState's target.
+  // mouseX/mouseY can be stale here (e.g. the real pointer moved in a
+  // different window while this tab was hidden) -- callers that can't
+  // guarantee fresh coordinates should also set hoverRefreshPending so the
+  // next real mousemove re-derives it from its own event coordinates.
   function refreshHoverState() {
     if (typeof document.elementFromPoint === 'function') {
       setHoverState(document.elementFromPoint(mouseX, mouseY));
@@ -563,6 +597,10 @@
 
   document.addEventListener('mousemove', function (e) {
     handlePointerActivity(e.clientX, e.clientY);
+    if (hoverRefreshPending) {
+      hoverRefreshPending = false;
+      refreshHoverState();
+    }
     const now = performance.now();
     if (now - lastSparkAt > SPARK_INTERVAL_MS) {
       spawnMiniSparks(e.clientX, e.clientY);
@@ -585,10 +623,11 @@
   });
 
   document.addEventListener('mousedown', function (e) {
+    if (e.button !== 0) return; // left click only; ignore right/middle click
     handlePointerActivity(e.clientX, e.clientY);
     spawnClickRing(e.clientX, e.clientY);
     playClickPop();
-    runFaviconAnimation();
+    flashFavicon();
   });
 
   document.addEventListener('pointerenter', function (e) {
@@ -603,13 +642,32 @@
     } else {
       startMotion();
       refreshHoverState();
+      // mouseX/mouseY above may be stale if the real pointer moved in a
+      // different window while this tab was hidden; force one more
+      // recheck using fresh coordinates on the next real pointer event.
+      hoverRefreshPending = true;
     }
   });
 
   window.addEventListener('focus', function () {
     startMotion();
     refreshHoverState();
+    hoverRefreshPending = true;
   });
+
+  // Scrolling can move different content under a stationary pointer without
+  // firing any mouse event; screen coordinates (mouseX/mouseY) stay valid
+  // here, so a direct recheck (rAF-throttled) is correct, unlike the
+  // deferred one above.
+  let scrollRefreshQueued = false;
+  window.addEventListener('scroll', function () {
+    if (scrollRefreshQueued) return;
+    scrollRefreshQueued = true;
+    window.requestAnimationFrame(function () {
+      scrollRefreshQueued = false;
+      refreshHoverState();
+    });
+  }, { passive: true });
 
   applyPosition();
   resetIdleState();

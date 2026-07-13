@@ -68,9 +68,12 @@ body.has-custom-cursor [role="button"] {
   100% { transform: scale(1); }
 }
 
-/* Fallback for browsers without the Web Animations API. */
+/* Fallback for browsers without the Web Animations API. Duration is set as
+   --pop-duration by the script (from POP_DURATION_MS) so it can't drift
+   from the primary Web Animations API version; 280ms is a static fallback
+   in case the script never sets the property. */
 .cursor-pop-layer.cursor-pop-fallback {
-  animation: cursorPopFallback 280ms cubic-bezier(.2,.85,.32,1);
+  animation: cursorPopFallback var(--pop-duration, 280ms) cubic-bezier(.2,.85,.32,1);
 }
 
 #custom-cursor .cursor-core {
@@ -315,23 +318,6 @@ body.has-custom-cursor [role="button"] {
   0% { transform: translateY(0); opacity: 0.95; }
   50% { transform: translateY(-4px); opacity: 1; }
   100% { transform: translateY(0); opacity: 0.95; }
-}
-
-/* sparkle cursor elements */
-.sparkle {
-  position: fixed;
-  pointer-events: none;
-  border-radius: 50%;
-  transform-origin: center;
-  animation: sparkleAnim 700ms forwards ease-out;
-  mix-blend-mode: screen;
-  z-index: 99999;
-}
-
-@keyframes sparkleAnim {
-  0% { transform: translateY(0) scale(1); opacity: 1; }
-  60% { transform: translateY(-12px) scale(1.2); opacity: 0.9; }
-  100% { transform: translateY(-24px) scale(0.6); opacity: 0; }
 }
 
 .about-section {
