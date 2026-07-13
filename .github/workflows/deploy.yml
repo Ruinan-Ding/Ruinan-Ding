@@ -6,9 +6,6 @@ on:
       - main
   workflow_dispatch:
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 permissions:
   contents: read
   pages: write
@@ -30,14 +27,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-
-      - name: Verify Node.js & npm (CI runtime)
-        run: |
-          echo "Node version:";
-          node --version;
-          echo "NPM version:";
-          npm --version;
-          echo "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=${{ env.FORCE_JAVASCRIPT_ACTIONS_TO_NODE24 }}";
 
       - name: Install dependencies
         run: npm ci --prefix ruinan-ding

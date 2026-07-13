@@ -14,8 +14,7 @@ body {
   box-sizing: border-box;
 }
 
-/* Global custom cursor styles (moved from app component so body-level cursor element is styled) */
-/* Only hide the native cursor when the script actually creates the custom cursor. */
+/* Hide the native cursor only when the custom cursor script is active. */
 body.has-custom-cursor,
 body.has-custom-cursor *,
 body.has-custom-cursor *::before,
@@ -28,17 +27,11 @@ body.has-custom-cursor button:hover,
 body.has-custom-cursor summary,
 body.has-custom-cursor summary:hover,
 body.has-custom-cursor [role="button"] {
-  /* !important beats the UA's cursor:pointer on links/buttons/summary,
-     which otherwise shows the native cursor on top of the custom one */
   cursor: none !important;
 }
 
-/* Pointy SVG cursor styles */
-
-/* The element is positioned by the script via transform: translate3d so the
-   cursor stays compositor-only; scale states (idle shrink, hover enlarge,
-   click pop) live on the inner .cursor-core so they never fight the
-   per-frame position transform. */
+/* Positioned by the script via transform; scale states live on .cursor-core
+   so they don't fight the per-frame position transform. */
 #custom-cursor {
   position: fixed;
   left: 0;
@@ -46,15 +39,12 @@ body.has-custom-cursor [role="button"] {
   width: 80px;
   height: 80px;
   pointer-events: none;
-  z-index: 2147483647; /* max so it's always above other UI */
+  z-index: 2147483647;
   display: block;
   will-change: transform;
   transition: opacity 120ms linear;
 }
 
-/* Click-pop scales this layer (via the Web Animations API) independently of
-   .cursor-core's idle/enlarge CSS transform, so the two compose instead of
-   one overriding the other mid-click. */
 #custom-cursor .cursor-pop-layer {
   display: block;
   width: 100%;
@@ -68,10 +58,7 @@ body.has-custom-cursor [role="button"] {
   100% { transform: scale(1); }
 }
 
-/* Fallback for browsers without the Web Animations API. Duration is set as
-   --pop-duration by the script (from POP_DURATION_MS) so it can't drift
-   from the primary Web Animations API version; 280ms is a static fallback
-   in case the script never sets the property. */
+/* Fallback for browsers without the Web Animations API. */
 .cursor-pop-layer.cursor-pop-fallback {
   animation: cursorPopFallback var(--pop-duration, 280ms) cubic-bezier(.2,.85,.32,1);
 }
@@ -80,7 +67,7 @@ body.has-custom-cursor [role="button"] {
   width: 100%;
   height: 100%;
   display: block;
-  transform-origin: 0 0; /* scale from the pointer tip */
+  transform-origin: 0 0;
   transition: transform 180ms cubic-bezier(.2,.9,.2,1);
   will-change: transform;
 }
@@ -97,13 +84,11 @@ body.has-custom-cursor [role="button"] {
   transform: scale(0.78) rotate(-2deg);
 }
 
-/* enlarge wins over idle while parked on an interactive element */
 #custom-cursor.cursor-enlarge .cursor-core {
   transform: scale(1.6);
 }
 
-/* speed up the rainbow cycle while hovering an interactive element
-   (first duration = cursorFloat, second = cursorRainbow) */
+/* speed up the rainbow cycle while hovering an interactive element */
 #custom-cursor.cursor-enlarge .cursor-core svg {
   animation-duration: 900ms, 0.8s;
 }
@@ -118,7 +103,6 @@ body.has-custom-cursor [role="button"] {
   100% { filter: hue-rotate(360deg) saturate(1.1); }
 }
 
-/* hidden state (when the tab becomes hidden) */
 #custom-cursor.is-hidden { opacity: 0; }
 
 .mini-spark { position: fixed; pointer-events: none; border-radius: 50%; mix-blend-mode: screen; z-index: 999998; animation: miniSpark 700ms forwards cubic-bezier(.16,.9,.3,1); }
@@ -129,7 +113,6 @@ body.has-custom-cursor [role="button"] {
   100% { opacity: 0; transform: translate(calc(var(--dx)*1.4), calc(var(--dy)*1.4)) scale(0.35); }
 }
 
-/* Click ring/pop visual that appears on pointer down */
 .cursor-pop-ring {
   position: fixed;
   left: 0;
@@ -152,8 +135,6 @@ body.has-custom-cursor [role="button"] {
   100% { transform: translate(-50%, -50%) scale(3.6); opacity: 0; }
 }
 
-/* --- Moved component styles (app.component) --- */
-
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -171,7 +152,6 @@ body.has-custom-cursor [role="button"] {
   height: auto;
 }
 
-/* Big animated GitHub Pages banner (below name) */
 .page-link-banner {
   display: flex;
   justify-content: center;
@@ -286,7 +266,7 @@ body.has-custom-cursor [role="button"] {
 }
 
 .badges img {
-  height: 48px; /* larger icons */
+  height: 48px;
 }
 
 .badge-cta {
@@ -358,7 +338,7 @@ body.has-custom-cursor [role="button"] {
   width: 90%;
   max-width: 600px;
   border-radius: 10px;
-  margin: 8px 0; /* tighter spacing to match README */
+  margin: 8px 0;
 }
 
 .caption {
@@ -368,14 +348,13 @@ body.has-custom-cursor [role="button"] {
   margin: 6px 0;
 }
 
-/* Location lines (match README size and tighter spacing) */
 .location {
   text-align: center;
   display: block;
   margin: 0;
   font-style: italic;
   color: #c9d1d9;
-  font-size: 14px; /* slightly smaller to match README */
+  font-size: 14px;
   line-height: 1.15;
 }
 

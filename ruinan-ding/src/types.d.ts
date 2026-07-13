@@ -1,4 +1,3 @@
-// Ambient declarations for Angular modules when node_modules is not available
 declare module '@angular/core';
 declare module '@angular/common';
 declare module '@angular/compiler';
