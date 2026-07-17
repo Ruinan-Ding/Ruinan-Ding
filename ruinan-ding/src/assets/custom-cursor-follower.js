@@ -46,6 +46,7 @@
   let faviconLoopStarted = false;
   let faviconLoopStopped = false;
   let faviconFlashUntil = 0;
+  let faviconBurstQueued = 0; // clicks waiting for a sparkle burst
 
   function ensureFaviconLink(type) {
     if (!faviconLink || !faviconLink.isConnected) {
@@ -151,6 +152,51 @@
         ctx.restore();
       }
 
+      // sparkle stars that shoot outward from the center on each click
+      const burstParticles = [];
+      const MAX_BURST_PARTICLES = 60;
+
+      function spawnBurst(now) {
+        const count = 10 + Math.floor(Math.random() * 5);
+        for (let i = 0; i < count; i++) {
+          if (burstParticles.length >= MAX_BURST_PARTICLES) burstParticles.shift();
+          burstParticles.push({
+            angle: Math.random() * Math.PI * 2,
+            dist: 16 + Math.random() * 26,
+            r: 4 + Math.random() * 5,
+            spin: (Math.random() - 0.5) * 4,
+            color: SPARK_COLORS[Math.floor(Math.random() * SPARK_COLORS.length)],
+            born: now,
+            life: 500 + Math.random() * 250
+          });
+        }
+      }
+
+      function drawBurstStar(p, now) {
+        const t = (now - p.born) / p.life;
+        if (t >= 1) return false;
+        const eased = t * (2 - t);
+        const x = 50 + Math.cos(p.angle) * p.dist * eased;
+        const y = 50 + Math.sin(p.angle) * p.dist * eased;
+        const r = p.r * (1 - t * 0.4);
+        ctx.save();
+        ctx.globalAlpha = 1 - t;
+        ctx.translate(x, y);
+        ctx.rotate(p.angle + p.spin * t);
+        ctx.strokeStyle = p.color;
+        ctx.lineWidth = 2.2;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(-r, 0); ctx.lineTo(r, 0);
+        ctx.moveTo(0, -r); ctx.lineTo(0, r);
+        const d = r * 0.55;
+        ctx.moveTo(-d, -d); ctx.lineTo(d, d);
+        ctx.moveTo(-d, d); ctx.lineTo(d, -d);
+        ctx.stroke();
+        ctx.restore();
+        return true;
+      }
+
       // letter paths from favicon.svg; D widened slightly so it reads as a
       // capital D at tab size
       const pathR = new Path2D('M 28 35 L 28 60 M 28 35 L 38 35 Q 42 35 42 40 Q 42 45 38 45 L 28 45 M 42 45 L 48 60');
@@ -214,6 +260,14 @@
         ctx.beginPath();
         ctx.stroke(pathD);
         ctx.restore();
+
+        while (faviconBurstQueued > 0) {
+          faviconBurstQueued--;
+          spawnBurst(now);
+        }
+        for (let i = burstParticles.length - 1; i >= 0; i--) {
+          if (!drawBurstStar(burstParticles[i], now)) burstParticles.splice(i, 1);
+        }
       }
 
       let lastAppliedAt = 0; // drops async frames that arrive out of order
@@ -261,8 +315,9 @@
         }
       }
 
-      // flash the stars on page load too
+      // flash and burst on page load too
       faviconFlashUntil = loopStart + FAVICON_FLASH_MS;
+      faviconBurstQueued++;
       window.requestAnimationFrame(tick);
     } catch (err) {
       debugError('favicon loop setup failed', err);
@@ -273,6 +328,7 @@
 
   function flashFavicon() {
     faviconFlashUntil = performance.now() + FAVICON_FLASH_MS;
+    faviconBurstQueued++;
     if (faviconLoopStopped) {
       flashFallbackFavicon();
     } else if (!faviconLoopStarted) {
