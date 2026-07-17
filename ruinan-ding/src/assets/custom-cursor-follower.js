@@ -162,12 +162,12 @@
           if (burstParticles.length >= MAX_BURST_PARTICLES) burstParticles.shift();
           burstParticles.push({
             angle: Math.random() * Math.PI * 2,
-            dist: 18 + Math.random() * 30,
-            r: 7 + Math.random() * 7,
+            dist: 20 + Math.random() * 34,
+            r: 9 + Math.random() * 9,
             spin: (Math.random() - 0.5) * 4,
             color: SPARK_COLORS[Math.floor(Math.random() * SPARK_COLORS.length)],
             born: now,
-            life: 500 + Math.random() * 250
+            life: 800 + Math.random() * 400
           });
         }
       }
@@ -188,7 +188,7 @@
         ctx.shadowBlur = 5;
         // colored star
         ctx.strokeStyle = p.color;
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 3.6;
         ctx.beginPath();
         ctx.moveTo(-r, 0); ctx.lineTo(r, 0);
         ctx.moveTo(0, -r); ctx.lineTo(0, r);
@@ -198,7 +198,7 @@
         ctx.stroke();
         // bright white core for extra glint
         ctx.strokeStyle = '#FFFFFF';
-        ctx.lineWidth = 1.4;
+        ctx.lineWidth = 1.8;
         const c = r * 0.45;
         ctx.beginPath();
         ctx.moveTo(-c, 0); ctx.lineTo(c, 0);
