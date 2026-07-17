@@ -3,6 +3,12 @@
   <img src="https://skillicons.dev/icons?i=java,spring,aws,kafka,typescript,python,angular,docker" />
 </div>
 
+<div align="center">
+  <a href="https://ruinan-ding.github.io/" target="_blank" rel="noopener noreferrer">
+    <img src="https://img.shields.io/badge/✨_Click_Here_to_Check_Out_My_Web_App!!-8A2BE2?style=for-the-badge&logoColor=white" alt="Check Out My Web App" />
+  </a>
+</div>
+
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=16&duration=2000&pause=1000&color=8A2BE2&center=false&vCenter=true&repeat=false&width=900&lines=Software+Engineer+%7C+Java+Developer+%7C+CompTIA+Security%2B+Certified+April+2021" alt="Typing SVG" />
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ruinan-ding/)
