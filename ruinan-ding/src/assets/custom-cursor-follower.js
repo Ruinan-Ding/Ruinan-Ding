@@ -157,13 +157,13 @@
       const MAX_BURST_PARTICLES = 60;
 
       function spawnBurst(now) {
-        const count = 10 + Math.floor(Math.random() * 5);
+        const count = 14 + Math.floor(Math.random() * 7);
         for (let i = 0; i < count; i++) {
           if (burstParticles.length >= MAX_BURST_PARTICLES) burstParticles.shift();
           burstParticles.push({
             angle: Math.random() * Math.PI * 2,
-            dist: 16 + Math.random() * 26,
-            r: 4 + Math.random() * 5,
+            dist: 18 + Math.random() * 30,
+            r: 7 + Math.random() * 7,
             spin: (Math.random() - 0.5) * 4,
             color: SPARK_COLORS[Math.floor(Math.random() * SPARK_COLORS.length)],
             born: now,
@@ -183,9 +183,12 @@
         ctx.globalAlpha = 1 - t;
         ctx.translate(x, y);
         ctx.rotate(p.angle + p.spin * t);
-        ctx.strokeStyle = p.color;
-        ctx.lineWidth = 2.2;
         ctx.lineCap = 'round';
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 5;
+        // colored star
+        ctx.strokeStyle = p.color;
+        ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(-r, 0); ctx.lineTo(r, 0);
         ctx.moveTo(0, -r); ctx.lineTo(0, r);
@@ -193,6 +196,18 @@
         ctx.moveTo(-d, -d); ctx.lineTo(d, d);
         ctx.moveTo(-d, d); ctx.lineTo(d, -d);
         ctx.stroke();
+        // bright white core for extra glint
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 1.4;
+        const c = r * 0.45;
+        ctx.beginPath();
+        ctx.moveTo(-c, 0); ctx.lineTo(c, 0);
+        ctx.moveTo(0, -c); ctx.lineTo(0, c);
+        ctx.stroke();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath();
+        ctx.arc(0, 0, 1.4, 0, Math.PI * 2);
+        ctx.fill();
         ctx.restore();
         return true;
       }
