@@ -5,7 +5,7 @@
 
 <div align="center">
   <a href="https://ruinan-ding.github.io/Ruinan-Ding/" target="_blank" rel="noopener noreferrer">
-    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=800&size=34&duration=2500&pause=800&color=FF80BF&center=true&vCenter=true&repeat=true&width=750&height=80&lines=🌐+Check+Out+My+Website!!" alt="Check Out My Website" />
+    <img src="https://img.shields.io/badge/🌐_Check_Out_My_Website!!-FF80BF?style=for-the-badge&logoColor=white" alt="Check Out My Website" width="440" />
   </a>
 </div>
 
