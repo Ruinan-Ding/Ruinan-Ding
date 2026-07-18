@@ -221,12 +221,6 @@ body.has-custom-cursor [role="button"] {
   100% { background-position: 0% 50%; }
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-  100% { transform: scale(1); }
-}
-
 .skills {
   text-align: center;
   margin: 30px 0;

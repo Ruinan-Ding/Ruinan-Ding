@@ -176,12 +176,6 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
 </details>
 
 <details>
-<summary><b>📊 Contribution Activity</b></summary>
-<div align="center">
-</div>
-</details>
-
-<details>
 <summary><b>🔍 Recent Projects</b></summary>
 <div align="center">
   
@@ -190,10 +184,6 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding)
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding.github.io&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding.github.io)
   
-</div>
-</details>
-
-<br>
 </div>
 </details>
 
