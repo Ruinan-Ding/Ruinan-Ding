@@ -24,8 +24,9 @@
   const POP_DURATION_MS = 280;
   const FAVICON_LOOP_MS = 3000;
   const FAVICON_FPS = 10;
+  const FAVICON_IDLE_FPS = 5;
   const FAVICON_FLASH_MS = 450;
-  const FAVICON_CANVAS_PX = 64;
+  const FAVICON_CANVAS_PX = 32;
 
   const HOVER_SELECTORS = 'a, button, input, select, textarea, summary, details, ' +
     '[role="button"], .page-link-cta, .badge-cta, .focus-badge, .project, ' +
@@ -57,14 +58,14 @@
       faviconLink.id = 'favicon';
       head.appendChild(faviconLink);
       if (old && old !== faviconLink && old.parentNode) old.parentNode.removeChild(old);
+      // drop any stray icon links so the browser doesn't pick one of those instead
+      const duplicates = document.querySelectorAll('link[rel~="icon"]');
+      for (let i = 0; i < duplicates.length; i++) {
+        const node = duplicates[i];
+        if (node !== faviconLink && node.parentNode) node.parentNode.removeChild(node);
+      }
     }
-    // drop any stray icon links so the browser doesn't pick one of those instead
-    const duplicates = document.querySelectorAll('link[rel~="icon"]');
-    for (let i = 0; i < duplicates.length; i++) {
-      const node = duplicates[i];
-      if (node !== faviconLink && node.parentNode) node.parentNode.removeChild(node);
-    }
-    faviconLink.type = type;
+    if (faviconLink.type !== type) faviconLink.type = type;
     return faviconLink;
   }
 
@@ -75,28 +76,43 @@
     if (link.parentNode) link.parentNode.appendChild(link);
   }
 
+  // per-frame path: once the link exists, updating href is enough — re-inserting
+  // the node many times a second forces extra icon refetch/decode work
+  function setFaviconFrame(href, type) {
+    ensureFaviconLink(type).href = href;
+  }
+
+  let faviconPrevObjectUrl = null;
+
   function setFaviconBlob(blob) {
     const newUrl = URL.createObjectURL(blob);
     try {
-      setFavicon(newUrl, 'image/png');
+      setFaviconFrame(newUrl, 'image/png');
     } catch (err) {
       URL.revokeObjectURL(newUrl);
       throw err;
     }
-    const previousUrl = faviconObjectUrl;
+    // revoke the URL from two frames back: the previous frame may still be
+    // loading, but the one before it is done — no timers needed
+    if (faviconPrevObjectUrl) URL.revokeObjectURL(faviconPrevObjectUrl);
+    faviconPrevObjectUrl = faviconObjectUrl;
     faviconObjectUrl = newUrl;
-    if (previousUrl) {
-      // let the browser finish fetching the old blob before revoking it
-      window.setTimeout(function () { URL.revokeObjectURL(previousUrl); }, 200);
+  }
+
+  function releaseFaviconObjectUrls() {
+    if (faviconObjectUrl) {
+      URL.revokeObjectURL(faviconObjectUrl);
+      faviconObjectUrl = null;
+    }
+    if (faviconPrevObjectUrl) {
+      URL.revokeObjectURL(faviconPrevObjectUrl);
+      faviconPrevObjectUrl = null;
     }
   }
 
   function restoreOriginalFavicon() {
     setFavicon(originalFavicon.href, originalFavicon.type);
-    if (faviconObjectUrl) {
-      URL.revokeObjectURL(faviconObjectUrl);
-      faviconObjectUrl = null;
-    }
+    releaseFaviconObjectUrls();
   }
 
   // cache-bust the static SVG so the icon still reacts when canvas is unavailable
@@ -106,10 +122,7 @@
     } catch (err) {
       debugError('favicon fallback flash failed', err);
     } finally {
-      if (faviconObjectUrl) {
-        URL.revokeObjectURL(faviconObjectUrl);
-        faviconObjectUrl = null;
-      }
+      releaseFaviconObjectUrls();
     }
   }
 
@@ -184,8 +197,6 @@
         ctx.translate(x, y);
         ctx.rotate(p.angle + p.spin * t);
         ctx.lineCap = 'round';
-        ctx.shadowColor = p.color;
-        ctx.shadowBlur = 5;
         // colored star
         ctx.strokeStyle = p.color;
         ctx.lineWidth = 3.6;
@@ -257,8 +268,6 @@
         ctx.translate(-50, -47.5);
         ctx.globalAlpha = progress < 0.9 ? 1 : 1 - (progress - 0.9) / 0.1;
         ctx.strokeStyle = letterGradient;
-        ctx.shadowColor = 'rgba(74, 20, 140, 0.35)';
-        ctx.shadowBlur = 4;
         ctx.lineWidth = 4.2;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
@@ -309,13 +318,17 @@
       }
 
       const frameInterval = 1000 / FAVICON_FPS;
+      const idleFrameInterval = 1000 / FAVICON_IDLE_FPS;
       let lastFrameAt = 0;
 
       function tick(now) {
         if (faviconLoopStopped) return;
         try {
+          // full rate only while a click flash/burst is animating; the ambient
+          // twinkle doesn't need that many PNG encodes per second
+          const busy = faviconFlashUntil > now || faviconBurstQueued > 0 || burstParticles.length > 0;
           // skip drawing while the tab is hidden; rAF resumes on its own
-          if (document.visibilityState !== 'hidden' && now - lastFrameAt >= frameInterval) {
+          if (document.visibilityState !== 'hidden' && now - lastFrameAt >= (busy ? frameInterval : idleFrameInterval)) {
             draw(now);
             pushFrame(now);
             lastFrameAt = now;

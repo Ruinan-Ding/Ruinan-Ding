@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&family=Dancing+Script:wght@400&family=Satisfy:wght@400&display=swap');
+/* Fonts are loaded from index.html (preconnect + stylesheet link) so the
+   Google Fonts fetch doesn't block first render via a CSS @import chain. */
 
 body {
   margin: 0;
