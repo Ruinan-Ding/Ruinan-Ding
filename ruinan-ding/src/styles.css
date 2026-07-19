@@ -124,7 +124,7 @@ body.has-custom-cursor [role="button"] {
   pointer-events: none;
   z-index: 2147483646;
   border: 2px solid rgba(255,255,255,0.95);
-  box-shadow: 0 0 18px rgba(255,128,191,0.95), 0 0 36px rgba(138,43,226,0.6);
+  box-shadow: 0 0 10px rgba(255,128,191,0.95), 0 0 18px rgba(138,43,226,0.6);
   transform: translate(-50%, -50%) scale(0.2);
   transform-origin: center center;
   animation: ringPop 420ms cubic-bezier(.2,.9,.2,1) forwards;

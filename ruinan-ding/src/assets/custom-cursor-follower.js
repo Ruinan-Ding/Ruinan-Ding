@@ -23,7 +23,7 @@
   const MAX_CLICK_RINGS = 8;
   const POP_DURATION_MS = 280;
   const FAVICON_LOOP_MS = 3000;
-  const FAVICON_FPS = 10;
+  const FAVICON_FPS = 6;
   const FAVICON_IDLE_FPS = 5;
   const FAVICON_FLASH_MS = 450;
   const FAVICON_CANVAS_PX = 32;
@@ -166,11 +166,12 @@
       }
 
       // sparkle stars that shoot outward from the center on each click
+      // small pool: at 32px the icon saturates well before this many stars
       const burstParticles = [];
-      const MAX_BURST_PARTICLES = 60;
+      const MAX_BURST_PARTICLES = 24;
 
       function spawnBurst(now) {
-        const count = 14 + Math.floor(Math.random() * 7);
+        const count = 8 + Math.floor(Math.random() * 3);
         for (let i = 0; i < count; i++) {
           if (burstParticles.length >= MAX_BURST_PARTICLES) burstParticles.shift();
           burstParticles.push({
@@ -295,10 +296,14 @@
       }
 
       let lastAppliedAt = 0; // drops async frames that arrive out of order
+      let encodeInFlight = false; // never stack encodes on a slow machine
 
       function pushFrame(drawnAt) {
         if (typeof canvas.toBlob === 'function') {
+          if (encodeInFlight) return;
+          encodeInFlight = true;
           canvas.toBlob(function (blob) {
+            encodeInFlight = false;
             try {
               if (!blob || faviconLoopStopped || drawnAt <= lastAppliedAt) return;
               lastAppliedAt = drawnAt;
