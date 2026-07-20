@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="64" viewBox="0 0 440 64" role="img" aria-label="Check Out My Website!!">
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FF9ECD"/>
+      <stop offset="100%" stop-color="#FF5CA8"/>
+    </linearGradient>
+    <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.05"/>
+    </linearGradient>
+  </defs>
+  <rect x="3" y="8" width="434" height="53" rx="16" fill="#a83570"/>
+  <rect x="3" y="3" width="434" height="53" rx="16" fill="url(#grad)"/>
+  <rect x="4" y="4" width="432" height="51" rx="15" fill="none" stroke="#ffffff" stroke-opacity="0.35" stroke-width="1.5"/>
+  <rect x="12" y="7" width="416" height="23" rx="11.5" fill="url(#gloss)"/>
+  <text x="220" y="38" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="700" fill="#7e1f4e" opacity="0.5">&#127760; Check Out My Website!!</text>
+  <text x="220" y="36.5" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="700" fill="#ffffff">&#127760; Check Out My Website!!</text>
+</svg>

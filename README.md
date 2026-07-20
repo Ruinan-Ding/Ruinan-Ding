@@ -4,9 +4,7 @@
 </div>
 
 <div align="center">
-  <a href="https://ruinan-ding.github.io/Ruinan-Ding/" target="_blank" rel="noopener noreferrer">
-    <img src="https://img.shields.io/badge/🌐_Check_Out_My_Website!!-FF80BF?style=for-the-badge&logoColor=white" alt="Check Out My Website" width="440" />
-  </a>
+  <a href="https://ruinan-ding.github.io/Ruinan-Ding/" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/website-button.svg" alt="Check Out My Website" width="440" /></a>
 </div>
 
 <div align="center">
@@ -265,16 +263,7 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=160&height=60&vCenter=true&lines=%F0%9F%93%AB+Connect" alt="Connect" />
 
 <p align="center">
-  <a href="https://www.linkedin.com/in/ruinan-ding/" target="_blank" rel="noopener noreferrer">
-    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" width="40" height="40" />
-  </a>
-  &nbsp;&nbsp;&nbsp;
-  <a href="https://github.com/Ruinan-Ding" target="_blank" rel="noopener noreferrer">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://cdn.simpleicons.org/github/white">
-      <img src="https://cdn.simpleicons.org/github/181717" width="40" height="40" />
-    </picture>
-  </a>
+  <a href="https://www.linkedin.com/in/ruinan-ding/" target="_blank" rel="noopener noreferrer"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" width="40" height="40" /></a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/Ruinan-Ding" target="_blank" rel="noopener noreferrer"><picture><source media="(prefers-color-scheme: dark)" srcset="https://cdn.simpleicons.org/github/white"><img src="https://cdn.simpleicons.org/github/181717" width="40" height="40" /></picture></a>
 </p>
 
 <div align="center">
