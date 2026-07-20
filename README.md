@@ -256,10 +256,6 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
   <img src="https://gh-profile-trophy.vercel.app/?username=Ruinan-Ding&theme=radical&row=1&column=6&margin-w=15" alt="Trophy" />
 </p>
 
-<div align="center">
-  <img src="https://user-images.githubusercontent.com/74038190/212750155-3f9a9ca9-804c-4a20-8231-54b1bfb30e37.gif" width="500" alt="GitHub Animation" />
-</div>
-
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=160&height=60&vCenter=true&lines=%F0%9F%93%AB+Connect" alt="Connect" />
 
 <p align="center">
