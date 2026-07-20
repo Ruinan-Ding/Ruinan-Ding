@@ -32,7 +32,7 @@ jobs:
         run: npm ci --prefix ruinan-ding
 
       - name: Build Angular application
-        run: npm run build --prefix ruinan-ding -- --configuration production --base-href /Ruinan-Ding/
+        run: npm run build --prefix ruinan-ding -- --configuration production --base-href /
 
       - name: Add Pages marker file
         run: touch ruinan-ding/dist/browser/.nojekyll
