@@ -179,10 +179,10 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
 <summary><b>🔍 Recent Projects</b></summary>
 <div align="center">
   
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=OpenAI-YouTube-Transcriber&theme=radical)](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber)
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=ChessPlusPlus&theme=radical)](https://github.com/Ruinan-Ding/ChessPlusPlus)
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding)
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding.github.io&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding.github.io)
+[![Readme Card](https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=Ruinan-Ding&repo=OpenAI-YouTube-Transcriber&theme=radical)](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber)
+[![Readme Card](https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=Ruinan-Ding&repo=ChessPlusPlus&theme=radical)](https://github.com/Ruinan-Ding/ChessPlusPlus)
+[![Readme Card](https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding)
+[![Readme Card](https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding.github.io&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding.github.io)
   
 </div>
 </details>
@@ -248,14 +248,14 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
 ### 📊 GitHub Stats & Languages
 <div align="center">
 <a href="https://github.com/Ruinan-Ding" target="_blank" rel="noopener noreferrer">
-  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=Ruinan-Ding&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true"/>
-  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Ruinan-Ding&layout=compact&langs_count=7&theme=tokyonight"/>
+  <img height="180em" src="https://github-readme-stats-sigma-five.vercel.app/api?username=Ruinan-Ding&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true"/>
+  <img height="180em" src="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=Ruinan-Ding&layout=compact&langs_count=7&theme=tokyonight"/>
 </a>
 </div>
 
 ### 🏆 GitHub Achievements
 <p align="center">
-  <img src="https://github-profile-trophy.vercel.app/?username=Ruinan-Ding&theme=radical&row=1&column=6&margin-w=15" alt="Trophy" />
+  <img src="https://gh-profile-trophy.vercel.app/?username=Ruinan-Ding&theme=radical&row=1&column=6&margin-w=15" alt="Trophy" />
 </p>
 
 <div align="center">
