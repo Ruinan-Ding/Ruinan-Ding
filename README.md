@@ -270,11 +270,13 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
   </a>
   &nbsp;&nbsp;&nbsp;
   <a href="https://github.com/Ruinan-Ding" target="_blank" rel="noopener noreferrer">
-    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="40" height="40" />
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://cdn.simpleicons.org/github/white">
+      <img src="https://cdn.simpleicons.org/github/181717" width="40" height="40" />
+    </picture>
   </a>
 </p>
 
----
 <div align="center">
   <img src="https://komarev.com/ghpvc/?username=Ruinan-Ding&color=blueviolet&style=flat-square" alt="Profile Views">
   <br>
