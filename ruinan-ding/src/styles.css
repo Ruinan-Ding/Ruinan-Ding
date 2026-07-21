@@ -424,6 +424,10 @@ body.has-custom-cursor [role="button"] {
   margin: 10px;
 }
 
+.github-stats img[alt="GitHub Trophies"] {
+  height: auto;
+}
+
 .connect {
   text-align: center;
   margin: 40px 0;
