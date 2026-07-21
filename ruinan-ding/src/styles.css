@@ -420,6 +420,7 @@ body.has-custom-cursor [role="button"] {
 
 .github-stats img {
   height: 180px;
+  max-width: 100%;
   margin: 10px;
 }
 
