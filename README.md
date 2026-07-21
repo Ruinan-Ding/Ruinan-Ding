@@ -203,6 +203,8 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
 ### <a href="https://github.com/Ruinan-Ding/Ruinan-Ding.github.io"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=00A6FF&repeat=false&width=450&lines=%E2%8F%B1%EF%B8%8F+Study+Timer+App" alt="Study Timer App" /></a>
 <a href="https://github.com/Ruinan-Ding/Ruinan-Ding.github.io" target="_blank" rel="noopener noreferrer">View source code</a> or click the header above. A lightweight Study Timer application written in Angular and deployed to GitHub Pages — ideal for focused study sessions and Pomodoro-style workflows.
 
+<a href="https://ruinan-ding.com/" target="_blank" rel="noopener noreferrer">Try the Live Demo</a>
+
 ### <a href="https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=FF7139&repeat=false&width=400&lines=📹+OpenAI+YouTube+Transcriber" alt="OpenAI YouTube Transcriber" /></a>
 <a href="https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber" target="_blank" rel="noopener noreferrer">View source code</a> or click the header above. A comprehensive Python application for working with YouTube content:
 - 🎬 Automatic download of audio/video streams from YouTube URLs
