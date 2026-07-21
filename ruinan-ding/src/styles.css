@@ -440,12 +440,14 @@ body.has-custom-cursor [role="button"] {
   height: 40px;
 }
 
-.footer {
+.footer,
+.divider {
   text-align: center;
   margin: 40px 0;
 }
 
-.footer img {
+.footer img,
+.divider img {
   width: 100%;
   max-width: 800px;
   height: auto;
