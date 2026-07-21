@@ -8,7 +8,7 @@
 </div>
 
 <div align="center">
-  <a href="https://ruinan-ding.github.io/" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/webapp-button.svg" alt="Check Out My Web App" width="322" /></a>
+  <a href="https://ruinan-ding.com/" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/webapp-button.svg" alt="Check Out My Web App" width="322" /></a>
 </div>
 
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=16&duration=2000&pause=1000&color=8A2BE2&center=false&vCenter=true&repeat=false&width=900&lines=Software+Engineer+%7C+Java+Developer+%7C+CompTIA+Security%2B+Certified+April+2021" alt="Typing SVG" />
