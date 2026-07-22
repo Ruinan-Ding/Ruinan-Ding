@@ -392,6 +392,35 @@ body.has-custom-cursor [role="button"] {
   font-size: 12px;
 }
 
+.collapsible-gif {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  margin: 16px auto 0;
+}
+
+.pin-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pin-cards img {
+  max-width: 100%;
+  height: auto;
+}
+
+.section-gif {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.section-gif img {
+  max-width: 500px;
+  width: 100%;
+}
+
 .projects {
   margin: 40px 0;
 }
@@ -443,6 +472,10 @@ body.has-custom-cursor [role="button"] {
 .connect-links a img {
   width: 40px;
   height: 40px;
+}
+
+.connect img[alt="Profile Views"] {
+  margin-top: 10px;
 }
 
 .footer,
