@@ -210,6 +210,34 @@ body.has-custom-cursor [role="button"] {
   transform: translateY(-2px) scale(1.03);
 }
 
+/* Quieter variant matching the static button SVGs used in the README:
+   vertical purple gradient, 18px text, no shimmer or gradient animation. */
+.page-link-cta--modest {
+  padding: 10px 22px;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background: linear-gradient(180deg, #b76eff, #8a2be2);
+  background-size: auto;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  animation: none;
+}
+
+.page-link-cta--modest::before {
+  content: none;
+}
+
+.page-link-cta--modest:hover,
+.page-link-cta--modest:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(138, 43, 226, 0.3);
+  filter: brightness(1.08);
+  letter-spacing: 0.3px;
+  animation: none;
+}
+
 @keyframes hoverPulse {
   0% { transform: translateY(-8px) scale(1.1) rotate(-1.4deg); }
   100% { transform: translateY(-10px) scale(1.12) rotate(-1.2deg); }
