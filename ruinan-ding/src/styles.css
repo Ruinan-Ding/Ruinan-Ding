@@ -335,6 +335,16 @@ body.has-custom-cursor [role="button"] {
   height: auto;
 }
 
+.section-heading {
+  font-family: 'Satisfy', cursive;
+  font-size: 30px;
+  color: #8a2be2;
+}
+
+.projects .section-heading {
+  text-align: center;
+}
+
 /* An h2 so it sits level with the other sections, sized down to stay a
    lead-in for the collapsibles rather than a section heading. */
 .explore-more {
@@ -515,7 +525,9 @@ body.has-custom-cursor [role="button"] {
   margin: 10px;
 }
 
-.github-stats img[alt="GitHub Trophies"] {
+/* The trophy row wraps to multiple rows, so it must keep its natural height
+   instead of the fixed one the stat cards use. */
+.github-stats .trophies {
   height: auto;
 }
 
@@ -583,6 +595,23 @@ body.has-custom-cursor [role="button"] {
 
   .github-stats img {
     height: 150px;
+  }
+}
+
+/* Every animation on this page is decorative, so hold still when asked. The
+   custom cursor bows out entirely (see custom-cursor-follower.js); the
+   animated GIFs can't be paused from CSS and remain a gap. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Without the blink keyframes this would sit there as a stray bar. */
+  .typing-animation {
+    border-right-color: transparent;
   }
 }
 

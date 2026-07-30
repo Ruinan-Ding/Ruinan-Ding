@@ -1,10 +1,14 @@
 /* Custom animated cursor with sparkle/click effects and an animated favicon.
- * Loaded as a plain deferred script (see index.html). Disabled on touch devices.
+ * Bundled via main.ts so it gets hashed for cache-busting. Disabled on touch
+ * devices and for visitors who ask for reduced motion.
  */
 (function () {
   'use strict';
 
-  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
+  if (!window.matchMedia) return;
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+  // The whole script is decorative motion, so there's nothing to degrade to.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   // set localStorage.RD_DEBUG = '1' to enable logging
   const RD_DEBUG = (function () {
