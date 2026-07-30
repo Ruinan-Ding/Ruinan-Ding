@@ -75,6 +75,7 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![Angular](https://img.shields.io/badge/Angular-DD0031?style=flat-square&logo=angular&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
 ![Django](https://img.shields.io/badge/Django-092E20?style=flat-square&logo=django&logoColor=white)
 
 ### Backend Development
@@ -253,7 +254,7 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
 
 ### 🏆 GitHub Achievements
 <p align="center">
-  <img src="https://gh-profile-trophy.vercel.app/?username=Ruinan-Ding&theme=radical&row=1&column=6&margin-w=15" alt="Trophy" />
+  <img src="https://github-trophies.vercel.app/?username=Ruinan-Ding&theme=radical&row=1&column=6&margin-w=15" alt="Trophy" />
 </p>
 
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=160&height=60&vCenter=true&lines=%F0%9F%93%AB+Connect" alt="Connect" />
