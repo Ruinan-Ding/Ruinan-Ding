@@ -238,6 +238,10 @@ body.has-custom-cursor [role="button"] {
   animation: none;
 }
 
+.page-link-cta--modest:active {
+  transform: translateY(0);
+}
+
 @keyframes hoverPulse {
   0% { transform: translateY(-8px) scale(1.1) rotate(-1.4deg); }
   100% { transform: translateY(-10px) scale(1.12) rotate(-1.2deg); }
@@ -333,8 +337,11 @@ body.has-custom-cursor [role="button"] {
   height: auto;
 }
 
+/* An h2 so it sits level with the other sections, sized down to stay a
+   lead-in for the collapsibles rather than a section heading. */
 .explore-more {
   text-align: center;
+  font-size: 20px;
   margin: 40px 0 0;
 }
 
