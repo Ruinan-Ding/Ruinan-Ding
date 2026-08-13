@@ -4,7 +4,7 @@
 </div>
 
 <div align="center">
-  <a href="https://ruinanding.com/" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/website-button.svg" alt="Check Out My Website" width="440" /></a>
+  <a href="https://ruinan-ding.com/" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/website-button.svg" alt="Check Out My Website" width="440" /></a>
 </div>
 
 <div align="center">
