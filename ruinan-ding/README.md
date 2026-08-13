@@ -1,4 +1,4 @@
-# ruinan-ding.com
+# ruinanding.com
 
 Angular source for my personal site. Pushing to `main` builds this directory
 and publishes `dist/browser` to GitHub Pages via
