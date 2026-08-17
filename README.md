@@ -1,6 +1,6 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=120&section=header&text=Ruinan%20Ding&fontSize=50&fontAlignY=45&animation=fadeIn&fontColor=ffffff" width="100%"/>
 <div align="center">
-  <img src="https://skillicons.dev/icons?i=java,spring,aws,kafka,typescript,python,angular,docker" />a
+  <img src="https://skillicons.dev/icons?i=java,spring,aws,kafka,typescript,python,angular,docker" />
 </div>
 
 <div align="center">
