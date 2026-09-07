@@ -75,7 +75,7 @@ body.has-custom-cursor [role="button"] {
   display: block;
   width: 100%;
   height: 100%;
-  animation: cursorFloat 900ms ease-in-out infinite alternate, cursorRainbow 2.4s linear infinite;
+  animation: cursorFloat 900ms ease-in-out infinite alternate;
   transform-origin: center center;
 }
 
@@ -87,9 +87,11 @@ body.has-custom-cursor [role="button"] {
   transform: scale(1.6);
 }
 
-/* speed up the rainbow cycle while hovering an interactive element */
+/* Rainbow only while hovering something interactive. Animating `filter` forces
+   a full re-raster (plus a re-run of the SVG drop shadow) every frame, so it
+   isn't worth burning from page load to tab close for an ambient effect. */
 #custom-cursor.cursor-enlarge .cursor-core svg {
-  animation-duration: 900ms, 0.8s;
+  animation: cursorFloat 900ms ease-in-out infinite alternate, cursorRainbow 0.8s linear infinite;
 }
 
 @keyframes cursorFloat {
@@ -104,7 +106,7 @@ body.has-custom-cursor [role="button"] {
 
 #custom-cursor.is-hidden { opacity: 0; }
 
-.mini-spark { position: fixed; pointer-events: none; border-radius: 50%; mix-blend-mode: screen; z-index: 999998; animation: miniSpark 700ms forwards cubic-bezier(.16,.9,.3,1); }
+.mini-spark { position: fixed; pointer-events: none; border-radius: 50%; z-index: 999998; animation: miniSpark 700ms forwards cubic-bezier(.16,.9,.3,1); }
 
 @keyframes miniSpark {
   0% { opacity: 1; transform: translate(0,0) scale(1); }
@@ -257,6 +259,7 @@ body.has-custom-cursor [role="button"] {
 }
 
 .skills img {
+  width: auto;
   height: 40px;
 }
 
@@ -291,6 +294,7 @@ body.has-custom-cursor [role="button"] {
 }
 
 .badges img {
+  width: auto;
   height: 48px;
 }
 
@@ -404,6 +408,7 @@ body.has-custom-cursor [role="button"] {
 .image-section img {
   width: 90%;
   max-width: 600px;
+  height: auto;
   border-radius: 10px;
   margin: 8px 0;
 }
@@ -468,6 +473,7 @@ body.has-custom-cursor [role="button"] {
   display: block;
   width: 100%;
   max-width: 500px;
+  height: auto;
   margin: 16px auto 0;
 }
 
@@ -491,6 +497,7 @@ body.has-custom-cursor [role="button"] {
 .section-gif img {
   max-width: 500px;
   width: 100%;
+  height: auto;
 }
 
 .projects {
@@ -520,6 +527,7 @@ body.has-custom-cursor [role="button"] {
 }
 
 .github-stats img {
+  width: auto;
   height: 180px;
   max-width: 100%;
   margin: 10px;
@@ -568,10 +576,20 @@ body.has-custom-cursor [role="button"] {
 .quote {
   text-align: center;
   margin: 40px 0;
+  min-height: 120px;
 }
 
 .quote img {
   max-width: 600px;
+}
+
+/* An image whose origin is down is replaced by this (see main.ts). Decorative
+   images carry alt="" and collapse to nothing; captioned ones read as text. */
+.img-unavailable {
+  display: inline-block;
+  color: #8b949e;
+  font-size: 14px;
+  font-style: italic;
 }
 
 @media (max-width: 768px) {
@@ -600,13 +618,19 @@ body.has-custom-cursor [role="button"] {
 
 /* Every animation on this page is decorative, so hold still when asked. The
    custom cursor bows out entirely (see custom-cursor-follower.js); the
-   animated GIFs can't be paused from CSS and remain a gap. */
+   animated GIFs can't be paused from CSS and remain a gap.
+
+   Collapse durations rather than using `animation: none` — the cursor script
+   removes each sparkle and click ring from its `animationend` handler, and
+   `none` means that event never fires, so a visitor who toggles reduced motion
+   on mid-session would be left with the nodes stuck on screen forever. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    animation: none !important;
-    transition: none !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 
   /* Without the blink keyframes this would sit there as a stray bar. */

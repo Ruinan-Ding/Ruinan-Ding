@@ -28,7 +28,6 @@
   const POP_DURATION_MS = 280;
   const FAVICON_LOOP_MS = 3000;
   const FAVICON_FPS = 6;
-  const FAVICON_IDLE_FPS = 5;
   const FAVICON_FLASH_MS = 450;
   const FAVICON_CANVAS_PX = 32;
 
@@ -52,6 +51,7 @@
   let faviconLoopStopped = false;
   let faviconFlashUntil = 0;
   let faviconBurstQueued = 0; // clicks waiting for a sparkle burst
+  let faviconResume = null;   // wakes the loop once it has parked
 
   function ensureFaviconLink(type) {
     if (!faviconLink || !faviconLink.isConnected) {
@@ -301,11 +301,15 @@
 
       let lastAppliedAt = 0; // drops async frames that arrive out of order
       let encodeInFlight = false; // never stack encodes on a slow machine
+      let encodeStartedAt = 0;
 
       function pushFrame(drawnAt) {
         if (typeof canvas.toBlob === 'function') {
-          if (encodeInFlight) return;
+          // drop the latch if a callback never came back, so one lost encode
+          // can't freeze the icon for the rest of the session
+          if (encodeInFlight && drawnAt - encodeStartedAt < 1000) return;
           encodeInFlight = true;
+          encodeStartedAt = drawnAt;
           canvas.toBlob(function (blob) {
             encodeInFlight = false;
             try {
@@ -319,7 +323,7 @@
         } else {
           try {
             lastAppliedAt = drawnAt;
-            setFavicon(canvas.toDataURL('image/png'), 'image/png');
+            setFaviconFrame(canvas.toDataURL('image/png'), 'image/png');
           } catch (err) {
             debugError('favicon frame apply failed (toDataURL fallback)', err);
           }
@@ -327,22 +331,32 @@
       }
 
       const frameInterval = 1000 / FAVICON_FPS;
-      const idleFrameInterval = 1000 / FAVICON_IDLE_FPS;
       let lastFrameAt = 0;
+      let tickScheduled = false;
+
+      function scheduleTick() {
+        if (tickScheduled || faviconLoopStopped) return;
+        tickScheduled = true;
+        window.requestAnimationFrame(tick);
+      }
+      faviconResume = scheduleTick;
 
       function tick(now) {
+        tickScheduled = false;
         if (faviconLoopStopped) return;
         try {
-          // full rate only while a click flash/burst is animating; the ambient
-          // twinkle doesn't need that many PNG encodes per second
           const busy = faviconFlashUntil > now || faviconBurstQueued > 0 || burstParticles.length > 0;
           // skip drawing while the tab is hidden; rAF resumes on its own
-          if (document.visibilityState !== 'hidden' && now - lastFrameAt >= (busy ? frameInterval : idleFrameInterval)) {
+          if (document.visibilityState !== 'hidden' && now - lastFrameAt >= frameInterval) {
             draw(now);
             pushFrame(now);
             lastFrameAt = now;
           }
-          window.requestAnimationFrame(tick);
+          // Park once the click animation settles. `busy` is read before draw(),
+          // so the frame that drains the last particle still queues one more —
+          // the icon parks on the settled art, not mid-burst. An idle tab has no
+          // business PNG-encoding a new icon forever; flashFavicon() wakes us.
+          if (busy) scheduleTick();
         } catch (err) {
           // stop cleanly and hand back to the static SVG rather than leaving
           // a half-drawn frame as the permanent icon
@@ -355,7 +369,7 @@
       // flash and burst on page load too
       faviconFlashUntil = loopStart + FAVICON_FLASH_MS;
       faviconBurstQueued++;
-      window.requestAnimationFrame(tick);
+      scheduleTick();
     } catch (err) {
       debugError('favicon loop setup failed', err);
       faviconLoopStopped = true;
@@ -364,13 +378,18 @@
   }
 
   function flashFavicon() {
+    if (faviconLoopStopped) {
+      // nothing drains the burst counter once the loop is gone, so don't add to it
+      flashFallbackFavicon();
+      return;
+    }
     faviconFlashUntil = performance.now() + FAVICON_FLASH_MS;
     faviconBurstQueued++;
-    if (faviconLoopStopped) {
-      flashFallbackFavicon();
-    } else if (!faviconLoopStarted) {
+    if (!faviconLoopStarted) {
       // a click can land before the startup timeout fires
       startFaviconLoop();
+    } else if (faviconResume) {
+      faviconResume();
     }
   }
 
@@ -381,6 +400,10 @@
 
   const el = document.createElement('div');
   el.id = 'custom-cursor';
+  // styles.css loads async, so pin the layout essentials inline — otherwise the
+  // inner SVG renders at its default 300x150 in normal flow, shifting the page
+  // and swallowing clicks until the stylesheet lands
+  el.style.cssText = 'position:fixed;left:0;top:0;width:80px;height:80px;pointer-events:none;z-index:2147483647';
   // separate layer for the click pop so it composes with .cursor-core's
   // idle/enlarge transform instead of overriding it
   const popLayer = document.createElement('div');
@@ -510,6 +533,7 @@
     for (let i = 0; i < count; i++) {
       const spark = document.createElement('div');
       spark.className = 'mini-spark';
+      spark.style.cssText = 'position:fixed;pointer-events:none'; // see #custom-cursor above
       const size = 4 + Math.random() * 8;
       spark.style.width = size + 'px';
       spark.style.height = size + 'px';
@@ -529,6 +553,7 @@
   function spawnClickRing(x, y) {
     const ring = document.createElement('div');
     ring.className = 'cursor-pop-ring';
+    ring.style.cssText = 'position:fixed;pointer-events:none'; // see #custom-cursor above
     ring.style.left = x + 'px';
     ring.style.top = y + 'px';
     spawnTracked(ring, activeRings, MAX_CLICK_RINGS);
@@ -604,7 +629,7 @@
   document.addEventListener('mouseover', function (e) {
     handlePointerActivity(e.clientX, e.clientY);
     setHoverState(e.target);
-  });
+  }, { passive: true });
 
   document.addEventListener('mouseout', function (e) {
     const related = e.relatedTarget;
@@ -613,7 +638,7 @@
       return;
     }
     setHoverState(null);
-  });
+  }, { passive: true });
 
   document.addEventListener('mousedown', function (e) {
     if (e.button !== 0) return;
@@ -621,11 +646,11 @@
     spawnClickRing(e.clientX, e.clientY);
     playClickPop();
     flashFavicon();
-  });
+  }, { passive: true });
 
   document.addEventListener('pointerenter', function (e) {
     handlePointerActivity(e && e.clientX, e && e.clientY);
-  });
+  }, { passive: true });
 
   // hide only when the document truly becomes hidden; transient blur events
   // shouldn't blank the cursor mid-interaction
@@ -647,15 +672,14 @@
     hoverRefreshPending = true;
   });
 
-  // scrolling moves content under a stationary pointer without mouse events
-  let scrollRefreshQueued = false;
+  // Scrolling moves content under a stationary pointer without mouse events.
+  // refreshHoverState() hit-tests via elementFromPoint, which forces a
+  // synchronous style+layout flush — so run it once the scroll settles rather
+  // than every frame, when the main thread is already contended.
+  let scrollHoverTimer = 0;
   window.addEventListener('scroll', function () {
-    if (scrollRefreshQueued) return;
-    scrollRefreshQueued = true;
-    window.requestAnimationFrame(function () {
-      scrollRefreshQueued = false;
-      refreshHoverState();
-    });
+    window.clearTimeout(scrollHoverTimer);
+    scrollHoverTimer = window.setTimeout(refreshHoverState, 120);
   }, { passive: true });
 
   applyPosition();
