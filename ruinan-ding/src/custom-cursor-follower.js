@@ -28,6 +28,7 @@
   const POP_DURATION_MS = 280;
   const FAVICON_LOOP_MS = 3000;
   const FAVICON_FPS = 6;
+  const FAVICON_IDLE_FPS = 5;
   const FAVICON_FLASH_MS = 450;
   const FAVICON_CANVAS_PX = 32;
 
@@ -51,7 +52,6 @@
   let faviconLoopStopped = false;
   let faviconFlashUntil = 0;
   let faviconBurstQueued = 0; // clicks waiting for a sparkle burst
-  let faviconResume = null;   // wakes the loop once it has parked
 
   function ensureFaviconLink(type) {
     if (!faviconLink || !faviconLink.isConnected) {
@@ -331,32 +331,27 @@
       }
 
       const frameInterval = 1000 / FAVICON_FPS;
+      const idleFrameInterval = 1000 / FAVICON_IDLE_FPS;
       let lastFrameAt = 0;
-      let tickScheduled = false;
-
-      function scheduleTick() {
-        if (tickScheduled || faviconLoopStopped) return;
-        tickScheduled = true;
-        window.requestAnimationFrame(tick);
-      }
-      faviconResume = scheduleTick;
 
       function tick(now) {
-        tickScheduled = false;
         if (faviconLoopStopped) return;
         try {
+          // full rate only while a click flash/burst is animating; the ambient
+          // twinkle doesn't need that many PNG encodes per second
           const busy = faviconFlashUntil > now || faviconBurstQueued > 0 || burstParticles.length > 0;
-          // skip drawing while the tab is hidden; rAF resumes on its own
-          if (document.visibilityState !== 'hidden' && now - lastFrameAt >= frameInterval) {
+          // Skip drawing while the tab is hidden; rAF resumes on its own, and
+          // browsers already park rAF in background tabs, so the idle cost this
+          // loop actually pays is only ever paid by a tab the visitor is looking
+          // at. Do NOT gate the reschedule on `busy` — the ambient art is a
+          // 3s draw-in/fade cycle, so stopping mid-cycle freezes the icon on a
+          // half-drawn letter, which is worse than the encodes it saves.
+          if (document.visibilityState !== 'hidden' && now - lastFrameAt >= (busy ? frameInterval : idleFrameInterval)) {
             draw(now);
             pushFrame(now);
             lastFrameAt = now;
           }
-          // Park once the click animation settles. `busy` is read before draw(),
-          // so the frame that drains the last particle still queues one more —
-          // the icon parks on the settled art, not mid-burst. An idle tab has no
-          // business PNG-encoding a new icon forever; flashFavicon() wakes us.
-          if (busy) scheduleTick();
+          window.requestAnimationFrame(tick);
         } catch (err) {
           // stop cleanly and hand back to the static SVG rather than leaving
           // a half-drawn frame as the permanent icon
@@ -369,7 +364,7 @@
       // flash and burst on page load too
       faviconFlashUntil = loopStart + FAVICON_FLASH_MS;
       faviconBurstQueued++;
-      scheduleTick();
+      window.requestAnimationFrame(tick);
     } catch (err) {
       debugError('favicon loop setup failed', err);
       faviconLoopStopped = true;
@@ -388,8 +383,6 @@
     if (!faviconLoopStarted) {
       // a click can land before the startup timeout fires
       startFaviconLoop();
-    } else if (faviconResume) {
-      faviconResume();
     }
   }
 

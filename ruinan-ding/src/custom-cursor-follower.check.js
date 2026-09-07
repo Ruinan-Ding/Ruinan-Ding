@@ -1,7 +1,9 @@
-/* Self-check for the favicon loop's park/wake state machine, the one bit of
- * custom-cursor-follower.js that fails silently: park too eagerly and the icon
- * freezes mid-burst, never park and it PNG-encodes a new icon 5x/second for
- * the life of the tab.
+/* Self-check for the two bits of custom-cursor-follower.js's favicon loop that
+ * fail silently — the icon just quietly stops moving and nobody notices:
+ *   1. the loop must keep rescheduling forever; the ambient art is a 3s
+ *      draw-in/fade cycle, so any early exit strands it mid-letter
+ *   2. a toBlob callback that never fires must not hold the encode latch shut
+ *      for the rest of the session
  *
  *   node src/custom-cursor-follower.check.js
  */
@@ -11,6 +13,8 @@ const assert = require('assert');
 // ---- just enough DOM to run the script ----
 
 let now = 0;
+let canvasEl = null;
+let encodes = 0;
 const rafQueue = [];
 const timers = [];
 
@@ -28,13 +32,14 @@ function makeEl(tag) {
     animate() { return { cancel() {}, onfinish: null }; }
   };
   if (tag === 'canvas') {
+    canvasEl = el;
     el.getContext = () => new Proxy({}, {
       get: (_, k) => (k === 'createLinearGradient' || k === 'createRadialGradient'
         ? () => ({ addColorStop() {} })
         : () => {}),
       set: () => true
     });
-    el.toBlob = (cb) => cb({ size: 1 });          // synchronous stand-in
+    el.toBlob = (cb) => { encodes++; cb({ size: 1 }); };  // synchronous stand-in
     el.toDataURL = () => 'data:image/png;base64,';
   }
   return el;
@@ -85,22 +90,25 @@ function advance(ms, step) {
   }
 }
 
-// The startup burst runs the loop...
+// The ambient favicon animation must never stop on its own.
 advance(200);
 assert.ok(rafQueue.length > 0, 'loop should be running during the startup burst');
 
-// ...and once the flash and its particles settle, it must stop scheduling.
-advance(6000);
-assert.strictEqual(rafQueue.length, 0, 'loop must park when nothing is animating');
+advance(6000); // well past the startup flash and its particles
+assert.ok(rafQueue.length > 0, 'loop must keep running when idle — the ambient art is a loop');
 
-// A click has to wake it back up, or the icon stays frozen for the session.
+// A click still has to register while it runs.
 const onMouseDown = listeners.mousedown[0];
+const framesBefore = encodes;
 onMouseDown({ button: 0, clientX: 10, clientY: 10 });
-assert.ok(rafQueue.length > 0, 'a click must wake the parked loop');
-
 advance(200);
-assert.ok(rafQueue.length > 0, 'loop should still be running mid-burst');
-advance(6000);
-assert.strictEqual(rafQueue.length, 0, 'loop must park again after the click burst');
+assert.ok(encodes > framesBefore, 'a click must still produce new favicon frames');
 
-console.log('ok - favicon loop parks when idle and wakes on click');
+// A toBlob callback that never comes back must not wedge the loop: the latch
+// releases after 1s so the icon keeps animating on a browser that drops one.
+canvasEl.toBlob = () => { encodes++; };   // swallow the callback
+const wedgedAt = encodes;
+advance(3000);
+assert.ok(encodes - wedgedAt >= 2, 'a dropped toBlob callback must not freeze the icon (got ' + (encodes - wedgedAt) + ')');
+
+console.log('ok - favicon loop keeps animating and survives a dropped encode');
