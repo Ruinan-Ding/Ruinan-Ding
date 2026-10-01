@@ -302,6 +302,8 @@
       let lastAppliedAt = 0; // drops async frames that arrive out of order
       let encodeInFlight = false; // never stack encodes on a slow machine
       let encodeStartedAt = 0;
+      let encodeSequence = 0;
+      let activeEncodeSequence = 0;
 
       function pushFrame(drawnAt) {
         if (typeof canvas.toBlob === 'function') {
@@ -310,8 +312,10 @@
           if (encodeInFlight && drawnAt - encodeStartedAt < 1000) return;
           encodeInFlight = true;
           encodeStartedAt = drawnAt;
+          const sequence = ++encodeSequence;
+          activeEncodeSequence = sequence;
           canvas.toBlob(function (blob) {
-            encodeInFlight = false;
+            if (activeEncodeSequence === sequence) encodeInFlight = false;
             try {
               if (!blob || faviconLoopStopped || drawnAt <= lastAppliedAt) return;
               lastAppliedAt = drawnAt;
