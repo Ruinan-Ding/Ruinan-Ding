@@ -1,0 +1,5 @@
+# Store text with LF and check it out with LF everywhere, so Windows git
+# (core.autocrlf=true) and WSL git see the same bytes on disk.
+* text=auto eol=lf
+
+*.gif binary
