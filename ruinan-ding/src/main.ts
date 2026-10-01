@@ -1,6 +1,7 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
+import { observeAnimatedGifs } from './animated-gif-visibility';
 // Every image on this page is served by a third party — 14 origins, none of
 // which owe this site an SLA. One capture-phase listener covers all of them:
 // `error` doesn't bubble, so capture is the only way to catch it centrally.
@@ -21,6 +22,9 @@ document.addEventListener('error', (event) => {
 }, true);
 
 bootstrapApplication(AppComponent, appConfig)
+  .then(() => {
+    observeAnimatedGifs(document, window);
+  })
   .catch((err: unknown) => console.error(err));
 
 // Bundled rather than loaded from index.html so the build hashes it and stale

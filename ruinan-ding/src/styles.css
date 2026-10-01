@@ -173,7 +173,6 @@ body.has-custom-cursor [role="button"] {
   box-shadow: 0 10px 30px rgba(138,43,226,0.18), 0 2px 6px rgba(0,0,0,0.25);
   background: linear-gradient(90deg, #8A2BE2, #FF80BF, #4B0082);
   background-size: 300% 100%;
-  animation: bannerShift 6s linear infinite;
   transform-origin: center;
   position: relative;
   isolation: isolate;
@@ -198,7 +197,7 @@ body.has-custom-cursor [role="button"] {
   filter: brightness(1.15) saturate(1.18);
   background-position: 100% 50%;
   letter-spacing: 1.1px;
-  animation: bannerShift 3s linear infinite, hoverPulse 700ms ease-in-out infinite alternate;
+  animation: hoverPulse 700ms ease-in-out infinite alternate;
 }
 
 .page-link-cta:hover::before,
@@ -245,12 +244,6 @@ body.has-custom-cursor [role="button"] {
 @keyframes hoverPulse {
   0% { transform: translateY(-8px) scale(1.1) rotate(-1.4deg); }
   100% { transform: translateY(-10px) scale(1.12) rotate(-1.2deg); }
-}
-
-@keyframes bannerShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 
 .skills {
@@ -320,13 +313,6 @@ body.has-custom-cursor [role="button"] {
   margin-top: 10px;
   font-weight: 700;
   font-size: 16px;
-  animation: invitePulse 2.4s ease-in-out infinite;
-}
-
-@keyframes invitePulse {
-  0% { transform: translateY(0); opacity: 0.95; }
-  50% { transform: translateY(-4px); opacity: 1; }
-  100% { transform: translateY(0); opacity: 0.95; }
 }
 
 .tagline {
@@ -580,7 +566,19 @@ body.has-custom-cursor [role="button"] {
 }
 
 .quote img {
+  width: 100%;
   max-width: 600px;
+  height: auto;
+}
+
+/* Animated GIFs lose their src while off-screen (see animated-gif-visibility.ts),
+   so their box has to come out the same with or without it. With no src, Chrome
+   lays out a captioned image as a one-line run of alt text unless it is
+   inline-block, and baseline alignment leaves a gap whose size differs between
+   the two states. :where() keeps this from overriding .collapsible-gif's block. */
+:where(img[data-animated-src]) {
+  display: inline-block;
+  vertical-align: top;
 }
 
 /* An image whose origin is down is replaced by this (see main.ts). Decorative
@@ -638,4 +636,3 @@ body.has-custom-cursor [role="button"] {
     border-right-color: transparent;
   }
 }
-
