@@ -4,20 +4,20 @@
 </div>
 
 <div align="center">
-  <a href="https://ruinanding.com/" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/website-button.svg" alt="Check Out My Website" width="440" /></a>
+  <a href="https://ruinanding.com/"><img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/website-button.svg" alt="Check Out My Website" width="440" /></a>
 </div>
 
 <div align="center">
-  <a href="https://ruinan-ding.com/" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/webapp-button.svg" alt="Check Out My Web App" width="322" /></a>
+  <a href="https://ruinan-ding.com/"><img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/webapp-button.svg" alt="Check Out My Web App" width="322" /></a>
 </div>
 
-## <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=16&duration=2000&pause=1000&color=8A2BE2&center=false&vCenter=true&repeat=false&width=900&lines=Software+Engineer+%7C+Java+Developer+%7C+CompTIA+Security%2B+Certified+April+2021" alt="Typing SVG" />
+## <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=16&duration=2000&pause=1000&color=8A2BE2&center=false&vCenter=true&repeat=false&width=900&lines=Software+Engineer+%7C+Java+Developer+%7C+CompTIA+Security%2B+Certified+April+2021" alt="Software Engineer | Java Developer | CompTIA Security+ Certified April 2021" />
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ruinan-ding/)
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Ruinan-Ding)
 
 <div align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=40&duration=3000&pause=1000&color=8A2BE2&center=true&vCenter=true&width=850&height=80&lines=Java+Development;Spring+Boot+Microservices;AWS+Cloud+Architecture;Kafka+Event+Streaming" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=40&duration=3000&pause=1000&color=8A2BE2&center=true&vCenter=true&width=850&height=80&lines=Java+Development;Spring+Boot+Microservices;AWS+Cloud+Architecture;Kafka+Event+Streaming" alt="Java Development, Spring Boot Microservices, AWS Cloud Architecture, Kafka Event Streaming" />
 </div>
 <br>
 
@@ -30,19 +30,19 @@
 </div>
 
 Software engineer with a strong background in Java, Spring Boot, and AWS. 7+ years of professional experience building enterprise applications and a passion for continuous learning and open-source contributions.
-Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_blank" rel="noopener noreferrer">GitHub repository</a> for some cool open-source projects and connect on <a href="https://www.linkedin.com/in/ruinan-ding/" target="_blank" rel="noopener noreferrer">LinkedIn</a> to engage in some interesting thoughts!
+Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories">GitHub repository</a> for some cool open-source projects and connect on <a href="https://www.linkedin.com/in/ruinan-ding/">LinkedIn</a> to engage in some interesting thoughts!
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="90%" />
   <br>
-  <img src="https://readme-typing-svg.herokuapp.com?font=Pacifico&size=28&duration=2500&pause=500&color=FF80BF&center=true&vCenter=true&width=700&height=80&lines=Tidal+Basin+during+cherry+blossom+peak+bloom+2025" alt="Cherry Blossom Caption" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Pacifico&size=28&duration=2500&pause=500&color=FF80BF&center=true&vCenter=true&width=700&height=80&lines=Tidal+Basin+during+cherry+blossom+peak+bloom+2025" alt="Tidal Basin during cherry blossom peak bloom 2025" />
   <br>
 
   <img src="https://user-images.githubusercontent.com/74038190/212284115-f47cd8ff-2ffb-4b04-b5bf-4d1c14c0247f.gif" width="90%" />
   <br>
-  
+
   <br>
-  <img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/DCSpringCherry2025.gif" width="90%" alt="Ruinan Ding" style="border-radius: 10px; border: 3px solid #8A2BE2;" />
+  <img src="https://github.com/Ruinan-Ding/Ruinan-Ding/raw/main/assets/DCSpringCherry2025.gif" width="90%" alt="Ruinan Ding" />
   <br>
 
   <img src="https://user-images.githubusercontent.com/74038190/212284115-f47cd8ff-2ffb-4b04-b5bf-4d1c14c0247f.gif" width="90%" />
@@ -50,9 +50,9 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
   <em>Software Engineer based in Washington, DC</em><br>
   <em>In my free time, I love coding and exploring the city!</em><br>
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="90%" />
-  
+
   <h3>🎵 Coding Playlist and My Recent Tracks</h3>
-  <a href="https://open.spotify.com/playlist/37i9dQZF1DWYoYGBbGKurt" target="_blank" rel="noopener noreferrer">
+  <a href="https://open.spotify.com/playlist/37i9dQZF1DWYoYGBbGKurt">
     <img src="https://img.shields.io/badge/Spotify-Deep%20Focus%20Coding-1DB954?style=for-the-badge&logo=spotify&logoColor=white" alt="Spotify Playlist" />
   </a>
   <br>
@@ -67,7 +67,7 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
 <details>
 <summary><b>🛠️ Tech Stack</b></summary>
 <div>
-  
+
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat-square&logo=spring-boot&logoColor=white)
 ![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=amazon-aws&logoColor=white)
@@ -175,12 +175,12 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
 <details>
 <summary><b>🔍 Recent Projects</b></summary>
 <div align="center">
-  
-[![Readme Card](https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=Ruinan-Ding&repo=OpenAI-YouTube-Transcriber&theme=radical)](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber)
-[![Readme Card](https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=Ruinan-Ding&repo=ChessPlusPlus&theme=radical)](https://github.com/Ruinan-Ding/ChessPlusPlus)
-[![Readme Card](https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding)
-[![Readme Card](https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding.github.io&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding.github.io)
-  
+
+[![OpenAI YouTube Transcriber](https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=Ruinan-Ding&repo=OpenAI-YouTube-Transcriber&theme=radical)](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber)
+[![ChessPlusPlus](https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=Ruinan-Ding&repo=ChessPlusPlus&theme=radical)](https://github.com/Ruinan-Ding/ChessPlusPlus)
+[![Ruinan-Ding](https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding)
+[![Ruinan-Ding.github.io](https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding.github.io&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding.github.io)
+
 </div>
 </details>
 
@@ -189,7 +189,7 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=150&height=60&vCenter=true&lines=%F0%9F%8C%9F+Projects" alt="Projects" />
 
 ### <a href="https://github.com/Ruinan-Ding/Ruinan-Ding"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=4B8BBE&repeat=false&width=650&lines=🎨+Dynamic+GitHub+Profile+README+(What+You're+Seeing+Now)!" alt="Dynamic Profile" /></a>
-<a href="https://github.com/Ruinan-Ding/Ruinan-Ding" target="_blank" rel="noopener noreferrer">See the code</a> or click the header above. This very GitHub profile you're currently exploring — visually enhanced developer profile using modern web techniques:
+<a href="https://github.com/Ruinan-Ding/Ruinan-Ding">See the code</a> or click the header above. This very GitHub profile you're currently exploring — visually enhanced developer profile using modern web techniques:
 - 🌊 Animated headers and footers via Capsule Render API
 - ✨ Dynamic typing animations with README Typing SVG
 - 🛠️ Tech stack visualization using SkillIcons and Shields.io
@@ -202,12 +202,12 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
 *Check out how this profile was built and perhaps adapt these techniques for your own GitHub presence! Feedback welcomed!*
 
 ### <a href="https://github.com/Ruinan-Ding/Ruinan-Ding.github.io"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=00A6FF&repeat=false&width=450&lines=%E2%8F%B1%EF%B8%8F+Study+Timer+App" alt="Study Timer App" /></a>
-<a href="https://github.com/Ruinan-Ding/Ruinan-Ding.github.io" target="_blank" rel="noopener noreferrer">View source code</a> or click the header above. A lightweight Study Timer application written in Angular and deployed to GitHub Pages — ideal for focused study sessions and Pomodoro-style workflows.
+<a href="https://github.com/Ruinan-Ding/Ruinan-Ding.github.io">View source code</a> or click the header above. A lightweight Study Timer application written in Angular and deployed to GitHub Pages — ideal for focused study sessions and Pomodoro-style workflows.
 
-<a href="https://ruinan-ding.com/" target="_blank" rel="noopener noreferrer">Try the Live Demo</a>
+<a href="https://ruinan-ding.com/">Try the Live Demo</a>
 
 ### <a href="https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=FF7139&repeat=false&width=400&lines=📹+OpenAI+YouTube+Transcriber" alt="OpenAI YouTube Transcriber" /></a>
-<a href="https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber" target="_blank" rel="noopener noreferrer">View source code</a> or click the header above. A comprehensive Python application for working with YouTube content:
+<a href="https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber">View source code</a> or click the header above. A comprehensive Python application for working with YouTube content:
 - 🎬 Automatic download of audio/video streams from YouTube URLs
 - 🔊 Transcription using OpenAI's Whisper AI
 - 🌐 Multi-language support and detection
@@ -220,7 +220,7 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
 *I welcome contributions, feedback, and collaboration for this project.*
 
 ### <a href="https://github.com/Ruinan-Ding/ChessPlusPlus"><img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=22&duration=2000&pause=500&color=DD0031&repeat=false&width=250&lines=♟️+ChessPlusPlus" alt="ChessPlusPlus" /></a>
-<a href="https://github.com/Ruinan-Ding/ChessPlusPlus" target="_blank" rel="noopener noreferrer">Explore repository</a> or click the header above. Multiplayer strategy turn-based game:
+<a href="https://github.com/Ruinan-Ding/ChessPlusPlus">Explore repository</a> or click the header above. Multiplayer strategy turn-based game:
 - 🎮 Angular frontend with interactive game board
 - 🔌 Django backend with WebSocket communication
 - 👥 Real-time multiplayer capabilities
@@ -246,7 +246,7 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
 
 ### 📊 GitHub Stats & Languages
 <div align="center">
-<a href="https://github.com/Ruinan-Ding" target="_blank" rel="noopener noreferrer">
+<a href="https://github.com/Ruinan-Ding">
   <img height="180em" src="https://github-readme-stats-sigma-five.vercel.app/api?username=Ruinan-Ding&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true"/>
   <img height="180em" src="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=Ruinan-Ding&layout=compact&langs_count=7&theme=tokyonight"/>
 </a>
@@ -260,13 +260,13 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories" target="_
 ## <img src="https://readme-typing-svg.herokuapp.com?font=Satisfy&size=30&duration=1500&pause=500&color=8A2BE2&repeat=false&width=160&height=60&vCenter=true&lines=%F0%9F%93%AB+Connect" alt="Connect" />
 
 <p align="center">
-  <a href="https://www.linkedin.com/in/ruinan-ding/" target="_blank" rel="noopener noreferrer"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" width="40" height="40" /></a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/Ruinan-Ding" target="_blank" rel="noopener noreferrer"><picture><source media="(prefers-color-scheme: dark)" srcset="https://cdn.simpleicons.org/github/white"><img src="https://cdn.simpleicons.org/github/181717" width="40" height="40" /></picture></a>
+  <a href="https://www.linkedin.com/in/ruinan-ding/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" width="40" height="40" /></a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/Ruinan-Ding"><picture><source media="(prefers-color-scheme: dark)" srcset="https://cdn.simpleicons.org/github/white"><img src="https://cdn.simpleicons.org/github/181717" width="40" height="40" /></picture></a>
 </p>
 
 <div align="center">
   <img src="https://komarev.com/ghpvc/?username=Ruinan-Ding&color=blueviolet&style=flat-square" alt="Profile Views">
   <br>
-  <img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=30&duration=2000&pause=1000&color=8A2BE2&center=true&vCenter=true&width=500&height=70&lines=Always+learning%2C+always+building...;Let's+connect!" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=30&duration=2000&pause=1000&color=8A2BE2&center=true&vCenter=true&width=500&height=70&lines=Always+learning%2C+always+building...;Let's+connect!" alt="Always learning, always building... Let's connect!" />
 </div>
 
 <div align="center">
