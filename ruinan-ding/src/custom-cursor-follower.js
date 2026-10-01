@@ -28,9 +28,10 @@
   const POP_DURATION_MS = 280;
   const FAVICON_LOOP_MS = 3000;
   const FAVICON_FPS = 6;
-  const FAVICON_IDLE_FPS = 5;
   const FAVICON_FLASH_MS = 450;
   const FAVICON_CANVAS_PX = 32;
+
+  const SPARK_COLORS = ['#FF80BF', '#FFD166', '#8A2BE2', '#4B0082', '#00D4FF', '#7CFFB2'];
 
   const HOVER_SELECTORS = 'a, button, input, select, textarea, summary, details, ' +
     '[role="button"], .page-link-cta, .badge-cta, .focus-badge, .project, ' +
@@ -135,7 +136,7 @@
     faviconLoopStarted = true;
 
     try {
-      // fixed 64px backing store; drawing stays in favicon.svg's 0..100 space
+      // fixed-size backing store; drawing stays in favicon.svg's 0..100 space
       const canvas = document.createElement('canvas');
       canvas.width = FAVICON_CANVAS_PX;
       canvas.height = FAVICON_CANVAS_PX;
@@ -335,26 +336,19 @@
       }
 
       const frameInterval = 1000 / FAVICON_FPS;
-      const idleFrameInterval = 1000 / FAVICON_IDLE_FPS;
       let lastFrameAt = 0;
 
       function tick(now) {
         if (faviconLoopStopped) return;
         try {
-          // full rate only while a click flash/burst is animating; the ambient
-          // twinkle doesn't need that many PNG encodes per second
-          const busy = faviconFlashUntil > now || faviconBurstQueued > 0 || burstParticles.length > 0;
-          // Skip drawing while the tab is hidden; rAF resumes on its own, and
-          // browsers already park rAF in background tabs, so the idle cost this
-          // loop actually pays is only ever paid by a tab the visitor is looking
-          // at. Do NOT gate the reschedule on `busy` — the ambient art is a
-          // 3s draw-in/fade cycle, so stopping mid-cycle freezes the icon on a
-          // half-drawn letter, which is worse than the encodes it saves.
-          if (document.visibilityState !== 'hidden' && now - lastFrameAt >= (busy ? frameInterval : idleFrameInterval)) {
+          // skip drawing while the tab is hidden; rAF resumes on its own
+          if (document.visibilityState !== 'hidden' && now - lastFrameAt >= frameInterval) {
             draw(now);
             pushFrame(now);
             lastFrameAt = now;
           }
+          // never stop between clicks: the art is a 3s draw-in/fade cycle, and
+          // parking mid-cycle would freeze the icon on a half-drawn letter
           window.requestAnimationFrame(tick);
         } catch (err) {
           // stop cleanly and hand back to the static SVG rather than leaving
@@ -521,7 +515,6 @@
     }, { once: true });
   }
 
-  const SPARK_COLORS = ['#FF80BF', '#FFD166', '#8A2BE2', '#4B0082', '#00D4FF', '#7CFFB2'];
   const activeSparkles = [];
   let lastSparkAt = 0;
 

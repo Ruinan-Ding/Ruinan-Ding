@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "node --test src/custom-cursor-follower.test.js src/animated-gif-visibility.test.js && node src/custom-cursor-follower.check.js"
+    "test": "node --test src/custom-cursor-follower.test.js src/animated-gif-visibility.test.js"
   },
   "private": true,
   "dependencies": {

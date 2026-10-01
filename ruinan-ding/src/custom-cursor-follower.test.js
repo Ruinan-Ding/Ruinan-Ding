@@ -16,22 +16,17 @@ function createHarness(options = {}) {
   const documentListeners = new Map();
   const windowListeners = new Map();
   const revokedUrls = [];
-  const errors = [];
   const env = {
-    now,
-    canvas: null,
     encodes: 0,
     drawCalls: 0,
     blobCallbacks: [],
     blobMode: options.blobMode || 'sync',
     toBlobEnabled: options.toBlobEnabled !== false,
     contextEnabled: options.contextEnabled !== false,
-    animateEnabled: options.animateEnabled !== false,
     throwOnDraw: false,
     canvasCreations: 0,
     hoverTarget: null,
-    elementFromPointCalls: 0,
-    bodyChildren: null
+    elementFromPointCalls: 0
   };
 
   function makeElement(tagName) {
@@ -121,7 +116,6 @@ function createHarness(options = {}) {
       }
     };
     if (tagName === 'canvas') {
-      env.canvas = element;
       env.canvasCreations++;
       const context = new Proxy({}, {
         get(_target, property) {
@@ -191,7 +185,7 @@ function createHarness(options = {}) {
         return null;
       }
     },
-    console: { error: (...args) => errors.push(args) },
+    console: { error() {} },
     matchMedia: options.matchMedia === false
       ? undefined
       : (query) => ({
@@ -252,16 +246,12 @@ function createHarness(options = {}) {
       frames.clear();
       for (const frame of dueFrames) frame(now);
     }
-    env.now = now;
   }
 
   env.advance = advance;
   env.dispatch = dispatch;
   env.document = document;
-  env.window = window;
-  env.originalIcon = originalIcon;
   env.revokedUrls = revokedUrls;
-  env.errors = errors;
   env.frames = frames;
   env.timers = timers;
   env.listeners = documentListeners;

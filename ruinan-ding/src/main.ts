@@ -2,11 +2,10 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 import { observeAnimatedGifs } from './animated-gif-visibility';
-// Every image on this page is served by a third party — 14 origins, none of
-// which owe this site an SLA. One capture-phase listener covers all of them:
-// `error` doesn't bubble, so capture is the only way to catch it centrally.
-// Decorative images (alt="") collapse; captioned ones degrade to their caption
-// instead of a broken-image icon.
+
+// Every image comes from a third-party origin that can go down. `error` doesn't
+// bubble, so one capture-phase listener handles them all: decorative images
+// (alt="") are removed, captioned ones are replaced by their caption.
 document.addEventListener('error', (event) => {
   const img = event.target;
   if (!(img instanceof HTMLImageElement) || img.dataset['failed']) return;
@@ -27,9 +26,8 @@ bootstrapApplication(AppComponent, appConfig)
   })
   .catch((err: unknown) => console.error(err));
 
-// Bundled rather than loaded from index.html so the build hashes it and stale
-// copies don't survive in browser caches. Imported dynamically because a static
-// import is hoisted above the bootstrap call no matter where it is written, and
-// this is decorative — it has no business running before the page renders.
+// Bundled so the build hashes it for cache-busting, and imported dynamically so
+// this decorative script runs after bootstrap (a static import would be hoisted
+// above it).
 // @ts-expect-error - side-effect-only JS module, nothing to type
 void import('./custom-cursor-follower.js');

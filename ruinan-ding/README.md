@@ -12,9 +12,11 @@ The whole site is one component:
 - `src/app/app.component.html` — all the markup
 - `src/styles.css` — all the styling
 - `src/custom-cursor-follower.js` — custom cursor and animated favicon
+- `src/animated-gif-visibility.ts` — loads GIFs only while they're near the viewport
 
 ```bash
 npm install
 npm start      # dev server on http://localhost:4200/
 npm run build  # production build into dist/
+npm test       # unit tests; the deploy runs these before building
 ```

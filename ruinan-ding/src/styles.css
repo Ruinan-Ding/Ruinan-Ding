@@ -571,11 +571,10 @@ body.has-custom-cursor [role="button"] {
   height: auto;
 }
 
-/* Animated GIFs lose their src while off-screen (see animated-gif-visibility.ts),
-   so their box has to come out the same with or without it. With no src, Chrome
-   lays out a captioned image as a one-line run of alt text unless it is
-   inline-block, and baseline alignment leaves a gap whose size differs between
-   the two states. :where() keeps this from overriding .collapsible-gif's block. */
+/* These GIFs lose their src off-screen (animated-gif-visibility.ts), so keep the
+   box identical without it: inline-block stops Chrome shrinking a captioned one
+   to a line of alt text, and top alignment avoids a baseline gap that changes.
+   :where() leaves .collapsible-gif's display: block in charge. */
 :where(img[data-animated-src]) {
   display: inline-block;
   vertical-align: top;
