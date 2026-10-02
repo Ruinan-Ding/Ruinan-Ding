@@ -641,8 +641,8 @@ body.has-custom-cursor [role="button"] {
 }
 
 /* Every animation on this page is decorative, so hold still when asked. The
-   custom cursor bows out entirely (see custom-cursor-follower.js); the
-   animated GIFs can't be paused from CSS and remain a gap.
+   custom cursor bows out entirely (see custom-cursor-follower.js), and the
+   decorative GIFs are hidden below.
 
    Collapse durations rather than using `animation: none` — the cursor script
    removes each sparkle and click ring from its `animationend` handler, and
@@ -660,5 +660,13 @@ body.has-custom-cursor [role="button"] {
   /* Without the blink keyframes this would sit there as a stray bar. */
   .typing-animation {
     border-right-color: transparent;
+  }
+
+  /* A GIF can't be paused from CSS, so hide the decorative ones (alt=""). A
+     hidden image never intersects the viewport, so animated-gif-visibility.ts
+     never loads it either. The cherry blossom photo has alt text: it's
+     content, so it stays. */
+  img[data-animated-src][alt=""] {
+    display: none;
   }
 }
