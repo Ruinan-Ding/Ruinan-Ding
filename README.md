@@ -176,10 +176,10 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories">GitHub re
 <summary><b>🔍 Recent Projects</b></summary>
 <div align="center">
 
-[![OpenAI YouTube Transcriber](https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=Ruinan-Ding&repo=OpenAI-YouTube-Transcriber&theme=radical)](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber)
-[![ChessPlusPlus](https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=Ruinan-Ding&repo=ChessPlusPlus&theme=radical)](https://github.com/Ruinan-Ding/ChessPlusPlus)
-[![Ruinan-Ding](https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding)
-[![Ruinan-Ding.github.io](https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=Ruinan-Ding&repo=Ruinan-Ding.github.io&theme=radical)](https://github.com/Ruinan-Ding/Ruinan-Ding.github.io)
+[![OpenAI YouTube Transcriber](assets/stats/pin-OpenAI-YouTube-Transcriber.svg)](https://github.com/Ruinan-Ding/OpenAI-YouTube-Transcriber)
+[![ChessPlusPlus](assets/stats/pin-ChessPlusPlus.svg)](https://github.com/Ruinan-Ding/ChessPlusPlus)
+[![Ruinan-Ding](assets/stats/pin-Ruinan-Ding.svg)](https://github.com/Ruinan-Ding/Ruinan-Ding)
+[![Ruinan-Ding.github.io](assets/stats/pin-Ruinan-Ding.github.io.svg)](https://github.com/Ruinan-Ding/Ruinan-Ding.github.io)
 
 </div>
 </details>
@@ -247,8 +247,8 @@ Check out my <a href="https://github.com/Ruinan-Ding?tab=repositories">GitHub re
 ### 📊 GitHub Stats & Languages
 <div align="center">
 <a href="https://github.com/Ruinan-Ding">
-  <img height="180em" src="https://github-readme-stats-sigma-five.vercel.app/api?username=Ruinan-Ding&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true"/>
-  <img height="180em" src="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=Ruinan-Ding&layout=compact&langs_count=7&theme=tokyonight"/>
+  <img height="180em" src="assets/stats/stats.svg"/>
+  <img height="180em" src="assets/stats/top-langs.svg"/>
 </a>
 </div>
 

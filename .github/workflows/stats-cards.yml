@@ -1,0 +1,103 @@
+name: Update stats cards
+
+# The GitHub stats and project cards used to be hotlinked from a public
+# github-readme-stats instance, which broke whenever that instance ran out of
+# API quota. Generate them here instead and commit them to assets/stats/: the
+# README embeds them from the repo and the site loads them from GitHub.
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Mondays 06:00 UTC
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/stats-cards.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stats-cards
+  cancel-in-progress: false
+
+jobs:
+  cards:
+    name: Generate cards
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # fail_on_error: a failed fetch fails the run and keeps the last good
+      # card, instead of committing a "Something went wrong" card.
+      - name: Stats card
+        uses: stats-organization/github-readme-stats-action@v2
+        with:
+          card: stats
+          options: username=Ruinan-Ding&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true
+          path: assets/stats/stats.svg
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_error: true
+
+      - name: Top languages card
+        uses: stats-organization/github-readme-stats-action@v2
+        with:
+          card: top-langs
+          options: username=Ruinan-Ding&layout=compact&langs_count=7&theme=tokyonight
+          path: assets/stats/top-langs.svg
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_error: true
+
+      - name: OpenAI-YouTube-Transcriber card
+        uses: stats-organization/github-readme-stats-action@v2
+        with:
+          card: pin
+          options: username=Ruinan-Ding&repo=OpenAI-YouTube-Transcriber&theme=radical
+          path: assets/stats/pin-OpenAI-YouTube-Transcriber.svg
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_error: true
+
+      - name: ChessPlusPlus card
+        uses: stats-organization/github-readme-stats-action@v2
+        with:
+          card: pin
+          options: username=Ruinan-Ding&repo=ChessPlusPlus&theme=radical
+          path: assets/stats/pin-ChessPlusPlus.svg
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_error: true
+
+      - name: Ruinan-Ding card
+        uses: stats-organization/github-readme-stats-action@v2
+        with:
+          card: pin
+          options: username=Ruinan-Ding&repo=Ruinan-Ding&theme=radical
+          path: assets/stats/pin-Ruinan-Ding.svg
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_error: true
+
+      - name: Ruinan-Ding.github.io card
+        uses: stats-organization/github-readme-stats-action@v2
+        with:
+          card: pin
+          options: username=Ruinan-Ding&repo=Ruinan-Ding.github.io&theme=radical
+          path: assets/stats/pin-Ruinan-Ding.github.io.svg
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_error: true
+
+      # Pushes made with GITHUB_TOKEN don't trigger other workflows, so this
+      # doesn't redeploy the site; it doesn't need to, since the site reads
+      # the cards straight from the repo.
+      - name: Commit cards
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/stats
+          if git diff --cached --quiet; then
+            echo "Cards unchanged."
+            exit 0
+          fi
+          git commit -m "chore: update stats cards"
+          git pull --rebase
+          git push
