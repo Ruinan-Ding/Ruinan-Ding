@@ -153,6 +153,13 @@ body.has-custom-cursor [role="button"] {
   height: auto;
 }
 
+/* The banner is the page's name, so it sits in the h1; keep the heading's own
+   size and margins from moving it. */
+.header h1 {
+  margin: 0;
+  font-size: inherit;
+}
+
 .page-link-banner {
   display: flex;
   justify-content: center;
@@ -512,6 +519,10 @@ body.has-custom-cursor [role="button"] {
 
 .project p {
   color: #c9d1d9;
+}
+
+.project a {
+  color: #58a6ff;
 }
 
 .github-stats {
