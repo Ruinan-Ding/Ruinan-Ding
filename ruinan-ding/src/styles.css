@@ -254,6 +254,8 @@ body.has-custom-cursor [role="button"] {
 .skills img {
   width: auto;
   height: 40px;
+  max-width: 100%;
+  object-fit: contain;
 }
 
 .typing-animation {
@@ -281,7 +283,7 @@ body.has-custom-cursor [role="button"] {
 .badges {
   display: flex;
   justify-content: center;
-  gap: 72px;
+  gap: 16px 72px;
   margin: 20px 0;
   flex-wrap: wrap;
 }
@@ -360,6 +362,11 @@ body.has-custom-cursor [role="button"] {
 .about-section {
   text-align: center;
   margin: 40px 0;
+}
+
+.about-section img {
+  max-width: 100%;
+  height: auto;
 }
 
 .focus-badges {
@@ -592,6 +599,15 @@ body.has-custom-cursor [role="button"] {
 @media (max-width: 768px) {
   .container {
     padding: 10px;
+  }
+
+  /* The line is ~720px of monospace text, and the typewriter effect only works
+     on one unbroken line, so on narrow screens let it wrap without the effect. */
+  .typing-animation {
+    white-space: normal;
+    text-wrap: balance;
+    border-right: none;
+    animation: none;
   }
 
   .focus-badges {
