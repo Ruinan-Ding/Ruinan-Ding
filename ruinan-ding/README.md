@@ -7,6 +7,10 @@ and publishes `dist/browser` to GitHub Pages via
 The page mirrors the profile README one directory up, so a content change
 usually belongs in both.
 
+Claude development uses the [senior Scrum workflow](../SCRUM_WORKFLOW.md) and
+[backlog](../SCRUM_BACKLOG.md). Start with `/scrum <task>`; follow
+[AGENTS.md](../AGENTS.md) for repo constraints, BDD/TDD and verification.
+
 The whole site is one component:
 
 - `src/app/app.component.html` — all the markup

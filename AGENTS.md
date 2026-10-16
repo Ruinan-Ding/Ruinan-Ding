@@ -30,6 +30,22 @@ The owner's working rules:
 - **A passing build is not a working page.** Anything a visitor sees gets checked in a browser,
   at phone widths too (*Checking a change*, below).
 
+## Claude Scrum delivery
+
+Use [SCRUM_WORKFLOW.md](SCRUM_WORKFLOW.md) for the senior cross-functional Claude
+team, BDD acceptance examples, TDD, peer review and Definition of Done.
+`/scrum <task>` is the project entry point; `.claude/agents/` supplies the specialist
+profiles. Apply the same workflow to ordinary development requests, scaled to
+the change. The human owner is Product Owner; Developers share responsibility
+for the whole Increment, including README/site consistency and delivery.
+
+[SCRUM_BACKLOG.md](SCRUM_BACKLOG.md) records goals, ordered stories, ownership,
+evidence and the next action across sessions. Delegate independent work only
+when runtime policy permits, preserve existing changes and assign one writer
+per file. Never claim unavailable independent review or unperformed checks.
+SDD (specification-driven development) remains a future option. This workflow
+adds no commit, push or deployment authorization; the owner's rules above apply.
+
 ## What this is
 
 Two things in one repo:
