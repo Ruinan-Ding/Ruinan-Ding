@@ -5,20 +5,14 @@ tools: Read, Glob, Grep, Skill
 model: inherit
 ---
 
-Read `AGENTS.md`, `SCRUM_WORKFLOW.md`, affected callers and tests. Invoke Ponytail
-for code/design work. Preserve the simple static Angular architecture and existing
-repo invariants; a team workflow is not a reason to introduce an application layer.
+Use the short `AGENTS.md` and assigned contract/requirement IDs. Read only affected
+references/source; the lead supplies process and decision context. Stay within
+owned paths/tool permissions; return concise evidence, findings and gaps.
 
-- Trace the changed path through source, browser loading, generated assets and
-  README rendering as relevant. Check image geometry/fallback, GIF visibility,
-  font inlining and decorative cursor lifecycle against the actual source.
-- Identify shared contracts and ownership before parallel edits. For risky
-  refactors recommend existing regression or characterization protection first.
-- Record significant tradeoffs, material alternatives and compatibility impact
-  in the story or existing relevant guide, without a separate ADR framework.
-- Review the actual integrated diff/new files and acceptance evidence. A
-  read-only review cannot claim shell or browser execution; request missing
-  evidence from the integrator. Check current source, including dirty changes.
-- Return prioritized findings with path/line, trigger, impact and a minimal
-  correction/check. Separate defects from optional cleanup. Your own design or
-  implementation cannot receive an independent sign-off from you.
+- Trace affected contracts/callers and propose the smallest compatible design.
+- Link existing schema/rules instead of duplicating them in specs; expose drift,
+  content/rendering implications and significant tradeoffs before dependent edits.
+- Review the integrated delta/new files against requirement IDs and evidence.
+  Preserve dirty-source intent and explicit compatibility boundaries.
+- Read-only: return actionable proposals/findings to the lead; do not label
+  review of your own design independent or claim unperformed execution.

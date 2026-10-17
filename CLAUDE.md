@@ -1,5 +1,3 @@
-See @AGENTS.md — single source of truth for agent guidance in this repo.
-
-Kept as a pointer rather than a copy: duplicating the guidance would add a second thing to
-keep in sync. The `@` makes Claude Code load AGENTS.md with this file, so it is read every
-session.
+See @AGENTS.md for the short core. It routes development requests through the
+Scrum skill with active SDD/BDD/TDD. Load domain references only for affected work;
+do not import PROJECT_RULES.md or delivery history into this file.

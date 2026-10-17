@@ -1,9 +1,18 @@
 # Scrum backlog
 
-Updated 15 Oct 2026. The human owner orders this backlog and owns product/content
+Updated 16 Oct 2026. The human owner orders this backlog and owns product/content
 decisions. [SCRUM_WORKFLOW.md](SCRUM_WORKFLOW.md) defines the process;
 [AGENTS.md](AGENTS.md) and existing guides retain technical facts and constraints.
-Record current outcomes/evidence here rather than duplicating those guides.
+Current contracts own outcomes/evidence; this backlog keeps ordering and short links.
+
+## Current work
+
+**WF-002 — Efficient SDD delivery: Done for scoped implementation/checks; unscheduled.** The owner requested
+cheaper context loading and automatic informal-request → SDD → BDD → TDD delivery.
+[Contract, acceptance and evidence](specs/WF-002-efficient-sdd.md) are canonical.
+All existing dirty product work is preserved. Read this contract and affected
+source; consult completed entries below only for a concrete historical question.
+SDD is active now; earlier “optional/future SDD” entries describe their dated state.
 
 ## Product Goal
 

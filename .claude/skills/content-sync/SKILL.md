@@ -15,14 +15,14 @@ because different things render them:
 | Stripped | `target`, `rel`, `style`, scripts | nothing |
 | Layout | `align=`, `width=`/`height=` attributes | `styles.css`, section-scoped (`.skills img`, `.about-section img`) |
 | Repo images (`assets/`) | relative path: `assets/stats/stats.svg` | `https://raw.githubusercontent.com/Ruinan-Ding/Ruinan-Ding/main/assets/...` |
-| Animated GIFs | `src` | `data-animated-src` - the loader sets `src` (AGENTS.md invariant 2) |
+| Animated GIFs | `src` | `data-animated-src` - the loader sets `src` (PROJECT_RULES.md invariant 2) |
 | An image that fails | broken-image icon | `main.ts`: `alt=""` removed, captioned replaced by its alt text |
 
 ## Procedure
 
 1. **Edit both**, unless the owner says it is one-sided. The words match; the markup follows the
    table above. Links to the two domains are different sites: `ruinanding.com` is this one,
-   `ruinan-ding.com` the Study Timer app (AGENTS.md invariant 6).
+   `ruinan-ding.com` the Study Timer app (PROJECT_RULES.md invariant 6).
 
 2. **Every image:**
    - **Alt text that says what it shows.** `alt=""` only for pure decoration: on the site that
@@ -48,7 +48,7 @@ because different things render them:
    actually render, `POST https://api.github.com/markdown` with `{"mode":"markdown","text": ...}`
    for the old and new file and compare the HTML.
 
-6. **Verify the site** (AGENTS.md, *Checking a change*): `npm test`, the production build, then
+6. **Verify the site** (PROJECT_RULES.md, *Checking a change*): `npm test`, the production build, then
    the built page at 320, 360, 390 and 1280px - no sideways scroll, nothing clipped, and the
    image's box the same height before and after it loads.
 
