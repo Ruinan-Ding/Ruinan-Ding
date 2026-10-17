@@ -1,18 +1,18 @@
 # Scrum backlog
 
-Updated 16 Oct 2026. The human owner orders this backlog and owns product/content
+Updated 17 Oct 2026. The human owner orders this backlog and owns product/content
 decisions. [SCRUM_WORKFLOW.md](SCRUM_WORKFLOW.md) defines the process;
 [AGENTS.md](AGENTS.md) and existing guides retain technical facts and constraints.
 Current contracts own outcomes/evidence; this backlog keeps ordering and short links.
 
 ## Current work
 
-**WF-002 — Efficient SDD delivery: Done for scoped implementation/checks; unscheduled.** The owner requested
-cheaper context loading and automatic informal-request → SDD → BDD → TDD delivery.
-[Contract, acceptance and evidence](specs/WF-002-efficient-sdd.md) are canonical.
-All existing dirty product work is preserved. Read this contract and affected
-source; consult completed entries below only for a concrete historical question.
-SDD is active now; earlier “optional/future SDD” entries describe their dated state.
+**WF-004 — Claude plugin integration: Done for installation/guidance/checks; unscheduled.**
+Owner request17 Oct: add relevant plugins, including Ralph, while keeping the
+SAFe/SDD/BDD/TDD workflow efficient. [Contract and evidence](specs/WF-004-claude-plugins.md)
+are canonical. Prior [SAFe configuration](specs/WF-003-lean-safe.md) remains complete
+for configured guidance/checks. [Publication authorization](specs/WF-004-claude-plugins.md#publication-request-17-oct)
+is recorded there. Resume only the contract matching the request.
 
 ## Product Goal
 

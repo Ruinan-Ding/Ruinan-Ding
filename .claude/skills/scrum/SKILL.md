@@ -1,23 +1,24 @@
 ---
 name: scrum
-description: Translate informal or structured Ruinan-Ding development requests into concise SDD contracts, BDD examples and TDD delivery with the senior Scrum team. Applies to ordinary feature/fix/design work and explicit planning/review; not general Scrum questions.
+description: Deliver Ruinan-Ding requests through SAFe-aligned planning, concise SDD contracts, BDD and TDD. Translate informal/vibe language automatically; use for development or explicit team/PI/portfolio planning and review, not general framework questions.
 ---
 
-# Scrum delivery
+# Delivery entry
 
-Use the active request if `$ARGUMENTS` is empty. Apply the already-loaded
-[core](../../../AGENTS.md) and read the [workflow](../../../SCRUM_WORKFLOW.md)
-once as lead. Read only the active contract linked at the top of the
-[backlog](../../../SCRUM_BACKLOG.md), plus relevant source/reference sections.
+Use `$ARGUMENTS` or the active request. Apply the loaded [core](../../../AGENTS.md)
+and read the [workflow](../../../SCRUM_WORKFLOW.md) once as lead. Inspect the
+[backlog pointer](../../../SCRUM_BACKLOG.md#current-work); resume its contract only
+when it matches the request, otherwise create/update the matching contract.
 
-Automatically turn informal requests into the same SDD contract before editing;
-use [intake](references/intake.md) for vague/vibe language. Keep user intent,
-assumptions and material questions distinct. No new approval gate. Link
-requirements → BDD examples → TDD tests/observations → final source evidence.
+Use [intake](references/intake.md) for informal/vibe requests. Classify team,
+ART-coordination or portfolio scope without inventing hierarchy. Routine work
+uses one team contract. For SAFe requests or real multi-team/investment needs,
+read only the relevant [SAFe section](references/safe.md). Keep intent → useful
+parent links → requirements → BDD examples → TDD checks → source evidence.
 Use [content-sync](../content-sync/SKILL.md) for mirrored visitor content.
-Default to one lead; add relevant specialists/review only for useful independent
-work within runtime policy. An assigned worker uses its packet and core/domain
-constraints; it does not reload the whole workflow/history or spawn another team.
-Use bounded reads/results, one writer per file, delta checks and one canonical
-record. Preserve dirty work, required checks, model/permission settings and the
-user's publication/service authorization. Disclose real verification limits.
+For plugin setup, focused reviews or requested Ralph loops, read the relevant
+[plugin guidance](references/plugins.md).
+Default to one lead; activate relevant specialists within runtime policy.
+Workers use bounded packets, not repeated intake or whole plans. Preserve dirty
+work, one writer per file, mandatory checks, human authority and publication/
+service permissions. Record compact continuation state and truthful gaps once.

@@ -3,7 +3,7 @@
 This repo contains the GitHub profile (`README.md`, `assets/`) and Angular site
 (`ruinan-ding/`). The page mirrors the profile. Read this core once; use the
 ordinary-language or `/scrum` entry point in [.claude/skills/scrum/SKILL.md](.claude/skills/scrum/SKILL.md)
-for active SDD → BDD → TDD delivery. The human is Product Owner. All nine senior
+for SAFe-aligned SDD → BDD → TDD delivery. The human is Product Owner. All nine senior
 capabilities remain available on demand; the lead covers small work directly.
 
 ## Owner constraints
