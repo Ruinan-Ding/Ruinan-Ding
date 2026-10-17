@@ -1,2 +1,6 @@
 # Claude Code local machine settings (permissions allowlist)
 .claude/settings.local.json
+
+# Ralph state belongs to one local session and can contain its working prompt.
+/.claude/ralph-loop.local.md
+/.claude/ralph-loop.local.md.tmp.*
